@@ -3,7 +3,7 @@ exec xcompmgr -c -f -n &
 exec redshift-gtk -l 41.6:-8.62 & 
 exec feh --bg-fill ~/Wallpaper/background3.png &
 exec polybar &
-exec sxhkd -c ~/.config/sxhkd/sxhkdrc_bsp &
+exec sxhkd -c ~/.config/sxhkd/sxhkdrc &
 exec xautolock -time 5 - locker slock &
 exec nm-applet &
 exec volumeicon &
