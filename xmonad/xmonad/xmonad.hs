@@ -25,7 +25,7 @@ main = xmonad
      $ myConfig
 
 myConfig = def
-    { terminal   = "kitty"      -- Rebind Mod to the Super key
+    { terminal   = "st"      -- Rebind Mod to the Super key
     , layoutHook = myLayout      -- Use custom layouts
     , manageHook = myManageHook  -- Match on certain windows
     , startupHook = myStartupHook -- Autostart apps
@@ -33,10 +33,10 @@ myConfig = def
   `additionalKeysP`
     [ ("M-d", spawn "rofi -show drun")
     , ("M-x", spawn "rofi -show powermenu -modi powermenu:rofi-power-menu")
-    , ("M-p", unGrab *> spawn "scrot -s"        )
-    , ("M-w"  , spawn "brave-browser-stable"                   )
+    , ("M-C-p", unGrab *> spawn "scrot -s"        )
+    , ("M-S-b"  , spawn "brave-browser-stable"                   )
     , ("M-c"  , spawn "better-control"                   )
-    , ("M-t"  , spawn "slock"                   )
+    , ("M-C-t"  , spawn "slock"                   )
     ]
 
 myManageHook :: ManageHook
@@ -56,11 +56,11 @@ myLayout = tiled ||| Mirror tiled ||| Full ||| threeCol
 myStartupHook :: X ()
 myStartupHook = do
   spawnOnce "feh --bg-fill ~/Wallpaper/Haskell_grey.png"
-  spawnOnce "polkit-kde-agent"
   spawnOnce "synclient TapButton1=1"
   spawnOnce "synclient TapButton2=3"
   spawnOnce "synclient TapButton3=2"
   spawnOnce "xcompmgr -c -f -n"
+  spawnOnce "dunst"
   spawnOnce "udiskie -a"
   spawnOnce "redshift -l 41.6:-8.62"
   spawnOnce "xautolock -time 5 -locker slock"
