@@ -133,7 +133,7 @@ include_dwm() {
 }
 
 include_box() {
-    	PKGS="cbatticon conky jgmenu jq redshift-gtk volumeicon"
+    	PKGS="$PKGS cbatticon conky jgmenu jq redshift-gtk volumeicon"
 	mkdir -p "$INCLUDEDIR"/usr/share/applications
 	cp ./common/jgmenu.desktop "$INCLUDEDIR"/usr/share/applications/
 }
@@ -154,7 +154,7 @@ include_niri() {
 } 
 
 include_poly() {
-    	PKGS="polybar volumeicon"
+    	PKGS="$PKGS polybar volumeicon"
 	mkdir -p "$INCLUDEDIR"/etc/skel/.local/share
 	cp -r ./common/fonts "$INCLUDEDIR"/etc/skel/.local/share/
 }
@@ -165,12 +165,12 @@ include_xfce() {
 }
 
 include_way() {
-    	PKGS="nwg-look nwg-launchers wlsunset xorg-server-wayland xwayland-satellite"
+    	PKGS="$PKGS nwg-look nwg-launchers wlsunset xorg-server-xwayland xwayland-satellite"
 	cp ./common/wswap-way "$INCLUDEDIR"/usr/bin/
 }	
 
 include_x11() {
-    	PKGS="dunst redshift scrot slock st transset xautolock xcompmgr"
+    	PKGS="$PKGS dunst redshift scrot slock st transset xautolock xcompmgr"
 	cp ./common/wswap-X "$INCLUDEDIR"/usr/bin/
 }	
 
