@@ -153,6 +153,7 @@ include_niri() {
 } 
 
 include_poly() {
+    	PKGS="polybar"
 	mkdir -p "$INCLUDEDIR"/etc/skel/.local/share
 	cp -r ./common/fonts "$INCLUDEDIR"/etc/skel/.local/share/
 }
@@ -242,7 +243,7 @@ build_variant() {
 	    COMMON=yes
 	    X11=yes
 	    POLY=yes
-            PKGS="$PKGS $XORG_PKGS $CALAMARES $D77_CORE bspwm dmenu dunst polybar redshift redshift-gtk scrot slock sxhkd st volumeicon xautolock xcompmgr"
+            PKGS="$PKGS $XORG_PKGS $CALAMARES $D77_CORE bspwm dmenu dunst redshift redshift-gtk scrot slock sxhkd st volumeicon xautolock xcompmgr"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
         ;;
 	dwm)
@@ -268,7 +269,7 @@ build_variant() {
 	    COMMON=yes
 	    X11=yes
 	    POLY=yes
-            PKGS="$PKGS $XORG_PKGS $CALAMARES $D77_CORE dunst i3-gaps i3lock i3status ImageMagick polybar redshift redshift-gtk scrot volumeicon xcompmgr"
+            PKGS="$PKGS $XORG_PKGS $CALAMARES $D77_CORE dunst i3-gaps i3lock i3status ImageMagick redshift redshift-gtk scrot volumeicon xcompmgr"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
         ;;
 	labwc)
@@ -281,7 +282,7 @@ build_variant() {
 	    COMMON=yes
 	    X11=yes
 	    POLY=yes
-            PKGS="$PKGS $XORG_PKGS $CALAMARES $D77_CORE dunst leftwm polybar redshift redshift-gtk scrot slock st xautolock xcompmgr"
+            PKGS="$PKGS $XORG_PKGS $CALAMARES $D77_CORE dunst leftwm redshift redshift-gtk scrot slock st xautolock xcompmgr"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
         ;;
 	lxqt)
