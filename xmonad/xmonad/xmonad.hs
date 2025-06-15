@@ -25,8 +25,8 @@ myConfig = def
     , layoutHook = myLayout      -- Use custom layouts
     , manageHook = myManageHook  -- Match on certain windows
     , startupHook = myStartupHook -- Autostart apps
-    , focusedBorderColor = "#bd93f9"
-    , normalBorderColor  = "#ff79c6"
+    , focusedBorderColor = "#ff79c6"
+    , normalBorderColor  = "#bd93f9"
     , borderWidth = 3
     }
   `additionalKeysP`
