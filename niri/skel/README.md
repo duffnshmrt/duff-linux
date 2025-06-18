@@ -1,16 +1,6 @@
 Hello
 Thank you for trying d77void.
 
-## **Very Important**
-
-To achieve the configuration I intended do distribute, please run:
-
-```
-niri_1st
-```
-
-Only that way you will see what the system is intended to look.
-
 
 ## Installer
 
