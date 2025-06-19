@@ -12,7 +12,7 @@ As extra it installs and enables NetworkManager, dbus and sddm.
 To use it simply:
 
 ```
-sudo ./void-xmonad
+./void-xmonad
 ```
 
 and wait a few time (cabal installing XMonad and all needed libs takes a long time).
@@ -27,9 +27,11 @@ it installs a session xmonad file in /usr/share/xsessions, a Wallpaper and my xm
 To use it simply:
 
 ```
-sudo ./xmonad_install
+./xmonad_install
 ```
 
 and wait a few time (cabal installing XMonad and all needed libs takes a long time).
+
+In both cases have your superuser pass at hand; you will need it.
 
 Have fun

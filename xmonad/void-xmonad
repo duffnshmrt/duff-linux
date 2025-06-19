@@ -35,7 +35,7 @@ enable_svs ()
 {
     for i in $svs; do
         echo -n "- enable service \"$i\"... "
-        ln -s /etc/sv/"$i" /var/service > /dev/null 2>&1
+        sudo ln -s /etc/sv/"$i" /var/service > /dev/null 2>&1
         if [ ! $? -eq 0 ]; then
             echo "${red}not enabled${normal}"
             error_svs=$error_svs"$i "
@@ -49,7 +49,7 @@ install_pkg ()
 {
     for i in $pkg; do
         echo -n "- install \"$i\"..."
-        xbps-install -y "$i" > /dev/null 2>&1 &
+        sudo xbps-install -y "$i" > /dev/null 2>&1 &
         spid=$!
         sleep .5
         dots &
@@ -64,7 +64,7 @@ install_pkg ()
 
 update ()
 {
-    xbps-install "$opt" > /dev/null 2>&1 &
+    sudo xbps-install "$opt" > /dev/null 2>&1 &
         spid=$!
         sleep .5
         dots &
@@ -135,7 +135,7 @@ update ()
 # XMonad Dependencies
     echo
     echo "Xmonad Dependencies"
-        pkg="cabal-install ghc git libX11-devel libXft-devel libXinerama-devel libXScrnSaver-devel ncurses-devel pkg-config xorg-minimal xterm"
+        pkg="cabal-install ghc git libX11-devel libXft-devel libXinerama-devel libXrandr-devel libXScrnSaver-devel ncurses-devel pkg-config xorg-minimal xterm"
         install_pkg "$pkg"
         echo "done"
 
@@ -144,6 +144,7 @@ update ()
     echo "Installing XMonad"
 	cabal update
 	cabal install --lib xmonad xmonad-contrib X11
+	cabal install xmonad
     # Cabal's BIN dir to PATH
     echo "Adding Cabal's BIN dir to PATH"
 	echo export PATH="$HOME/.cabal/bin:$PATH" >> ~/.bashrc
