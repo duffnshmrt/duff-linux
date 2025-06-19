@@ -353,6 +353,7 @@ binds {
     Mod+B { spawn "brave-browser-stable"; }
     Super+C { spawn "better-control"; }
     Mod+D { spawn "fuzzel"; }
+    Mod+N { spawn "nwggrid"; }
     Mod+O { spawn "gmrun"; }
     Mod+P { spawn "pcmanfm"; }
     Mod+T { spawn "swaylock"; }
