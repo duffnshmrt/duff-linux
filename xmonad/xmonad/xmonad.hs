@@ -9,10 +9,12 @@ import XMonad.Util.EZConfig
 import XMonad.Util.Loggers
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.SpawnOnce
+import XMonad.Layout.IndependentScreens
 import XMonad.Layout.Magnifier
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Spacing
 import XMonad.Layout.Gaps
+import qualified XMonad.StackSet as W
 
 main :: IO ()
 main = xmonad
@@ -32,24 +34,28 @@ myConfig = def
     }
   `additionalKeysP`
     [ ("M-d", spawn "rofi -show drun")
-    , ("M-x", spawn "rofi -show powermenu -modi powermenu:rofi-power-menu")
+    , ("M-x", spawn "power_menu")
     , ("M-C-p", unGrab *> spawn "scrot -s")
     , ("M-S-b"  , spawn "brave-browser-stable")
     , ("M-c"  , spawn "better-control")
     , ("M-C-t"  , spawn "slock")
     , ("M-S-r", spawn "xmonad --recompile --restart")
-    , ("M-S-s", namedScratchpadAction myScratchPads "terminal")
-    ]
+    , ("M-s", namedScratchpadAction myScratchPads "terminal")
+    , ("M-h", namedScratchpadAction myScratchPads "htop")
+    , ("M-n", namedScratchpadAction myScratchPads "nano") ]
 
 myScratchPads :: [NamedScratchpad]
-myScratchPads = [ NS "terminal" "xterm -name scratchpad" (title =? "scratchpad") nonFloating ]
+myScratchPads = [ NS "terminal" "xterm -name scratchpad" (title =? "scratchpad")   nonFloating 
+		, NS "htop" "xterm -e htop" (title =? "htop") (customFloating $ W.RationalRect (1/4) (1/4) (1/2) (1/2))
+                , NS "nano" "xterm -e nano" (title =? "nano") (customFloating $ W.RationalRect (1/4) (1/4) (1/2) (1/2)) ]
 
 myManageHook :: ManageHook
 myManageHook = composeAll
     [ className =? "Gimp" --> doFloat
+    , className =? "scratchpad" --> nonFloating
+    , className =? "htop" --> nonFloating
+    , className =? "nano" --> doFloat
     , isDialog            --> doFloat
-    , className =? "scratchpad" --> doFloat
-    , isDialog		  --> doFloat
     ]
 
 myLayout = spacingWithEdge 3 $ gaps [(U, 3)] $ tiled ||| Mirror tiled ||| Full ||| threeCol
@@ -69,7 +75,7 @@ myStartupHook = do
   spawnOnce "xcompmgr -c -f -n"
   spawnOnce "dunst"
   spawnOnce "udiskie -a"
-  spawnOnce "redshift -l 41.6:-8.62"
+  spawnOnce "redshift -l 41.6:-8.62 -t 5700:3500 -g 0.8"
   spawnOnce "xautolock -time 5 -locker slock"
 
 myXmobarPP :: PP
