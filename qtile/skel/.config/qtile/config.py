@@ -39,22 +39,28 @@ import subprocess
  
 mod = "mod4"
 
+if qtile.core.name == "x11":
+	terminal = "st"
+elif qtile.core.name == "wayland":
+	terminal = "kitty"
+
 def dynamic_launcher(qtile):
 	if qtile.core.name == "x11":
 		qtile.spawn("rofi -show drun")
 	elif qtile.core.name == "wayland":
 		qtile.spawn("nwggrid")
 
+def dynamic_locker(qtile):
+	if qtile.core.name == "x11":
+		qtile.spawn("slock")
+	elif qtile.core.name == "wayland":
+		qtile.spawn("swaylock")
+
 def dynamic_wall(qtile):
 	if qtile.core.name == "x11":
 		qtile.spawn("wswap-X")
 	elif qtile.core.name == "wayland":
 		qtile.spawn("wswap-way")
-
-if qtile.core.name == "x11":
-	terminal = "st"
-elif qtile.core.name == "wayland":
-	terminal = "kitty"
 
 @hook.subscribe.startup_once
 def autostart():
@@ -87,22 +93,12 @@ keys = [
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
     # multiple stack panes
-    Key(
-        [mod, "shift"],
-        "Return",
-        lazy.layout.toggle_split(),
-        desc="Toggle between split and unsplit sides of stack",
-    ),
+    Key([mod, "shift"], "Return", lazy.layout.toggle_split(), desc="Toggle between split and unsplit sides of stack"),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
-    Key(
-        [mod],
-        "f",
-        lazy.window.toggle_fullscreen(),
-        desc="Toggle fullscreen on the focused window",
-    ),
+    Key([mod], "f", lazy.window.toggle_fullscreen(), desc="Toggle fullscreen on the focused window",),
     Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
@@ -114,6 +110,7 @@ keys = [
     Key([mod], "d", lazy.spawn("pcmanfm"), desc="Filemanager"),
     Key([mod], "m", lazy.spawn("geary"), desc="Web browser"),
     Key([mod], "n", lazy.function(dynamic_launcher)),
+    Key([mod, "control"], "t", lazy.function(dynamic_locker), desc="Lock Screen"),
     Key([mod], "x", lazy.spawn("rofi -show power-menu -modi power-menu:rofi-power-menu"), desc="Rofi PowerMenu"),
     Key([mod], "y", lazy.spawn("slock"), desc="screen locker"),
     Key([mod], "w", lazy.spawn("brave-browser-stable"), desc="Web browser"),
@@ -131,13 +128,8 @@ keys = [
 # We therefore defer the check until the key binding is run by using .when(func=...)
 for vt in range(1, 8):
     keys.append(
-        Key(
-            ["control", "mod1"],
-            f"f{vt}",
-            lazy.core.change_vt(vt).when(func=lambda: qtile.core.name == "wayland"),
-            desc=f"Switch to VT{vt}",
-        )
-    )
+        Key(["control", "mod1"], f"f{vt}", lazy.core.change_vt(vt).when(func=lambda: qtile.core.name == "wayland"), desc=f"Switch to VT{vt}",))
+
 workspaces = [
     {"name": " ", "key": "1", "matches": [Match(wm_class='kitty'), Match(wm_class='mousepad'), Match(wm_class='ranger'), Match(wm_class='geany')], "layout": "monadtall"},
     {"name": " ", "key": "2", "matches": [Match(wm_class='librewolf'), Match(wm_class='brave-browser-stable'), Match(wm_class='org.gnome.Evolution-alarm-notify.desktop'), Match(wm_class='transmission-gtk.desktop'), Match(wm_class='geary')], "layout": "max"},
@@ -147,12 +139,10 @@ workspaces = [
 ]
 
 
-groups = [ ScratchPad("scratchpad", [
-        DropDown("term", "kitty", width=0.5, height=0.5, x=0.25, y=0.25, opacity=0.9),
-    ]),
-	ScratchPad("htop", [
-        DropDown("term", "kitty -e htop", width=0.5, height=0.5, x=0.25, y=0.25, opacity=0.9),
-    ])]
+groups = [ 
+	ScratchPad("scratchpad", [ DropDown("term", "xterm", width=0.5, height=0.5, x=0.25, y=0.25, opacity=0.9), ]),
+	ScratchPad("htop", [ DropDown("term", "xterm -e htop", width=0.5, height=0.5, x=0.25, y=0.25, opacity=0.9),])
+]
 
 for workspace in workspaces:
     matches = workspace["matches"] if "matches" in workspace else None
@@ -162,7 +152,6 @@ for workspace in workspaces:
     keys.append(Key([mod, "shift"], workspace["key"], lazy.window.togroup(workspace["name"])))
 
 qtile_colors = colors.d77
-
 layout_theme = {"border_width": 3, "border_focus": qtile_colors[32], "border_normal": qtile_colors[33], "margin": 5}
 
 layouts = [
@@ -182,7 +171,7 @@ layouts = [
 
 widget_defaults = dict(
     font="hack",
-    fontsize=10,
+    fontsize=9,
     padding=2,
 )
 
@@ -225,7 +214,7 @@ screens = [
 		widget.Volume(fmt="  {}",
                 mouse_callbacks={'Button3': lazy.spawn('pavucontrol')}),
 		widget.Battery(format = '  {percent:2.0%} {hour:d}:{min:02d}'),
-		widget.KeyboardLayout(configured_keyboards = ["de deadtilde", "pt", "us"],fmt = ' 󰌌 {}'),
+		##widget.KeyboardLayout(configured_keyboards = ["gb intl", "de deadtilde", "pt", "us"],fmt = ' 󰌌 {}'),
 		widget.CheckUpdates(distro = 'Void',no_update_string=' No updates',update_interval=600,
 		mouse_callbacks={'Button1': lazy.spawn('qt-sudo xbps-install -Su -y')}),
 		widget.TextBox(text=" ",
