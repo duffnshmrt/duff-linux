@@ -165,7 +165,7 @@ include_xfce() {
 }
 
 include_way() {
-    	PKGS="$PKGS nwg-look nwg-launchers swaybg swayidle swayimg swaylock SwayNotificationCenter Waybar wlsunset xorg-server-xwayland xwayland-satellite"
+    	PKGS="$PKGS nwg-look nwg-launchers Waybar wlsunset xorg-server-xwayland xwayland-satellite"
 	cp ./common/wswap-way "$INCLUDEDIR"/usr/bin/
 }	
 
@@ -279,7 +279,7 @@ build_variant() {
 	labwc)
 	    COMMON=yes
 	    WAY=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $CALAMARES $D77_CORE grim ImageMagick labwc labwc-menu-generator labwc-tweaks-qt pavucontrol qt5-wayland qt6-wayland"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $CALAMARES $D77_CORE grim ImageMagick labwc labwc-menu-generator labwc-tweaks-qt pavucontrol qt5-wayland qt6-wayland swaybg swayidle swayimg swaylock SwayNotificationCenter"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
         ;;
 	leftwm)
@@ -300,7 +300,7 @@ build_variant() {
 	    COMMON=yes
 	    WAY=yes
 	    NIRI=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $CALAMARES $D77_CORE fuzzel gnome-keyring grim ImageMagick niri pavucontrol qt5-wayland qt6-wayland swww xdg-desktop-portal-gnome xdg-desktop-portal-gtk"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $CALAMARES $D77_CORE fuzzel gnome-keyring grim ImageMagick niri pavucontrol qt5-wayland qt6-wayland swaybg swayidle swayimg swaylock SwayNotificationCenter swww xdg-desktop-portal-gnome xdg-desktop-portal-gtk"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
         ;;
 	openbox)
@@ -320,7 +320,7 @@ build_variant() {
 	sway)
 	    COMMON=yes
 	    WAY=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $CALAMARES $D77_CORE grim ImageMagick pavucontrol qt5-wayland qt6-wayland sway wmenu"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $CALAMARES $D77_CORE grim ImageMagick pavucontrol qt5-wayland qt6-wayland sway swaybg swayidle swayimg swaylock SwayNotificationCenter wmenu"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
         ;;
 	wayfire)
