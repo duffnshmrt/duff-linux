@@ -9,6 +9,7 @@ import XMonad.Util.EZConfig
 import XMonad.Util.Loggers
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.SpawnOnce
+import XMonad.Layout.BinarySpacePartition
 import XMonad.Layout.IndependentScreens
 import XMonad.Layout.Magnifier
 import XMonad.Layout.ThreeColumns
@@ -58,7 +59,7 @@ myManageHook = composeAll
     , isDialog            --> doFloat
     ]
 
-myLayout = spacingWithEdge 3 $ gaps [(U, 3)] $ tiled ||| Mirror tiled ||| Full ||| threeCol
+myLayout = spacingWithEdge 3 $ gaps [(U, 3)] $ emptyBSP ||| tiled ||| Mirror tiled ||| Full ||| threeCol
   where
     threeCol = magnifiercz' 1.3 $ ThreeColMid nmaster delta ratio
     tiled    = Tall nmaster delta ratio
