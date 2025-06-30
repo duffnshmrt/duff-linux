@@ -7,7 +7,7 @@ sxhkd -c ~/.config/sxhkd/sxhkdrc &
 udiskie -at &
 conky -c .conkyrc &
 conky -c .conkyrc1 &
-feh --bg-fill  ~/Wallpaper/background2.png &
+feh --bg-fill  ~/Wallpaper/background6.png &
 xrdb merge ~/.Xresources &
 /usr/bin/octoxbps-notifier &
 xautolock -time 5 -locker slock &
