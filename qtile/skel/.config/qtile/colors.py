@@ -1,4 +1,4 @@
-d77 = [
+macchiato = [
     ["#f4dbd6", "#f4dbd6"], # 0 rosewater
     ["#f0c6c6", "#f0c6c6"], # 1 flamingo
     ["#f5bde6", "#f5bde6"], # 2 pink
@@ -23,16 +23,31 @@ d77 = [
     ["#363a4f", "#363a4f"], # 21 surface0
     ["#24273a", "#24273a"], # 22 base
     ["#1e2030", "#1e2030"], # 23 mantle
-    ["#181926", "#181926"], # 24 crust
-    ["#282a36", "#282a36"], # 25 background
-    ["#44475a", "#44475a"], # 26 current
-    ["#f8f8f2", "#f8f8f2"], # 27 foreground
-    ["#6272a4", "#6272a4"], # 28 comment
-    ["#8be9fd", "#8be9fd"], # 29 cyan
-    ["#50fa7b", "#50fa7b"], # 30 green1
-    ["#ffb86c", "#ffb86c"], # 31 orange
-    ["#ff79c6", "#ff79c6"], # 32 pink1
-    ["#bd93f9", "#bd93f9"], # 33 purple
-    ["#ff5555", "#ff5555"], # 34 red1
-    ["#f1fa8c", "#f1fa8c"] # 35 yellow
+    ["#181926", "#181926"] # 24 crust
 ]
+
+d77 = [
+    ["#282a36", "#282a36"], # 0 background
+    ["#44475a", "#44475a"], # 1 current
+    ["#f8f8f2", "#f8f8f2"], # 2 foreground
+    ["#6272a4", "#6272a4"], # 3 comment
+    ["#8be9fd", "#8be9fd"], # 4 cyan
+    ["#50fa7b", "#50fa7b"], # 5 green1
+    ["#ffb86c", "#ffb86c"], # 6 orange
+    ["#ff79c6", "#ff79c6"], # 7 pink1
+    ["#bd93f9", "#bd93f9"], # 8 purple
+    ["#ff5555", "#ff5555"], # 9 red1
+    ["#f1fa8c", "#f1fa8c"] # 10 yellow
+]
+
+DoomOne = [
+    ["#282c34", "#282c34"], # bg
+    ["#bbc2cf", "#bbc2cf"], # fg
+    ["#1c1f24", "#1c1f24"], # color01
+    ["#ff6c6b", "#ff6c6b"], # color02
+    ["#98be65", "#98be65"], # color03
+    ["#da8548", "#da8548"], # color04
+    ["#51afef", "#51afef"], # color05
+    ["#c678dd", "#c678dd"], # color06
+    ["#46d9ff", "#46d9ff"]  # color15
+    ]

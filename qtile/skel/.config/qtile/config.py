@@ -152,7 +152,7 @@ for workspace in workspaces:
     keys.append(Key([mod, "shift"], workspace["key"], lazy.window.togroup(workspace["name"])))
 
 qtile_colors = colors.d77
-layout_theme = {"border_width": 3, "border_focus": qtile_colors[32], "border_normal": qtile_colors[33], "margin": 5}
+layout_theme = {"border_width": 3, "border_focus": qtile_colors[7], "border_normal": qtile_colors[8], "margin": 5}
 
 layouts = [
      #layout.Columns(border_focus_stack=["#4d235c", "#686714"]),
