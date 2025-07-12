@@ -212,7 +212,7 @@ screens = [
 		widget.Net(format='  {down:.0f}{down_suffix} ↓↑ {up:.0f}{up_suffix}',update_interval=1.0,
                 mouse_callbacks={'Button1': lazy.spawn(terminal + ' --class floating_shell -e nmtui')}),
 		widget.Volume(fmt="  {}",
-                mouse_callbacks={'Button3': lazy.spawn('pavucontrol')}),
+                mouse_callbacks={'Button3': lazy.spawn('pavucontrol-qt')}),
 		widget.Battery(format = '  {percent:2.0%} {hour:d}:{min:02d}'),
 		widget.KeyboardLayout(configured_keyboards = ["us", "de deadtilde", "pt"],fmt = ' 󰌌 {}'),
 		widget.CheckUpdates(distro = 'Void',no_update_string=' No updates',update_interval=600,
