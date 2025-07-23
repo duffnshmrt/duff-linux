@@ -13,32 +13,32 @@ set -e
 set -u
 
 # All supported choices
-all=(logout reboot shutdown)
+all=(suspend logout reboot shutdown)
 
 # By default, show all (i.e., just copy the array)
 show=("${all[@]}")
 
 declare -A texts
-texts[switchuser]="switch user"
+texts[suspend]="suspend"
 texts[logout]="log out"
 texts[reboot]="reboot"
 texts[shutdown]="shut down"
 
 declare -A icons
-icons[switchuser]=""
+icons[suspend]=""
 icons[logout]="󰍃"
 icons[reboot]="󱞳"
 icons[shutdown]="󰤆"
 icons[cancel]="󱫀"
 
 declare -A actions
-actions[switchuser]="???"
+actions[suspend]="loginctl suspend"
 actions[logout]="loginctl terminate-user $USER"
 actions[reboot]="loginctl reboot"
 actions[shutdown]="loginctl poweroff"
 
 # By default, ask for confirmation for actions that are irreversible
-confirmations=(reboot shutdown)
+confirmations=(suspend reboot shutdown)
 
 # By default, no dry run
 dryrun=false
