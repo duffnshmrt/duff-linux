@@ -113,6 +113,7 @@ include_common() {
 	cp ./common/.Xresources "$INCLUDEDIR"/etc/skel/
 	cp ./common/d77-welcome "$INCLUDEDIR"/usr/bin/
 	cp ./common/rofi-power-menu "$INCLUDEDIR"/usr/bin/
+	cp ./common/wofi-power-menu "$INCLUDEDIR"/usr/bin/
 	cp ./common/50-udisks.rules "$INCLUDEDIR"/usr/share/polkit-1/rules.d/
 	cp ./common/d77-welcome.desktop "$INCLUDEDIR"/usr/share/applications/
 	cp ./common/d77void.png "$INCLUDEDIR"/usr/share/pixmaps/

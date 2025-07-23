@@ -50,6 +50,18 @@ def dynamic_launcher(qtile):
 	elif qtile.core.name == "wayland":
 		qtile.spawn("nwggrid")
 
+def dynamic_menu(qtile):
+	if qtile.core.name == "x11":
+		qtile.spawn("rofi -show drun")
+	elif qtile.core.name == "wayland":
+		qtile.spawn("wofi --show drun")
+
+def dynamic_power(qtile):
+	if qtile.core.name == "x11":
+		qtile.spawn("rofi -show power-menu -modi power-menu:rofi-power-menu")
+	elif qtile.core.name == "wayland":
+		qtile.spawn("wofi-power-menu")
+
 def dynamic_locker(qtile):
 	if qtile.core.name == "x11":
 		qtile.spawn("slock")
@@ -104,14 +116,14 @@ keys = [
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     Key([mod], "i", lazy.widget["keyboardlayout"].next_keyboard(), desc="Next keyboard layout."),
-    Key([mod], "a", lazy.spawn("rofi -show drun"), desc="Menu"),
+    Key([mod], "a", lazy.function(dynamic_menu)),
     Key([mod], "b", lazy.function(dynamic_wall), desc="Swap Wallpaper"),
     Key([mod], "c", lazy.spawn("better-control"), desc="Control Panel"),
     Key([mod], "d", lazy.spawn("pcmanfm"), desc="Filemanager"),
     Key([mod], "m", lazy.spawn("geary"), desc="Web browser"),
     Key([mod], "n", lazy.function(dynamic_launcher)),
     Key([mod, "control"], "t", lazy.function(dynamic_locker), desc="Lock Screen"),
-    Key([mod], "x", lazy.spawn("rofi -show power-menu -modi power-menu:rofi-power-menu"), desc="Rofi PowerMenu"),
+    Key([mod], "x", lazy.function(dynamic_power)),
     Key([mod], "y", lazy.spawn("slock"), desc="screen locker"),
     Key([mod], "w", lazy.spawn("brave-browser-stable"), desc="Web browser"),
     Key([], "XF86AudioRaiseVolume",lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%")),
