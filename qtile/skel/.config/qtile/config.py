@@ -230,7 +230,7 @@ screens = [
 		widget.CheckUpdates(distro = 'Void',no_update_string=' No updates',update_interval=600,
 		mouse_callbacks={'Button1': lazy.spawn('qt-sudo xbps-install -Su -y')}),
 		widget.TextBox(text=" ",
-		mouse_callbacks={'Button1': lazy.spawn('rofi -show power-menu -modi power-menu:rofi-power-menu')}),
+		mouse_callbacks={'Button1': lazy.function(dynamic_power)}),
             ], 
             25,
 	    background = "#11111b80",
