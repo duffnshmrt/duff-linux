@@ -30,6 +30,7 @@ alt + shift + r -> reload configuration
 
 ## d77 Keybinds
 
+alt + a -> scratchpad
 
 alt + b -> swap wallpaper
 
@@ -44,6 +45,8 @@ alt + t -> lock screen
 alt + w -> brave
 
 alt + x -> powermenu
+
+alt + z -> yakuake alike scratchpad
 
 super + c -> control pannel
 
