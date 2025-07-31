@@ -30,6 +30,7 @@ pre_install() {
 }
 
 post_install() {
+	install -Dm644 ${FILESDIR}/st.desktop -t ${DESTDIR}/usr/share/applications
 	vdoc README
 	vdoc FAQ
 	vlicense LICENSE
