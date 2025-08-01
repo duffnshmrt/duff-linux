@@ -1,5 +1,3 @@
-alt + d
-	rofi -show drun
 alt + r
 	gmrun
 alt + w
@@ -10,6 +8,8 @@ super + b
 	wswap-X
 super + c
 	better-control
+super + d
+	rofi -show drun
 super + f
 	pcmanfm
 super + l

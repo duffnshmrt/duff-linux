@@ -48,8 +48,6 @@ alt + f -> floating mode
 
 alt + m -> focus mode
 
-alt + d -> rofi
-
 alt + p -> dmenu
 
 alt + r -> gmrun
@@ -61,6 +59,8 @@ alt + w -> brave
 super + b -> swap wallpaper
 
 super + c -> control pannel
+
+super + d -> rofi
 
 super + f -> pcmanfm
 
