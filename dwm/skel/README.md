@@ -52,6 +52,8 @@ alt + p -> dmenu
 
 alt + r -> gmrun
 
+alt + s -> scratchpad
+
 alt + x -> powermenu
 
 alt + w -> brave
