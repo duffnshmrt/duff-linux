@@ -830,3 +830,22 @@ client.connect_signal("unmanage", backham)
 tag.connect_signal("property::selected", backham)
 
 -- }}}
+
+-- Autorun programs
+autorun = true
+autorunApps =
+{
+   "redshift-gtk",
+   "volumeicon",
+   "nm-applet",
+   "octoxbps-notifier",
+   "xcompmgr -c -f -n",
+   "synclient TapButton1=1",
+   "synclient TapButton2=3",
+   "synclient TapButton3=2",
+}
+if autorun then
+   for app = 1, #autorunApps do
+       awful.util.spawn(autorunApps[app])
+   end
+end

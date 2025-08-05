@@ -1,9 +1,0 @@
-exec xcompmgr -c -f -n &
-exec redshift-gtk &
-exec dunst &
-exec octoxbps-notifier &
-exec nm-applet &
-exec synclient TapButton1=1 &
-exec synclient TapButton2=3 &
-exec synclient TapButton3=2 &
-exec dbus-launch awesome
