@@ -14,18 +14,27 @@ leftwm command "LoadTheme $SCRIPTPATH/theme.ron"
 leftwm command "LoadTheme $SCRIPTPATH/theme.toml"
 
 # Set background
-# if [ -x "$(command -v wallc)" ]; then
-#     WALLPAPER=$(ls $SCRIPTPATH/background* | shuf -n 1)
-#     wallc set $WALLPAPER
-# fi
 if [ -x "$(command -v feh)" ]; then
     WALLPAPER=$(ls $SCRIPTPATH/background* | shuf -n 1)
     feh --bg-scale $WALLPAPER
 fi
 
 # start eww daemon
-# eww --debug daemon &
 eww daemon &
 
 #open eww windows
 eww open-many left tags right
+
+polybar &
+xcompmgr -c -f -n &
+exec dunst &
+redshift-gtk -l 41.6:-8.62 &
+xautolock -time 5 - locker slock &
+nm-applet &
+volumeicon &
+octoxbps-notifier &
+udiskie -at &
+synclient TapButton1=1 &
+synclient TapButton2=3 &
+synclient TapButton3=2 &
+
