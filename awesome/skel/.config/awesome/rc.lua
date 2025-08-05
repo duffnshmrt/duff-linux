@@ -836,7 +836,7 @@ autorun = true
 autorunApps =
 {
    "redshift-gtk",
-   "volumeicon",
+   "dunst",
    "nm-applet",
    "octoxbps-notifier",
    "xcompmgr -c -f -n",
