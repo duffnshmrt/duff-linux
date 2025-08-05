@@ -36,7 +36,7 @@ super + c -> control pannel
 
 super + d -> wmenu
 
-super + p -> rofi
+super + p -> menu
 
 super + o -> gmrun
 

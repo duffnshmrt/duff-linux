@@ -119,8 +119,8 @@ output * bg ~/Wallpaper/background1.png fill
     # Start nwggrid
     bindsym $mod+n exec nwggrid
 
-    # Start rofi
-    bindsym $mod+p exec rofi -show drun
+    # Start fuzzel
+    bindsym $mod+p exec fuzzel
 
     # Swap Wallpaper
     bindsym $mod+y exec wswap-way
@@ -132,7 +132,7 @@ output * bg ~/Wallpaper/background1.png fill
     bindsym $mod+t exec swaylock
 
     # Powermenu
-    bindsym $mod+x exec rofi -show power-menu -modi power-menu:rofi-power-menu
+    bindsym $mod+x exec fuzzel-power-menu
 
 
 
