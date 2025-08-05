@@ -838,6 +838,7 @@ autorunApps =
    "redshift-gtk",
    "dunst",
    "nm-applet",
+   "udiskie -at",
    "octoxbps-notifier",
    "xcompmgr -c -f -n",
    "synclient TapButton1=1",
