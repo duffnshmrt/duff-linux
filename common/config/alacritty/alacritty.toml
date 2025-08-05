@@ -17,5 +17,5 @@ size = 10
 family = "Hack"
 
 [general]
-import = ["~/.config/alacritty/catppuccin/catppuccin-mocha.toml"]
+import = ["~/.config/alacritty/themes/catppuccin-mocha.toml"]
 
