@@ -1,0 +1,21 @@
+[env]
+TERM = "xterm-256color"
+
+[window]
+decorations = "buttonless"
+dynamic_padding = false
+opacity = 0.9
+
+[window.padding]
+x = 25
+y = 20
+
+[font]
+size = 10
+
+[font.normal]
+family = "Hack"
+
+[general]
+import = ["~/.config/alacritty/catppuccin/catppuccin-mocha.toml"]
+
