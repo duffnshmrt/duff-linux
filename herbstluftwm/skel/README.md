@@ -19,7 +19,7 @@ To use the dead simple Calamares installer, just press <alt + d> and type calama
 
 ## general Keybinds
 
-alt + return -> terminal
+alt + shift + return -> terminal
 
 alt + shift + q -> logout
 
