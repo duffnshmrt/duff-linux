@@ -54,7 +54,7 @@ hc keybind $Mod-z spawn ~/.config/herbstluftwm/q3terminal.sh
 hc keybind $Mod-Shift-q quit
 hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-c close
-hc keybind $Mod-Return spawn "${TERMINAL:-st}" # use your $TERMINAL with xterm as fallback
+hc keybind $Mod-Shift-Return spawn "${TERMINAL:-st}" # use your $TERMINAL with xterm as fallback
 
 # basic movement in tiling and floating mode
 # focusing clients
