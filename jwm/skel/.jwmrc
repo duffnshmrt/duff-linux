@@ -12,7 +12,8 @@ cbatticon &
 volumeicon &
 udiskie -at &
 redshift-gtk &
-/usr/bin/octoxbps-notifier
+/usr/bin/octoxbps-notifier &
+xautolock -time 5 -locker slock 
 </StartupCommand>
     <!-- The root menu. -->
     <RootMenu onroot="12">
