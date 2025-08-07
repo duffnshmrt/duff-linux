@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <JWM>
 <StartupCommand>
-feh --bg-fill ~/Wallpaper/background3.png &
+feh --bg-fill ~/Wallpaper/background7.png &
 xcompmgr -c -f -n &
+conky &
 synclient TapButton1=1 &
 synclient TapButton2=3 &
 synclient TapButton3=2 &
@@ -18,11 +19,11 @@ redshift-gtk &
         <Program icon="utilities-terminal" label="Terminal">st</Program>
 	<Include>exec: xdgmenumaker -n -i -f jwm</Include>
         <Separator/>
-        <Program icon="lock" label="Lock">
-           xscreensaver-command -lock
+        <Program icon="xfce4-system-lock" label="Lock">
+           slock
         </Program>
         <Separator/>
-        <Restart label="Reload" icon="reload"/>
+        <Restart label="Reload" icon="x-rebirth"/>
         <Exit label="LogOut" confirm="true" icon="system-log-out"/>
 	<Program label="Restart" icon="system-reboot">loginctl reboot</Program>
 	<Program label="Poweroff" icon="system-shutdown">loginctl poweroff</Program>
