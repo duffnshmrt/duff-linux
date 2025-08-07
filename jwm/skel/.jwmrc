@@ -18,6 +18,8 @@ xautolock -time 5 -locker slock
     <!-- The root menu. -->
     <RootMenu onroot="12">
         <Program icon="utilities-terminal" label="Terminal">st</Program>
+        <Program icon="pcmanfm-qt" label="File manager">pcmanfm</Program>
+        <Program icon="web-browser" label="Internet">brave-browser-stable</Program>
 	<Include>exec: xdgmenumaker -n -i -f jwm</Include>
         <Separator/>
         <Program icon="xfce4-system-lock" label="Lock">
