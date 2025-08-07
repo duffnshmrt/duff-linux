@@ -6,7 +6,7 @@ set -eu
 
 PROGNAME=$(basename "$0")
 ARCH=$(uname -m)
-IMAGES="awesome base bspwm cosmic dwm fluxbox herbstluftwm hyprland i3wm labwc leftwm lxqt niri openbox qtile sway xfce"
+IMAGES="awesome base bspwm cosmic dwm fluxbox herbstluftwm hyprland i3wm jwm labwc leftwm lxqt niri openbox qtile sway xfce"
 TRIPLET=
 REPO=
 DATE=$(date -u +%Y%m%d)
@@ -16,13 +16,13 @@ usage() {
 	Usage: $PROGNAME [options ...] [-- mklive options ...]
 
 	Wrapper script around mklive.sh for several standard flavors of live images.
-	Adds d77void-installer and other helpful utilities to the generated images.
+	Adds d77void-installer and other helpful utilities to the generated i<mages.
         
 	adaptation of mkiso.sh by Daniel Azevedo (dani-77) 
 
 	OPTIONS
 	 -a <arch>     Set architecture (or platform) in the image
-	 -b <variant>  One of base, awesome, bspwm, dwm, fluxbox, herbstluftwm, hyprland, i3wm, labwc, leftwm, niri, openbox, qtile or sway. 
+	 -b <variant>  One of base, awesome, bspwm, dwm, fluxbox, herbstluftwm, hyprland, i3wm, JWM, labwc, leftwm, niri, openbox, qtile or sway. 
                May be specified multiple times to build multiple variants.
 	 -d <date>     Override the datestamp on the generated image (YYYYMMDD format)
 	 -t <arch-date-variant>
@@ -323,6 +323,12 @@ build_variant() {
 	    POLY=yes
 	    ROFI=yes
             PKGS="$PKGS $XORG_PKGS $CALAMARES $D77_CORE i3-gaps i3lock i3status"
+            SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
+        ;;
+	jwm)
+	    COMMON=yes
+	    X11=yes
+            PKGS="$PKGS $XORG_PKGS $CALAMARES $D77_CORE cbatticon conky jq jwm network-manager-applet redshift-gtk volumeicon xdgmenumaker"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
         ;;
 	labwc)
