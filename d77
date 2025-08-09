@@ -344,7 +344,7 @@ build_variant() {
 	    POLY=yes
 	    DMENU=yes
 	    ROFI=yes
-            PKGS="$PKGS $XORG_PKGS $CALAMARES $D77_CORE leftwm"
+            PKGS="$PKGS $XORG_PKGS $CALAMARES $D77_CORE leftwm leftwm-theme"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
         ;;
 	lxqt)
