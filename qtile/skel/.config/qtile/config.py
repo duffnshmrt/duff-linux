@@ -131,8 +131,10 @@ keys = [
     Key([], "XF86AudioMute",lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ toggle")),
     Key([], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 5")),
     Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 5")),
-    Key([], 'F12', lazy.group['scratchpad'].dropdown_toggle('term')),
+    Key([], 'F9', lazy.group['nmtui'].dropdown_toggle('term')),
+    Key([], 'F10', lazy.group['alsamixer'].dropdown_toggle('term')),
     Key([], 'F11', lazy.group['htop'].dropdown_toggle('term')),
+    Key([], 'F12', lazy.group['scratchpad'].dropdown_toggle('term')),
 ]
 
 # Add key bindings to switch VTs in Wayland.
@@ -144,7 +146,7 @@ for vt in range(1, 8):
 
 workspaces = [
     {"name": " ", "key": "1", "matches": [Match(wm_class='kitty'), Match(wm_class='mousepad'), Match(wm_class='ranger'), Match(wm_class='geany')], "layout": "monadtall"},
-    {"name": " ", "key": "2", "matches": [Match(wm_class='librewolf'), Match(wm_class='brave-browser-stable'), Match(wm_class='org.gnome.Evolution-alarm-notify.desktop'), Match(wm_class='transmission-gtk.desktop'), Match(wm_class='geary')], "layout": "max"},
+    {"name": " ", "key": "2", "matches": [Match(wm_class='librewolf'), Match(wm_class='qutebrowser'), Match(wm_class='brave-browser-stable'), Match(wm_class='org.gnome.Evolution-alarm-notify.desktop'), Match(wm_class='transmission-gtk.desktop'), Match(wm_class='geary')], "layout": "max"},
     {"name": " ", "key": "3", "matches": [Match(wm_class='mpv'), Match(wm_class='deadbeef'),  Match(wm_class='cmus')], "layout": "monadtall"},
     {"name": " ", "key": "4", "matches": [Match(wm_class='abiword'), Match(wm_class='gimp,desktop'), Match(wm_class='Gnumeric')], "layout": "max"},
     {"name": " ", "key": "5", "matches": [Match(wm_class='telegram-desktop'), Match(wm_class='discord')], "layout": "monadtall"},
@@ -152,8 +154,10 @@ workspaces = [
 
 
 groups = [ 
-	ScratchPad("scratchpad", [ DropDown("term", "xterm", width=0.5, height=0.5, x=0.25, y=0.25, opacity=0.9), ]),
-	ScratchPad("htop", [ DropDown("term", "xterm -e htop", width=0.5, height=0.5, x=0.25, y=0.25, opacity=0.9),])
+	ScratchPad("alsamixer", [ DropDown("term", "xterm -e alsamixer", width=0.5, height=0.5, x=0.25, y=0.25, opacity=0.9),]),
+	ScratchPad("htop", [ DropDown("term", "xterm -e htop", width=0.5, height=0.5, x=0.25, y=0.25, opacity=0.9),]),
+	ScratchPad("nmtui", [ DropDown("term", "xterm -e nmtui", width=0.5, height=0.5, x=0.25, y=0.25, opacity=0.9),]),
+	ScratchPad("scratchpad", [ DropDown("term", "xterm", width=0.5, height=0.5, x=0.25, y=0.25, opacity=0.9),])
 ]
 
 for workspace in workspaces:
@@ -182,8 +186,8 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font="hack",
-    fontsize=9,
+    font="iosevka",
+    fontsize=12,
     padding=2,
 )
 
@@ -212,24 +216,24 @@ screens = [
                     name_transform=lambda name: name.upper(),
                 ),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-		widget.Wttr(location={'Porto': 'Porto'}),
-                widget.Clock(format=" %A, %d-%m-%Y %H:%M %p"),
+		widget.Wttr(location={'Porto':'Porto'}),
+                widget.Clock(format="  %A, %d %B %Y %H:%M:%S %p"),
 		widget.Spacer(),
 		#widget.StatusNotifier(),
-		widget.HDD(format=" {HDDPercent}%"),
-		widget.CPU(format=" {load_percent}%",
-                mouse_callbacks={'Button1': lazy.spawn(terminal + ' --class floating_shell -e htop')}),
-		widget.Memory(format=" {MemUsed:.0f}{mm}",interval=1.0,
-                mouse_callbacks={'Button1': lazy.spawn(terminal + ' --class floating_shell -e htop')}),
+		widget.HDD(format=" {HDDPercent}%"),
+		widget.CPU(format="  {load_percent}%",
+                mouse_callbacks={'Button1': lazy.group['htop'].dropdown_toggle('term')}),
+		widget.Memory(format="  {MemUsed:.0f}{mm}",interval=1.0,
+                mouse_callbacks={'Button1': lazy.group['htop'].dropdown_toggle('term')}),
 		widget.Net(format='  {down:.0f}{down_suffix} ↓↑ {up:.0f}{up_suffix}',update_interval=1.0,
-                mouse_callbacks={'Button1': lazy.spawn(terminal + ' --class floating_shell -e nmtui')}),
+                mouse_callbacks={'Button1': lazy.group['nmtui'].dropdown_toggle('term')}),
 		widget.Volume(fmt="  {}",
-                mouse_callbacks={'Button3': lazy.spawn('pavucontrol-qt')}),
+                mouse_callbacks={'Button3': lazy.group['alsamixer'].dropdown_toggle('term')}),
 		widget.Battery(format = '  {percent:2.0%} {hour:d}:{min:02d}'),
-		widget.KeyboardLayout(configured_keyboards = ["us", "de deadtilde", "pt"],fmt = ' 󰌌 {}'),
-		widget.CheckUpdates(distro = 'Void',no_update_string=' No updates',update_interval=600,
+		widget.KeyboardLayout(configured_keyboards = ["us", "de deadtilde", "pt"],fmt = '  {}'),
+		widget.CheckUpdates(distro = 'Void',no_update_string='  No updates',update_interval=300,
 		mouse_callbacks={'Button1': lazy.spawn('qt-sudo xbps-install -Su -y')}),
-		widget.TextBox(text=" ",
+		widget.TextBox(text="  ",
 		mouse_callbacks={'Button1': lazy.function(dynamic_power)}),
             ], 
             25,
