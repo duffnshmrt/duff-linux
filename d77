@@ -191,7 +191,7 @@ include_xfce() {
 }
 
 include_way() {
-    	PKGS="$PKGS network-manager-applet nwg-look nwg-launchers pavucontrol Waybar wlsunset xorg-server-xwayland xwayland-satellite"
+    	PKGS="$PKGS network-manager-applet nwg-look nwg-launchers pavucontrol SwayNotificationCenter Waybar wlsunset xorg-server-xwayland xwayland-satellite"
 	cp ./common/wswap-way "$INCLUDEDIR"/usr/bin/
 	mkdir -p "$INCLUDEDIR"/etc/skel/.config
 	cp -r ./common/waybar "$INCLUDEDIR"/etc/skel/.config/
@@ -337,7 +337,7 @@ build_variant() {
 	    COMMON=yes
 	    WAY=yes
 	    FUZZEL=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $CALAMARES $D77_CORE grim ImageMagick labwc labwc-menu-generator labwc-tweaks-qt qt5-wayland qt6-wayland swaybg swayidle swayimg swaylock SwayNotificationCenter"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $CALAMARES $D77_CORE grim ImageMagick labwc labwc-menu-generator labwc-tweaks-qt qt5-wayland qt6-wayland swaybg swayidle swayimg swaylock"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
         ;;
 	leftwm)
@@ -361,7 +361,7 @@ build_variant() {
 	    WAY=yes
 	    NIRI=yes
 	    FUZZEL=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $CALAMARES $D77_CORE gnome-keyring grim ImageMagick niri qt5-wayland qt6-wayland swaybg swayidle swayimg swaylock SwayNotificationCenter swww xdg-desktop-portal-gnome xdg-desktop-portal-gtk"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $CALAMARES $D77_CORE gnome-keyring grim ImageMagick niri qt5-wayland qt6-wayland swaybg swayidle swayimg swaylock swww xdg-desktop-portal-gnome xdg-desktop-portal-gtk"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
         ;;
 	openbox)
@@ -384,7 +384,7 @@ build_variant() {
 	    COMMON=yes
 	    WAY=yes
 	    FUZZEL=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $CALAMARES $D77_CORE grim ImageMagick qt5-wayland qt6-wayland sway swaybg swayidle swayimg swaylock SwayNotificationCenter wmenu"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $CALAMARES $D77_CORE grim ImageMagick qt5-wayland qt6-wayland sway swaybg swayidle swayimg swaylock wmenu"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
         ;;
 	wayfire)
