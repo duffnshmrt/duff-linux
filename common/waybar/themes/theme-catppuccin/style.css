@@ -1,0 +1,206 @@
+@import "colors/macchiato.css";
+
+@keyframes blink-warning {
+    70% {
+        color: @wm_icon_bg;
+    }
+
+    to {
+        color: @wm_icon_bg;
+        background-color: @yellow;
+    }
+}
+
+@keyframes blink-critical {
+    70% {
+        color: @wm_icon_bg;
+    }
+
+    to {
+        color: @wm_icon_bg;
+        background-color: @red;
+    }
+}
+
+/* Reset all styles */
+* {
+    border: 0px;
+    border-radius: 0px;
+    color: @text;
+    padding: 0 0;
+    margin-right: 2px;
+    margin-left: 2px;
+    font-family: "Noto Sans", "Font Awesome 6 Free", "Font Awesome";
+    font-size: 14px;
+}
+
+#window {
+    margin-left: 10px;
+    margin-bottom: 3px;
+}
+
+window#waybar {
+    background: @base;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+#workspaces button {
+    border-bottom: 2px;
+    border-color: @base;
+    border-style: solid;
+    margin-bottom: 3px;
+}
+
+#workspaces button.focused {
+    color: @sapphire;
+    border-color: @sapphire;
+}
+
+#workspaces button.urgent {
+    border-color: @red;
+    color: @red;
+}
+
+#mode {
+    color: @yellow;
+    margin-bottom: 3px;
+}
+
+#clock,
+#custom-help,
+#custom-playerctl,
+#custom-power,
+#custom-wlsunset,
+#custom-clipboard,
+#custom-menu,
+#custom-dunst,
+#battery,
+#cpu,
+#language,
+#memory,
+#network,
+#bluetooth,
+#pulseaudio,
+#tray,
+#mode,
+#idle_inhibitor {
+    padding: 0 6px;
+    border-bottom: 2px;
+    border-style: solid;
+    margin-bottom: 3px;
+}
+
+#custom-menu {
+    color: @green;
+}
+
+#custom-wf-recorder {
+    color: @error_color;
+    padding-right: 10px;
+}
+
+#tray {
+    padding-left: 5px;
+    padding-right: 5px;
+    color: @rosewater;
+}
+
+#custom-playerctl {
+    color: @pink;
+}
+
+#custom-help {
+    color: @rosewater;
+}
+
+#custom-wlsunset {
+    color: @mauve;
+}
+
+#idle_inhibitor {
+    color: @red;
+}
+
+#custom-dunst {
+    color: @maroon;
+}
+
+#language {
+    color: @peach;
+}
+
+#custom-clipboard {
+    color: @yellow;
+}
+
+#cpu {
+    color: @green;
+}
+
+#memory {
+    color: @teal;
+}
+
+#battery {
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    color: @sky;
+}
+
+#battery.warning {
+    color: @yellow;
+}
+
+#battery.critical {
+    color: @red;
+}
+
+#battery.warning.discharging {
+    animation-name: blink-warning;
+    animation-duration: 3s;
+}
+
+#battery.critical.discharging {
+    animation-name: blink-critical;
+    animation-duration: 2s;
+}
+
+label:focus {
+    background-color: #000000;
+}
+
+#network {
+    color: @sapphire;
+}
+
+#network.disconnected {
+    color: @wm_icon_bg
+}
+
+#bluetooth {
+    color: @blue;
+}
+
+#bluetooth.disabled {
+    color: @wm_icon_bg;
+}
+
+#pulseaudio {
+    color: @lavender;
+}
+
+#pulseaudio.muted {
+    color: @wm_icon_bg;
+}
+
+#clock {
+    color: @text;
+}
+
+#custom-power {
+    color: @subtext1;
+}
