@@ -29,7 +29,7 @@ from libqtile.backend.wayland import InputConfig
 from libqtile.config import Click, Drag, Group, Key, Match, Screen, Rule, ScratchPad, DropDown
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
-from qtile_extras.widget.decorations import GradientDecoration, BorderDecoration  # type: ignore
+from qtile_extras.widget.decorations import GradientDecoration, BorderDecoration, RectDecoration
 from qtile_extras.layout.decorations import RoundedCorners
 from qtile_extras.resources import wallpapers
 from qtile_extras import widget
@@ -38,6 +38,12 @@ import colors
 import subprocess
  
 mod = "mod4"
+
+decoration_group = {
+    "decorations": [
+        RectDecoration(colour="#004040", radius=5, filled=True, padding_y=4, group=True)
+    ],
+}
 
 if qtile.core.name == "x11":
 	terminal = "st"
@@ -200,12 +206,11 @@ screens = [
     	wallpaper_mode='fill',        
 	top=bar.Bar(
             [	
-		widget.Image(filename='/usr/share/pixmaps/d77void.png', scale = True, margin=3, rotate=45, mouse_callbacks={'Button1': lazy.function(dynamic_launcher)}),
-		widget.CurrentLayoutIcon(scale=0.6),
-                widget.CurrentLayout(),
-                widget.GroupBox(
+		widget.Image(**decoration_group, filename='/usr/share/pixmaps/d77void.png', scale = True, margin=3, rotate=45, mouse_callbacks={'Button1': lazy.function(dynamic_launcher)}),
+		widget.CurrentLayoutIcon(**decoration_group, scale=0.6),
+                widget.CurrentLayout(**decoration_group, mode='both', icon_first=True),
+                widget.GroupBox( 
 		highlight_method='block',
-		rounded = True,
 		inactive='9d8b8b'),
                 widget.Prompt(),
                 widget.WindowName(),
@@ -216,30 +221,31 @@ screens = [
                     name_transform=lambda name: name.upper(),
                 ),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-		widget.Wttr(location={'Porto':'Porto'}),
-                widget.Clock(format="  %A, %d %B %Y %H:%M:%S %p"),
+		widget.Wttr(**decoration_group, location={'Porto':'Porto'}),
+                widget.Clock(**decoration_group, format=" %A, %d %B %Y %H:%M:%S %p"),
 		widget.Spacer(),
 		#widget.StatusNotifier(),
-		widget.HDD(format=" {HDDPercent}%"),
-		widget.CPU(format="  {load_percent}%",
+		widget.HDD(**decoration_group, format=" {HDDPercent}%"),
+		widget.CPU(**decoration_group, format=" {load_percent}%",
                 mouse_callbacks={'Button1': lazy.group['htop'].dropdown_toggle('term')}),
-		widget.Memory(format="  {MemUsed:.0f}{mm}",interval=1.0,
+		widget.Memory(**decoration_group, format=" {MemUsed:.0f}{mm}",interval=1.0,
                 mouse_callbacks={'Button1': lazy.group['htop'].dropdown_toggle('term')}),
-		widget.Net(format='  {down:.0f}{down_suffix} ↓↑ {up:.0f}{up_suffix}',update_interval=1.0,
+		widget.Net(**decoration_group, format=' {down:.0f}{down_suffix} ↓↑ {up:.0f}{up_suffix}',update_interval=1.0,
                 mouse_callbacks={'Button1': lazy.group['nmtui'].dropdown_toggle('term')}),
-		widget.Volume(fmt="  {}",
+		widget.Volume(**decoration_group, fmt=" {}",
                 mouse_callbacks={'Button3': lazy.group['alsamixer'].dropdown_toggle('term')}),
-		widget.Battery(format = '  {percent:2.0%} {hour:d}:{min:02d}'),
-		widget.KeyboardLayout(configured_keyboards = ["us", "de deadtilde", "pt"],fmt = '  {}'),
-		widget.CheckUpdates(distro = 'Void',no_update_string='  No updates',update_interval=300,
+		widget.Battery(**decoration_group, format = '  {percent:2.0%} {hour:d}:{min:02d}'),
+		widget.KeyboardLayout(**decoration_group, configured_keyboards = ["us", "de deadtilde", "pt"],fmt = '  {}'),
+		widget.CheckUpdates(**decoration_group, distro = 'Void',no_update_string=' No updates',update_interval=300,
 		mouse_callbacks={'Button1': lazy.spawn('qt-sudo xbps-install -Su -y')}),
-		widget.TextBox(text="  ",
+		widget.TextBox(**decoration_group, text=" ",
 		mouse_callbacks={'Button1': lazy.function(dynamic_power)}),
             ], 
             25,
 	    background = "#11111b80",
             border_width=[0, 0, 0, 0],  # Draw top and bottom borders
-            border_color=["ff00ff", "000000", "50fa7b", "000000"]  # Borders are magenta
+            border_color=["bd93f9", "bd93f9", "bd93f9", "bd93f9"],  # Borders are magenta
+	    margin=[5, 5, 0, 5],
         ),
         # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
         # By default we handle these events delayed to already improve performance, however your system might still be struggling
