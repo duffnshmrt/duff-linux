@@ -13,7 +13,7 @@ echo "
 	  
   Note: additional packages listed as dependencies will also be installed."
 
-if prompt "  Would you like to add your user to dbus and flatpak groups?"; then
+if prompt "  Would you like to enable bluetooth services?"; then
 	sudo  ln -s /etc/sv/bluetoothd /var/service/ && sudo ln -s /etc/sv/bluetooth-meshd /var/service/
 
 fi
