@@ -3,16 +3,17 @@ clear
 # echo "  -----------------------------[ screen $STEP of $STEPS ]----------------------------
 echo "
 
-  INSTALL FLATPAK
+  INSTALL BLUETOOTH
   -------------------------------
-  You will need to add your user to dbus and flatpak Groups.
-  Would you like to add them to be able to use Flatpak now?
+  You will need to enbale the bluettoth services on your system.
+  Would you like to enable them now?
   If you choose to do this, the following will be done: 
   
-  usermod $USER -G dbus,_flatpak -a
+  ln -s /etc/sv/bluetoothd /var/service/ && ln -s /etc/sv/bluetooth-meshd /var/service/
 	  
   Note: additional packages listed as dependencies will also be installed."
 
 if prompt "  Would you like to add your user to dbus and flatpak groups?"; then
-	sudo usermod $USER -G dbus,_flatpak -a
+	sudo  ln -s /etc/sv/bluetoothd /var/service/ && sudo ln -s /etc/sv/bluetooth-meshd /var/service/
+
 fi

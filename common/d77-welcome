@@ -147,7 +147,7 @@ fi
 STEPS_MAIN=('set-root-password' 'update' 'dist-upgrade' 'office' 'media-graphics' 'bluetooth' 'browser' 'flatpak' 'steam' 'wireplumber' 'd77void-repo' 'hyprland' 'cosmic' 'calamares' 'quit' )
 STEPS_OFFICE=('install-libreoffice' 'install-abignu' 'back' )
 STEPS_MEDIA_GRAPHICS=('install-gimp' 'install-deadbeef' 'back')
-STEPS_BLUETOOTH=('install-bluetooth' 'back')
+STEPS_BLUETOOTH=('install-bluetooth' 'service' 'back')
 STEPS_CALAMARES=('remove-calamares' 'back')
 STEPS_BROWSER=('install-firefox' 'install-chromium' 'back')
 STEPS_STEAM=('install-steam' 'back')
