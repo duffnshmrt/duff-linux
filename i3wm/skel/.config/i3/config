@@ -23,6 +23,8 @@ exec --no-startup-id dex --autostart --environment i3
 
 # Touchpad
 exec --no-startup-id synclient TapButton1=1
+exec --no-startup-id synclient TapButton2=3
+exec --no-startup-id synclient TapButton3=2
 
 # Polybar
 #exec --no-startup-id polybar
@@ -112,6 +114,9 @@ bindsym Mod1+d exec --no-startup-id rofi -show drun
 
 # start power-menu
 bindsym Mod1+x exec rofi -show power-menu -modi power-menu:rofi-power-menu
+
+# start a runner
+bindsym Mod1+o exec gmrun
 
 # change focus
 bindsym Mod1+$left focus left
