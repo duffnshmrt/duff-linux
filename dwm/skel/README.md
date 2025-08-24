@@ -28,11 +28,13 @@ calamares
 
 Among other changes:
 
--  new control pannel application
+-  updated to dwm 6.6
 
--  new runner application
+-  updated to st 0.9.3
 
--  slstatus bar updated to latest version
+-  updated to slock 1.6
+
+-  added a scratchpad
 
 ## Keybinds
 
@@ -71,5 +73,9 @@ super + l -> slock
 super + m -> geary
 
 super + p -> scrot
+
+## Hacking
+
+To add/remove autostart programs edit the file ~/.dwm/autostart.sh
 
 Have fun!
