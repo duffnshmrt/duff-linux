@@ -12,13 +12,6 @@ If you install using the tui, to maintain the configuration of the live iso, cho
 
 During install, add your user to the storage group. That way udiskie will automount disks.
 
-If you use Calamares installer, the install process is super simple and recommended.
-
-Side Note:
-
-I would like to thank Calamares team, Kevin Figueroa (Cereus Linux) and johna1 (F-Void Linux) for all the work done and guidance.
-
-I would like to express my gratitude and say a big thank you to Rúben Gomez (Youtube channel Ruben_&_Linux_:~) for all the encouragement.
 
 In Wayland, tray, notifications and locker don't work properly.
 
