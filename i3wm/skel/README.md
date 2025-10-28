@@ -12,15 +12,6 @@ To maintain the configuration of the live iso, during install, choose local inst
 
 During install, add your user to the storage group. That way udiskie will automount disks.
 
-# Calamares
-
-Calamares installer usage; 
-
-To use it open a terminal and
-
-```
-calamares
-```
 
 ## Keybinds
 
