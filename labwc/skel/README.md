@@ -11,18 +11,6 @@ Note:
 To maintain the configuration of the live iso, during install with tui, choose local instead of network install and add your user to the storage group. That way udiskie will automount disks.
 
 
-To run Calamares installer open a terminal and type:
-
-```
-su
-
-calamares
-```
-
-I would like to thank Calamares team, Kevin Figueroa (Cereus Linux) and johna1 (F-Void Linux) for all the work done and guidance.
-
-I would like to express my gratitude and say a big thank you to Rúben Gomez (Youtube channel Ruben_&_Linux_:~) for all the encouragement.
-
 ## Keybinds
 
 super + return -> terminal
