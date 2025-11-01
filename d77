@@ -402,6 +402,15 @@ build_variant() {
             PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES grim ImageMagick qt5-wayland qt6-wayland sway swaybg swayidle swayimg swaylock wmenu"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
         ;;
+	super)
+	    COMMON=yes
+	    WAY=yes
+	    X11=yes
+	    DMENU=yes
+	    ROFI=yes
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES dwm extension-manager gdm gnome gnome-shell-extensions grim ImageMagick qt5-wayland qt6-wayland slstatus sxhkd"
+            SERVICES="$SERVICES dbus elogind gdm NetworkManager polkitd"
+        ;;
 	wayfire)
 	    COMMON=yes
             PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_WAYFIRE $CALAMARES grim ImageMagick pavucontrol qt5-wayland qt6-wayland swaybg swayidle swayimg swaylock SwayNotificationCenter wayfire wayfire-plugins-extra wcm wf-shell wlr-randr wlogout"

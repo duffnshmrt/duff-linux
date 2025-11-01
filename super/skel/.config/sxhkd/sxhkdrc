@@ -1,0 +1,20 @@
+alt + r
+	gmrun
+alt + w
+	brave-browser-stable
+alt + x
+	power_menu
+super + b
+	wswap-X
+super + c
+	better-control
+super + d
+	rofi -show drun
+super + f
+	pcmanfm
+super + l
+	slock
+super + m
+	geary
+super + p
+	scrot
