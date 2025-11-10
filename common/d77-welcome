@@ -144,7 +144,7 @@ fi
 
 # Run through steps
 # STEPS_BASIC=('update' 'dist-upgrade' 'office' 'media-graphics' 'install-gimp' 'install-libreoffice')
-STEPS_MAIN=('set-root-password' 'update' 'dist-upgrade' 'office' 'media-graphics' 'bluetooth' 'browser' 'flatpak' 'steam' 'wireplumber' 'd77void-repo' 'hyprland' 'cosmic' 'calamares' 'quit' )
+STEPS_MAIN=('set-root-password' 'update' 'dist-upgrade' 'office' 'media-graphics' 'bluetooth' 'browser' 'flatpak' 'steam' 'wireplumber' 'd77void-repo' 'hyprland' 'cosmic' 'boot-animation' 'calamares' 'quit' )
 STEPS_OFFICE=('install-libreoffice' 'install-abignu' 'back' )
 STEPS_MEDIA_GRAPHICS=('install-gimp' 'install-deadbeef' 'back')
 STEPS_BLUETOOTH=('install-bluetooth' 'service' 'back')
@@ -156,6 +156,7 @@ STEPS_D77VOID=('d77void-repo' 'back')
 STEPS_HYPRLAND=('hyprland' 'back')
 STEPS_COSMIC=('cosmic' 'back')
 STEPS_WIREPLUMBER=('wireplumber' 'back')
+STEPS_BOOT=('boot-animation' 'back')
 
 # . "$LIBDIR/intro"
 connection-test
@@ -230,6 +231,11 @@ do
 
                         "wireplumber")
 				submenu "wireplumber" STEPS_WIREPLUMBER
+				break
+                        ;;
+
+                        "boot-animation")
+				submenu "boot-animation" STEPS_BOOT
 				break
                         ;;
 
