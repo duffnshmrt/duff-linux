@@ -156,7 +156,7 @@ STEPS_D77VOID=('d77void-repo' 'back')
 STEPS_HYPRLAND=('hyprland' 'back')
 STEPS_COSMIC=('cosmic' 'back')
 STEPS_WIREPLUMBER=('wireplumber' 'back')
-STEPS_BOOT=('boot-animation' 'back')
+STEPS_BOOT=('boot-animation1' 'boot-animation2' 'back')
 
 # . "$LIBDIR/intro"
 connection-test

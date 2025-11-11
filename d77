@@ -107,6 +107,7 @@ include_common() {
 	cp -r ./common/d77-grub-theme "$INCLUDEDIR"/boot/grub/themes/
 	cp -r ./common/calamares "$INCLUDEDIR"/etc/
 	cp -r ./common/d77 "$INCLUDEDIR"/usr/share/plymouth/themes/
+	cp -r ./common/d77-spinner "$INCLUDEDIR"/usr/share/plymouth/themes/
 	cp -r ./common/.bash_it "$INCLUDEDIR"/etc/skel/
 	cp -r $variant/skel "$INCLUDEDIR"/etc/
 	cp ./common/sddm.conf "$INCLUDEDIR"/etc/
