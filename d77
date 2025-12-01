@@ -325,9 +325,7 @@ build_variant() {
         ;;
 	hyprland)
 	    COMMON=yes
-	    WAY=yes
-	    FUZZEL=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES grim hyprland hyprland-qtutils hyprlock hyprpaper ImageMagick qt5-wayland qt6-wayland wayland-devel wayland-protocols"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES  network-manager-applet nwg-look pavucontrol SwayNotificationCenter wlsunset xorg-server-xwayland xwayland-satellite grim hyprland hyprland-qtutils hyprpaper ImageMagick qt5-wayland qt6-wayland quickshell wayland-devel wayland-protocols"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
         ;;
 	i3wm)
