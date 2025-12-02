@@ -88,6 +88,12 @@ setup_pipewire() {
     ln -sf /usr/share/alsa/alsa.conf.d/99-pipewire-default.conf "$INCLUDEDIR"/etc/alsa/conf.d
 }
 
+include_box() {
+    	PKGS="$PKGS cbatticon conky jgmenu jq redshift-gtk volumeicon network-manager-applet"
+	mkdir -p "$INCLUDEDIR"/usr/share/applications
+	cp ./common/jgmenu.desktop "$INCLUDEDIR"/usr/share/applications/
+}
+
 include_common() {
 	mkdir -p "$INCLUDEDIR"/boot/grub/themes
 	mkdir -p "$INCLUDEDIR"/etc
@@ -131,37 +137,9 @@ include_common() {
 	cp -r ./common/Wallpaper "$INCLUDEDIR"/usr/share/
 }
 
-include_box() {
-    	PKGS="$PKGS cbatticon conky jgmenu jq redshift-gtk volumeicon network-manager-applet"
-	mkdir -p "$INCLUDEDIR"/usr/share/applications
-	cp ./common/jgmenu.desktop "$INCLUDEDIR"/usr/share/applications/
-}
-
-include_lxqt() {
-	mkdir -p "$INCLUDEDIR"/usr/share/lxqt/wallpapers
-	mkdir -p "$INCLUDEDIR"/usr/share/lxqt/graphics
-	cp ./common/Wallpaper/background3.png "$INCLUDEDIR"/usr/share/lxqt/wallpapers/
-	cp ./common/d77void.png "$INCLUDEDIR"/usr/share/lxqt/graphics/
-}
-
-include_niri() {
+include_dank() {
 	mkdir -p "$INCLUDEDIR"/usr/bin
-	cp ./common/dconf_niri "$INCLUDEDIR"/usr/bin/
-	cp ./common/sww "$INCLUDEDIR"/usr/bin/
-	cp ./common/niri_1st "$INCLUDEDIR"/usr/bin/
-	cp ./common/screenlock "$INCLUDEDIR"/usr/bin/
-} 
-include_river() {
-	mkdir -p "$INCLUDEDIR"/usr/bin
-	cp ./common/screenlock "$INCLUDEDIR"/usr/bin/
-} 
-
-include_poly() {
-    	PKGS="$PKGS polybar cbatticon network-manager-applet redshift-gtk volumeicon"
-	mkdir -p "$INCLUDEDIR"/etc/skel/.config
-	mkdir -p "$INCLUDEDIR"/etc/skel/.local/share
-	cp -r ./common/polybar "$INCLUDEDIR"/etc/skel/.config/
-	cp -r ./common/fonts "$INCLUDEDIR"/etc/skel/.local/share/
+	cp ./common/dms "$INCLUDEDIR"/usr/bin/
 }
 
 include_dmenu() {
@@ -178,6 +156,34 @@ include_fuzzel() {
 	cp ./common/fuzzel_c/fuzzel-power-menu "$INCLUDEDIR"/usr/bin/
 }
 
+include_lxqt() {
+	mkdir -p "$INCLUDEDIR"/usr/share/lxqt/wallpapers
+	mkdir -p "$INCLUDEDIR"/usr/share/lxqt/graphics
+	cp ./common/Wallpaper/background3.png "$INCLUDEDIR"/usr/share/lxqt/wallpapers/
+	cp ./common/d77void.png "$INCLUDEDIR"/usr/share/lxqt/graphics/
+}
+
+include_niri() {
+	mkdir -p "$INCLUDEDIR"/usr/bin
+	cp ./common/dconf_niri "$INCLUDEDIR"/usr/bin/
+	cp ./common/sww "$INCLUDEDIR"/usr/bin/
+	cp ./common/niri_1st "$INCLUDEDIR"/usr/bin/
+	cp ./common/screenlock "$INCLUDEDIR"/usr/bin/
+} 
+
+include_poly() {
+    	PKGS="$PKGS polybar cbatticon network-manager-applet redshift-gtk volumeicon"
+	mkdir -p "$INCLUDEDIR"/etc/skel/.config
+	mkdir -p "$INCLUDEDIR"/etc/skel/.local/share
+	cp -r ./common/polybar "$INCLUDEDIR"/etc/skel/.config/
+	cp -r ./common/fonts "$INCLUDEDIR"/etc/skel/.local/share/
+}
+
+include_river() {
+	mkdir -p "$INCLUDEDIR"/usr/bin
+	cp ./common/screenlock "$INCLUDEDIR"/usr/bin/
+} 
+
 include_rofi() {
     	PKGS="$PKGS rofi"
 	mkdir -p "$INCLUDEDIR"/etc/skel/.config
@@ -186,13 +192,10 @@ include_rofi() {
 	cp ./common/rofi_c/rofi-power-menu "$INCLUDEDIR"/usr/bin/
 }
 
-include_wofi() {
-    	PKGS="$PKGS wofi"
-	mkdir -p "$INCLUDEDIR"/etc/skel/.config
-	mkdir -p "$INCLUDEDIR"/usr/bin
-	cp -r ./common/wofi_c/wofi "$INCLUDEDIR"/etc/skel/.config
-	cp ./common/wofi_c/wofi-power-menu "$INCLUDEDIR"/usr/bin/
-}
+include_x11() {
+    	PKGS="$PKGS dunst redshift scrot slock st transset xautolock xcompmgr"
+	cp ./common/wswap-X "$INCLUDEDIR"/usr/bin/
+}	
 
 include_xfce() {
 	mkdir -p "$INCLUDEDIR"/usr/share/backgrounds/xfce
@@ -206,10 +209,13 @@ include_way() {
 	cp -r ./common/waybar "$INCLUDEDIR"/etc/skel/.config/
 }	
 
-include_x11() {
-    	PKGS="$PKGS dunst redshift scrot slock st transset xautolock xcompmgr"
-	cp ./common/wswap-X "$INCLUDEDIR"/usr/bin/
-}	
+include_wofi() {
+    	PKGS="$PKGS wofi"
+	mkdir -p "$INCLUDEDIR"/etc/skel/.config
+	mkdir -p "$INCLUDEDIR"/usr/bin
+	cp -r ./common/wofi_c/wofi "$INCLUDEDIR"/etc/skel/.config
+	cp ./common/wofi_c/wofi-power-menu "$INCLUDEDIR"/usr/bin/
+}
 
 build_variant() {
     variant="$1"
@@ -233,6 +239,7 @@ build_variant() {
 	    D77_EXTRA="abook automake calcurse cargo epson-inkjet-printer-escpr gcc isync make ncspot nextcloud-client neomutt pass pcsc-ccid pcsc-tools pcsclite python3-pip rust"
 	    CALAMARES="calamares grub rsync"
 	    COMMON=
+	    DANK=
 	    X11=
 	    WAY=
 	    NIRI=
@@ -299,6 +306,12 @@ build_variant() {
             PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cosmic-desktop ImageMagick"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
         ;;
+	dank)
+	    COMMON=yes
+	    DANK=yes
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES hyprland hyprland-qtutils hyprpaper network-manager-applet nwg-look pavucontrol qt5-wayland qt6-multimedia qt6-wayland xwayland-satellite wayland-devel wayland-protocols wlsunset xdg-desktop-portal-hyprland xorg-server-xwayland"
+            SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
+        ;;
 	dwm)
 	    COMMON=yes
 	    X11=yes
@@ -325,7 +338,9 @@ build_variant() {
         ;;
 	hyprland)
 	    COMMON=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES  network-manager-applet nwg-look pavucontrol SwayNotificationCenter wlsunset xorg-server-xwayland xwayland-satellite grim hyprland hyprland-qtutils hyprpaper ImageMagick qt5-wayland qt6-wayland quickshell wayland-devel wayland-protocols"
+	    WAY=yes
+	    FUZZEL=yes
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES hyprland hyprland-qtutils hyprlock hyprpaper hyprsunset hyprutils qt5-wayland qt6-wayland wayland-devel wayland-protocols xdg-desktop-portal-hyprland"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
         ;;
 	i3wm)
@@ -371,6 +386,11 @@ build_variant() {
 	    NIRI=yes
 	    FUZZEL=yes
             PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES gnome-keyring grim ImageMagick niri qt5-wayland qt6-wayland swaybg swayidle swayimg swaylock swww xdg-desktop-portal-gnome xdg-desktop-portal-gtk"
+            SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
+        ;;
+	noctalia)
+	    COMMON=yes
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES hyprland hyprland-qtutils hyprpaper network-manager-applet nwg-look pavucontrol qt5-wayland qt6-multimedia qt6-wayland xwayland-satellite wayland-devel wayland-protocols wlsunset xdg-desktop-portal-hyprland xorg-server-xwayland"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd"
         ;;
 	openbox)
@@ -443,6 +463,10 @@ EOF
 
     if [ "$COMMON" = yes ]; then
         include_common
+    fi
+
+    if [ "$DANK" = yes ]; then
+        include_dank
     fi
 
     if [ "$DMENU" = yes ]; then
