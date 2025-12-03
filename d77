@@ -203,7 +203,7 @@ include_xfce() {
 }
 
 include_way() {
-    	PKGS="$PKGS network-manager-applet nwg-look nwg-launchers pavucontrol SwayNotificationCenter Waybar wlsunset xorg-server-xwayland xwayland-satellite"
+    	PKGS="$PKGS cliphist network-manager-applet nwg-look nwg-launchers pavucontrol SwayNotificationCenter Waybar wlsunset xorg-server-xwayland xwayland-satellite"
 	cp ./common/wswap-way "$INCLUDEDIR"/usr/bin/
 	mkdir -p "$INCLUDEDIR"/etc/skel/.config
 	cp -r ./common/waybar "$INCLUDEDIR"/etc/skel/.config/
@@ -303,13 +303,13 @@ build_variant() {
 	cosmic)
 	    COMMON=yes
 	    X11=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cosmic-desktop ImageMagick"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cliphist cosmic-desktop ImageMagick"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
         ;;
 	dank)
 	    COMMON=yes
 	    DANK=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES hyprland hyprland-qtutils hyprpaper network-manager-applet nwg-look pavucontrol qt5-wayland qt6-multimedia qt6-wayland quickshell xwayland-satellite wayland-devel wayland-protocols wlsunset xdg-desktop-portal-hyprland xorg-server-xwayland"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cliphist hyprland hyprland-qtutils hyprpaper network-manager-applet nwg-look pavucontrol qt5-wayland qt6-multimedia qt6-wayland quickshell xwayland-satellite wayland-devel wayland-protocols wlsunset xdg-desktop-portal-hyprland xorg-server-xwayland"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
         ;;
 	dwm)
@@ -340,7 +340,7 @@ build_variant() {
 	    COMMON=yes
 	    WAY=yes
 	    FUZZEL=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES hyprland hyprland-qtutils hyprlock hyprpaper hyprsunset hyprutils qt5-wayland qt6-wayland wayland-devel wayland-protocols xdg-desktop-portal-hyprland"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cliphist hyprland hyprland-qtutils hyprlock hyprpaper hyprsunset hyprutils qt5-wayland qt6-wayland wayland-devel wayland-protocols xdg-desktop-portal-hyprland"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
         ;;
 	i3wm)
@@ -390,7 +390,7 @@ build_variant() {
         ;;
 	noctalia)
 	    COMMON=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES hyprland hyprland-qtutils hyprpaper network-manager-applet nwg-look pavucontrol qt5-wayland qt6-multimedia qt6-wayland quickshell xwayland-satellite wayland-devel wayland-protocols wlsunset xdg-desktop-portal-hyprland xorg-server-xwayland"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cliphist hyprland hyprland-qtutils hyprpaper network-manager-applet nwg-look pavucontrol qt5-wayland qt6-multimedia qt6-wayland quickshell xwayland-satellite wayland-devel wayland-protocols wlsunset xdg-desktop-portal-hyprland xorg-server-xwayland"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
         ;;
 	openbox)
@@ -406,7 +406,7 @@ build_variant() {
 	    X11=yes
 	    FUZZEL=yes
 	    ROFI=yes
-    	    PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES grim ImageMagick jgmenu nwg-look nwg-launchers python3-psutil python3-qtile-extras qt5-wayland qt6-wayland qtile qtile-wayland xorg-server-xwayland wlroots wlsunset xwayland-satellite"
+    	    PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cliphist grim ImageMagick jgmenu nwg-look nwg-launchers python3-psutil python3-qtile-extras qt5-wayland qt6-wayland qtile qtile-wayland xorg-server-xwayland wlroots wlsunset xwayland-satellite"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
         ;;
 	river)
@@ -435,7 +435,7 @@ build_variant() {
         ;;
 	wayfire)
 	    COMMON=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_WAYFIRE $CALAMARES grim ImageMagick pavucontrol qt5-wayland qt6-wayland swaybg swayidle swayimg swaylock SwayNotificationCenter wayfire wayfire-plugins-extra wcm wf-shell wlr-randr wlogout"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_WAYFIRE $CALAMARES cliphist grim ImageMagick pavucontrol qt5-wayland qt6-wayland swaybg swayidle swayimg swaylock SwayNotificationCenter wayfire wayfire-plugins-extra wcm wf-shell wlr-randr wlogout"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
         ;;
 	xfce)
