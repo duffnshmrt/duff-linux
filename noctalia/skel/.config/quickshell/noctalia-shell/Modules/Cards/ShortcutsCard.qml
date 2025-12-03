@@ -4,7 +4,6 @@ import QtQuick.Layouts
 import Quickshell
 import qs.Commons
 import qs.Modules.Panels.ControlCenter
-import qs.Modules.Panels.ControlCenter.Cards
 import qs.Widgets
 
 RowLayout {
@@ -14,6 +13,7 @@ RowLayout {
   NBox {
     Layout.fillWidth: true
     Layout.preferredHeight: root.shortcutsHeight
+    visible: Settings.data.controlCenter.shortcuts.left.length > 0
 
     RowLayout {
       id: leftContent
@@ -53,6 +53,7 @@ RowLayout {
   NBox {
     Layout.fillWidth: true
     Layout.preferredHeight: root.shortcutsHeight
+    visible: Settings.data.controlCenter.shortcuts.right.length > 0
 
     RowLayout {
       id: rightContent

@@ -87,7 +87,8 @@ Singleton {
                                   "Battery": {
                                     "allowUserSettings": true,
                                     "displayMode": "onhover",
-                                    "warningThreshold": 30
+                                    "warningThreshold": 30,
+                                    "deviceNativePath": ""
                                   },
                                   "Bluetooth": {
                                     "allowUserSettings": true,
@@ -110,7 +111,9 @@ Singleton {
                                     "useDistroLogo": false,
                                     "icon": "noctalia",
                                     "customIconPath": "",
-                                    "colorizeDistroLogo": false
+                                    "colorizeDistroLogo": false,
+                                    "colorizeSystemIcon": "none",
+                                    "enableColorization": false
                                   },
                                   "CustomButton": {
                                     "allowUserSettings": true,

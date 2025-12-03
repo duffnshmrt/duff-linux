@@ -5,8 +5,8 @@ import Quickshell
 import Quickshell.Io
 import "../Helpers/QtObj2JS.js" as QtObj2JS
 import qs.Commons
-import qs.Services.Power
-import qs.Services.System
+import qs.Commons.Migrations
+import qs.Modules.OSD
 import qs.Services.UI
 
 Singleton {
@@ -22,7 +22,7 @@ Singleton {
   - Default cache directory: ~/.cache/noctalia
   */
   readonly property alias data: adapter  // Used to access via Settings.data.xxx.yyy
-  readonly property int settingsVersion: 25
+  readonly property int settingsVersion: 26
   readonly property bool isDebug: Quickshell.env("NOCTALIA_DEBUG") === "1"
   readonly property string shellName: "noctalia"
   readonly property string configDir: Quickshell.env("NOCTALIA_CONFIG_DIR") || (Quickshell.env("XDG_CONFIG_HOME") || Quickshell.env("HOME") + "/.config") + "/" + shellName + "/"
@@ -35,7 +35,6 @@ Singleton {
   readonly property string defaultAvatar: Quickshell.env("HOME") + "/.face"
   readonly property string defaultVideosDirectory: Quickshell.env("HOME") + "/Videos"
   readonly property string defaultWallpapersDirectory: Quickshell.env("HOME") + "/Pictures/Wallpapers"
-  readonly property string defaultWallpaper: Quickshell.shellDir + "/Assets/Wallpaper/noctalia.png"
 
   // Signal emitted when settings are loaded after startupcale changes
   signal settingsLoaded
@@ -66,6 +65,8 @@ Singleton {
     adapter.general.avatarImage = defaultAvatar;
     adapter.screenRecorder.directory = defaultVideosDirectory;
     adapter.wallpaper.directory = defaultWallpapersDirectory;
+    adapter.ui.fontDefault = Qt.application.font.family;
+    adapter.ui.fontFixed = "monospace";
 
     // Set the adapter to the settingsFileView to trigger the real settings load
     settingsFileView.adapter = adapter;
@@ -76,7 +77,7 @@ Singleton {
   Timer {
     id: saveTimer
     running: false
-    interval: 1000
+    interval: 500
     onTriggered: {
       root.saveImmediate();
     }
@@ -99,6 +100,10 @@ Singleton {
     onLoaded: function () {
       if (!isLoaded) {
         Logger.i("Settings", "Settings loaded");
+
+        // -----------------
+        // Run versioned migrations from MigrationRegistry
+        runVersionedMigrations();
 
         upgradeSettingsData();
 
@@ -145,7 +150,7 @@ Singleton {
     property JsonObject bar: JsonObject {
       property string position: "top" // "top", "bottom", "left", or "right"
       property real backgroundOpacity: 1.0
-      property list<string> monitors: []
+      property list<string> monitors: [] // holds bar visibility per monitor
       property string density: "default" // "compact", "default", "comfortable"
       property bool showCapsule: true
       property real capsuleOpacity: 1.0
@@ -166,7 +171,13 @@ Singleton {
       widgets: JsonObject {
         property list<var> left: [
           {
-            "id": "ControlCenter"
+            "icon": "rocket",
+            "id": "CustomButton",
+            "leftClickExec": "qs -c noctalia-shell ipc call launcher toggle"
+          },
+          {
+            "id": "Clock",
+            "usePrimaryColor": false
           },
           {
             "id": "SystemMonitor"
@@ -203,7 +214,7 @@ Singleton {
             "id": "Brightness"
           },
           {
-            "id": "Clock"
+            "id": "ControlCenter"
           }
         ]
       }
@@ -233,8 +244,8 @@ Singleton {
 
     // ui
     property JsonObject ui: JsonObject {
-      property string fontDefault: "Roboto"
-      property string fontFixed: "DejaVu Sans Mono"
+      property string fontDefault: ""
+      property string fontFixed: ""
       property real fontDefaultScale: 1.0
       property real fontFixedScale: 1.0
       property bool tooltipsEnabled: true
@@ -261,11 +272,11 @@ Singleton {
     property JsonObject calendar: JsonObject {
       property list<var> cards: [
         {
-          "id": "banner-card",
+          "id": "calendar-header-card",
           "enabled": true
         },
         {
-          "id": "calendar-card",
+          "id": "calendar-month-card",
           "enabled": true
         },
         {
@@ -297,6 +308,7 @@ Singleton {
       property bool enabled: true
       property bool overviewEnabled: false
       property string directory: ""
+      property list<var> monitorDirectories: []
       property bool enableMultiMonitorDirectories: false
       property bool recursiveSearch: false
       property bool setWallpaperOnAllMonitors: true
@@ -319,9 +331,6 @@ Singleton {
       property string wallhavenResolutionMode: "atleast" // "atleast" or "exact"
       property string wallhavenResolutionWidth: ""
       property string wallhavenResolutionHeight: ""
-
-      property string defaultWallpaper: "" // TODO REMOVE
-      property list<var> monitors: []  // TODO REMOVE
     }
 
     // applauncher
@@ -409,6 +418,11 @@ Singleton {
       property int memCriticalThreshold: 90
       property int diskWarningThreshold: 80
       property int diskCriticalThreshold: 90
+      property int cpuPollingInterval: 3000
+      property int tempPollingInterval: 3000
+      property int memPollingInterval: 3000
+      property int diskPollingInterval: 3000
+      property int networkPollingInterval: 3000
       property bool useCustomColors: false
       property string warningColor: ""
       property string criticalColor: ""
@@ -419,11 +433,10 @@ Singleton {
       property bool enabled: true
       property string displayMode: "auto_hide" // "always_visible", "auto_hide", "exclusive"
       property real backgroundOpacity: 1.0
-      property real radiusRatio: 0.1
       property real floatingRatio: 1.0
       property real size: 1
       property bool onlySameOutput: true
-      property list<string> monitors: []
+      property list<string> monitors: [] // holds dock visibility per monitor
       // Desktop entry IDs pinned to the dock (e.g., "org.kde.konsole", "firefox.desktop")
       property list<string> pinnedApps: []
       property bool colorizeIcons: false
@@ -471,7 +484,7 @@ Singleton {
     // notifications
     property JsonObject notifications: JsonObject {
       property bool enabled: true
-      property list<string> monitors: []
+      property list<string> monitors: [] // holds notifications visibility per monitor
       property string location: "top_right"
       property bool overlayLayer: true
       property real backgroundOpacity: 1.0
@@ -489,8 +502,8 @@ Singleton {
       property int autoHideMs: 2000
       property bool overlayLayer: true
       property real backgroundOpacity: 1.0
-      property list<var> enabledTypes: []
-      property list<string> monitors: []
+      property list<var> enabledTypes: [OSD.Type.Volume, OSD.Type.InputVolume, OSD.Type.Brightness]
+      property list<string> monitors: [] // holds osd visibility per monitor
     }
 
     // audio
@@ -542,6 +555,8 @@ Singleton {
       property bool spicetify: false
       property bool telegram: false
       property bool cava: false
+      property bool emacs: false
+      property bool niri: false
       property bool enableUserTemplates: false
     }
 
@@ -617,6 +632,41 @@ Singleton {
   }
 
   // -----------------------------------------------------
+  // Run versioned migrations using MigrationRegistry
+  function runVersionedMigrations() {
+    const currentVersion = adapter.settingsVersion;
+    const migrations = MigrationRegistry.migrations;
+
+    // Get all migration versions and sort them
+    const versions = Object.keys(migrations).map(v => parseInt(v)).sort((a, b) => a - b);
+
+    // Run migrations in order for versions newer than current
+    for (var i = 0; i < versions.length; i++) {
+      const version = versions[i];
+
+      if (currentVersion < version) {
+        // Create migration instance and run it
+        const migrationComponent = migrations[version];
+        const migration = migrationComponent.createObject(root);
+
+        if (migration && typeof migration.migrate === "function") {
+          const success = migration.migrate(adapter, Logger);
+          if (!success) {
+            Logger.e("Settings", "Migration to v" + version + " failed");
+          }
+        } else {
+          Logger.e("Settings", "Invalid migration for v" + version);
+        }
+
+        // Clean up migration instance
+        if (migration) {
+          migration.destroy();
+        }
+      }
+    }
+  }
+
+  // -----------------------------------------------------
   // Function to clean up deprecated user/custom bar widgets settings
   function upgradeWidget(widget) {
     // Backup the widget definition before altering
@@ -666,31 +716,7 @@ Singleton {
     const sections = ["left", "center", "right"];
 
     // -----------------
-    // 1st. convert old widget id to new id
-    for (var s = 0; s < sections.length; s++) {
-      const sectionName = sections[s];
-      for (var i = 0; i < adapter.bar.widgets[sectionName].length; i++) {
-        var widget = adapter.bar.widgets[sectionName][i];
-
-        switch (widget.id) {
-        case "DarkModeToggle":
-          widget.id = "DarkMode";
-          break;
-        case "PowerToggle":
-          widget.id = "SessionMenu";
-          break;
-        case "ScreenRecorderIndicator":
-          widget.id = "ScreenRecorder";
-          break;
-        case "SidePanelToggle":
-          widget.id = "ControlCenter";
-          break;
-        }
-      }
-    }
-
-    // -----------------
-    // 2nd. remove any non existing widget type
+    // 1. remove any non existing widget type
     var removedWidget = false;
     for (var s = 0; s < sections.length; s++) {
       const sectionName = sections[s];
@@ -707,7 +733,7 @@ Singleton {
     }
 
     // -----------------
-    // 3nd. upgrade widget settings
+    // 2. upgrade user widget settings
     for (var s = 0; s < sections.length; s++) {
       const sectionName = sections[s];
       for (var i = 0; i < adapter.bar.widgets[sectionName].length; i++) {
@@ -726,7 +752,7 @@ Singleton {
     }
 
     // -----------------
-    // 4th. safety check
+    // 3. safety check
     // if a widget was deleted, ensure we still have a control center
     if (removedWidget) {
       var gotControlCenter = false;
@@ -747,345 +773,6 @@ Singleton {
                                              "id": "ControlCenter"
                                            }));
         Logger.w("Settings", "Added a ControlCenter widget to the right section");
-      }
-    }
-
-    // -----------------
-    // TEMP Normalize OSD enabled types and migrate legacy show* toggles
-    try {
-      var osdRawJson = settingsFileView.text();
-      if (osdRawJson) {
-        var osdParsed = JSON.parse(osdRawJson);
-        if (osdParsed.osd) {
-          var legacyHandled = false;
-
-          if (osdParsed.osd.enabledTypes === undefined) {
-            // Some configurations (<= v23) stored booleans like showVolume/showBrightness/etc.
-            // Convert them into the new enabledTypes array as soon as we detect the legacy shape.
-            var legacyOsd = osdParsed.osd;
-            var typeMappings = [
-                  {
-                    key: "showVolume",
-                    type: 0
-                  },
-                  {
-                    key: "showInputVolume",
-                    type: 1
-                  },
-                  {
-                    key: "showBrightness",
-                    type: 2
-                  },
-                  {
-                    key: "showLockKey",
-                    type: 3
-                  }
-                ];
-
-            var migratedTypes = [];
-            var sawLegacyKey = false;
-
-            for (var i = 0; i < typeMappings.length; i++) {
-              var mapping = typeMappings[i];
-              if (legacyOsd[mapping.key] !== undefined)
-                sawLegacyKey = true;
-
-              var enabled = legacyOsd[mapping.key];
-              if (enabled === undefined)
-                enabled = true; // default behaviour before enabledTypes existed
-
-              if (enabled && migratedTypes.indexOf(mapping.type) === -1)
-                migratedTypes.push(mapping.type);
-            }
-
-            if (legacyOsd.showLockKeyNotifications !== undefined) {
-              sawLegacyKey = true;
-              if (legacyOsd.showLockKeyNotifications) {
-                if (migratedTypes.indexOf(3) === -1)
-                  migratedTypes.push(3);
-              } else {
-                migratedTypes = migratedTypes.filter(function (type) {
-                  return type !== 3;
-                });
-              }
-            }
-
-            if (sawLegacyKey) {
-              if (migratedTypes.length === 0) {
-                migratedTypes = [0, 1, 2, 3];
-              }
-              adapter.osd.enabledTypes = migratedTypes;
-              Logger.i("Settings", "Migrated legacy OSD toggles to enabledTypes = " + JSON.stringify(migratedTypes));
-              legacyHandled = true;
-            }
-          }
-
-          // No matter which format the JSON used, hydrate the runtime value from disk so we don't
-          // accidentally keep the default [0,1,2,3] array after a restart.
-          if (!legacyHandled && osdParsed.osd.enabledTypes !== undefined) {
-            var parsedTypes = osdParsed.osd.enabledTypes;
-            if (Array.isArray(parsedTypes)) {
-              adapter.osd.enabledTypes = parsedTypes.slice();
-            } else if (parsedTypes && typeof parsedTypes === "object" && parsedTypes.length !== undefined) {
-              // QJsonArray can materialise as a list-like object; convert it to a plain array
-              var normalized = [];
-              for (var idx = 0; idx < parsedTypes.length; idx++) {
-                var value = parsedTypes[idx];
-                if (value !== undefined)
-                  normalized.push(value);
-              }
-              adapter.osd.enabledTypes = normalized;
-            }
-          }
-        }
-      }
-    } catch (error) {
-      Logger.w("Settings", "Failed to normalize OSD enabledTypes:", error);
-    }
-
-    // -----------------
-    // Migrate ShellState-related files from old cache files to ShellState
-    // This consolidates migrations that were previously in individual files
-    if (adapter.settingsVersion < 25) {
-      // Only migrate the settings once!
-      if (ShellState?.isLoaded) {
-        migrateShellStateFiles();
-      } else {
-        // Wait for ShellState to be ready
-        Qt.callLater(() => {
-                       if (ShellState?.isLoaded) {
-                         migrateShellStateFiles();
-                       }
-                     });
-      }
-    }
-  }
-
-  // -----------------------------------------------------
-  function buildStateSnapshot() {
-    try {
-      const settingsData = QtObj2JS.qtObjectToPlainObject(adapter);
-      const shellStateData = ShellState?.data ? QtObj2JS.qtObjectToPlainObject(ShellState.data) || {} : {};
-
-      return {
-        settings: settingsData,
-        state: {
-          doNotDisturb: NotificationService.doNotDisturb,
-          noctaliaPerformanceMode: PowerProfileService.noctaliaPerformanceMode,
-          barVisible: BarService.isVisible,
-          display: shellStateData.display || {},
-          wallpapers: shellStateData.wallpapers || {},
-          notificationsState: shellStateData.notificationsState || {},
-          changelogState: shellStateData.changelogState || {},
-          colorSchemesList: shellStateData.colorSchemesList || {}
-        }
-      };
-    } catch (error) {
-      Logger.e("Settings", "Failed to build state snapshot:", error);
-      return null;
-    }
-  }
-
-  // -----------------------------------------------------
-  // --- TO BE REMOVED
-  // -----------------------------------------------------
-  // Migrate old cache files to ShellState
-  function migrateShellStateFiles() {
-    // Migrate display.json → ShellState (CompositorService)
-    migrateDisplayFile();
-
-    // Migrate notifications-state.json → ShellState (NotificationService)
-    migrateNotificationsStateFile();
-
-    // Migrate changelog-state.json → ShellState (UpdateService)
-    migrateChangelogStateFile();
-
-    // Migrate color-schemes-list.json → ShellState (SchemeDownloader)
-    migrateColorSchemesListFile();
-
-    // Migrate wallpaper paths from Settings → ShellState (WallpaperService)
-    migrateWallpaperPaths();
-  }
-
-  // -----------------------------------------------------
-  function migrateDisplayFile() {
-    // Check if ShellState already has display data
-    const cached = ShellState.getDisplay();
-    if (cached && Object.keys(cached).length > 0) {
-      return; // Already migrated
-    }
-
-    const oldDisplayPath = cacheDir + "display.json";
-    const migrationFileView = Qt.createQmlObject(`
-      import QtQuick
-      import Quickshell.Io
-      import qs.Commons
-      FileView {
-        id: migrationView
-        path: "${oldDisplayPath}"
-        printErrors: false
-        adapter: JsonAdapter {
-          property var displays: ({})
-        }
-        onLoaded: {
-          if (adapter.displays && Object.keys(adapter.displays).length > 0) {
-            ShellState.setDisplay(adapter.displays);
-            Logger.i("Settings", "Migrated display.json to ShellState");
-          }
-          migrationView.destroy();
-        }
-        onLoadFailed: {
-          migrationView.destroy();
-        }
-      }
-    `, root, "displayMigrationView");
-  }
-
-  // -----------------------------------------------------
-  function migrateNotificationsStateFile() {
-    // Check if ShellState already has notifications state
-    const cached = ShellState.getNotificationsState();
-    if (cached && cached.lastSeenTs && cached.lastSeenTs > 0) {
-      return; // Already migrated
-    }
-
-    // Also check Settings for lastSeenTs
-    if (adapter.notifications && adapter.notifications.lastSeenTs) {
-      ShellState.setNotificationsState({
-                                         lastSeenTs: adapter.notifications.lastSeenTs
-                                       });
-      Logger.i("Settings", "Migrated notifications lastSeenTs from Settings to ShellState");
-      return;
-    }
-
-    const oldStatePath = cacheDir + "notifications-state.json";
-    const migrationFileView = Qt.createQmlObject(`
-      import QtQuick
-      import Quickshell.Io
-      import qs.Commons
-      FileView {
-        id: migrationView
-        path: "${oldStatePath}"
-        printErrors: false
-        adapter: JsonAdapter {
-          property real lastSeenTs: 0
-        }
-        onLoaded: {
-          if (adapter.lastSeenTs && adapter.lastSeenTs > 0) {
-            ShellState.setNotificationsState({
-              lastSeenTs: adapter.lastSeenTs
-            });
-            Logger.i("Settings", "Migrated notifications-state.json to ShellState");
-          }
-          migrationView.destroy();
-        }
-        onLoadFailed: {
-          migrationView.destroy();
-        }
-      }
-    `, root, "notificationsMigrationView");
-  }
-
-  function migrateChangelogStateFile() {
-    // Check if ShellState already has changelog state
-    const cached = ShellState.getChangelogState();
-    if (cached && cached.lastSeenVersion && cached.lastSeenVersion !== "") {
-      return; // Already migrated
-    }
-
-    // Also check Settings for lastSeenVersion
-    if (adapter.changelog && adapter.changelog.lastSeenVersion) {
-      ShellState.setChangelogState({
-                                     lastSeenVersion: adapter.changelog.lastSeenVersion
-                                   });
-      Logger.i("Settings", "Migrated changelog lastSeenVersion from Settings to ShellState");
-      return;
-    }
-
-    const oldChangelogPath = cacheDir + "changelog-state.json";
-    const migrationFileView = Qt.createQmlObject(`
-      import QtQuick
-      import Quickshell.Io
-      import qs.Commons
-      FileView {
-        id: migrationView
-        path: "${oldChangelogPath}"
-        printErrors: false
-        adapter: JsonAdapter {
-          property string lastSeenVersion: ""
-        }
-        onLoaded: {
-          if (adapter.lastSeenVersion && adapter.lastSeenVersion !== "") {
-            ShellState.setChangelogState({
-              lastSeenVersion: adapter.lastSeenVersion
-            });
-            Logger.i("Settings", "Migrated changelog-state.json to ShellState");
-          }
-          migrationView.destroy();
-        }
-        onLoadFailed: {
-          migrationView.destroy();
-        }
-      }
-    `, root, "changelogMigrationView");
-  }
-
-  function migrateColorSchemesListFile() {
-    // Check if ShellState already has color schemes list
-    const cached = ShellState.getColorSchemesList();
-    if (cached && cached.schemes && cached.schemes.length > 0) {
-      return; // Already migrated
-    }
-
-    const oldSchemesPath = cacheDir + "color-schemes-list.json";
-    const migrationFileView = Qt.createQmlObject(`
-      import QtQuick
-      import Quickshell.Io
-      import qs.Commons
-      FileView {
-        id: migrationView
-        path: "${oldSchemesPath}"
-        printErrors: false
-        adapter: JsonAdapter {
-          property var schemes: []
-          property real timestamp: 0
-        }
-        onLoaded: {
-          if (adapter.schemes && adapter.schemes.length > 0) {
-            ShellState.setColorSchemesList({
-              schemes: adapter.schemes,
-              timestamp: adapter.timestamp || 0
-            });
-            Logger.i("Settings", "Migrated color-schemes-list.json to ShellState");
-          }
-          migrationView.destroy();
-        }
-        onLoadFailed: {
-          migrationView.destroy();
-        }
-      }
-    `, root, "schemesMigrationView");
-  }
-
-  function migrateWallpaperPaths() {
-    // Check if ShellState already has wallpaper paths
-    const cached = ShellState.getWallpapers();
-    if (cached && Object.keys(cached).length > 0) {
-      return; // Already migrated
-    }
-
-    // Migrate from Settings wallpaper.monitors
-    var monitors = adapter.wallpaper.monitors || [];
-    if (monitors.length > 0) {
-      var wallpapers = {};
-      for (var i = 0; i < monitors.length; i++) {
-        if (monitors[i].name && monitors[i].wallpaper) {
-          wallpapers[monitors[i].name] = monitors[i].wallpaper;
-        }
-      }
-      if (Object.keys(wallpapers).length > 0) {
-        ShellState.setWallpapers(wallpapers);
-        Logger.i("Settings", "Migrated wallpaper paths from Settings to ShellState");
       }
     }
   }

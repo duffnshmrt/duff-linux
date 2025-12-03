@@ -49,6 +49,8 @@ ColumnLayout {
       schemeName = "Noctalia (legacy)";
     } else if (schemeName === "Tokyo-Night") {
       schemeName = "Tokyo Night";
+    } else if (schemeName === "Rosepine") {
+      schemeName = "Rose Pine";
     }
 
     return schemeName;
@@ -475,7 +477,7 @@ ColumnLayout {
             anchors.topMargin: -3
             width: 20
             height: 20
-            radius: width * 0.5
+            radius: Math.min(Style.radiusL, width / 2)
             color: Color.mSecondary
             border.width: Style.borderS
             border.color: Color.mOnSecondary
@@ -570,6 +572,32 @@ ColumnLayout {
         onToggled: checked => {
                      Settings.data.templates.kcolorscheme = checked;
                      AppThemeService.generate();
+                   }
+      }
+    }
+
+    // Compositors
+    NCollapsible {
+      Layout.fillWidth: true
+      label: I18n.tr("settings.color-scheme.templates.compositors.label")
+      description: I18n.tr("settings.color-scheme.templates.compositors.description")
+      defaultExpanded: false
+
+      NCheckbox {
+        label: "Niri"
+        description: ProgramCheckerService.niriAvailable ? I18n.tr("settings.color-scheme.templates.compositors.niri.description", {
+                                                                     "filepath": "~/.config/niri/noctalia.kdl"
+                                                                   }) : I18n.tr("settings.color-scheme.templates.compositors.niri.description-missing", {
+                                                                                  "app": "niri"
+                                                                                })
+        checked: Settings.data.templates.niri
+        enabled: ProgramCheckerService.niriAvailable
+        opacity: ProgramCheckerService.niriAvailable ? 1.0 : 0.6
+        onToggled: checked => {
+                     if (ProgramCheckerService.niriAvailable) {
+                       Settings.data.templates.niri = checked;
+                       AppThemeService.generate();
+                     }
                    }
       }
     }
@@ -866,7 +894,24 @@ ColumnLayout {
                      }
                    }
       }
+
+      NCheckbox {
+        label: "Emacs"
+        description: ProgramCheckerService.emacsAvailable ? "Doom: ~/.config/doom/themes/noctalia.el\nStandard: ~/.emacs.d/themes/noctalia.el\n\nApply manually: (load-theme 'noctalia t)" : I18n.tr("settings.color-scheme.templates.programs.emacs.description-missing", {
+                                                                                                                                                                                                       "app": "emacs"
+                                                                                                                                                                                                     })
+        checked: Settings.data.templates.emacs
+        enabled: ProgramCheckerService.emacsAvailable
+        opacity: ProgramCheckerService.emacsAvailable ? 1.0 : 0.6
+        onToggled: checked => {
+                     if (ProgramCheckerService.emacsAvailable) {
+                       Settings.data.templates.emacs = checked;
+                       AppThemeService.generate();
+                     }
+                   }
+      }
     }
+
     // Miscellaneous
     NCollapsible {
       Layout.fillWidth: true

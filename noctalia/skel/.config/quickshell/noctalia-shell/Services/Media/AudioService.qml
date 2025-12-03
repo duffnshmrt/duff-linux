@@ -41,6 +41,31 @@ Singleton {
   }
   readonly property bool inputMuted: source?.audio?.muted ?? true
 
+  // Allow callers to skip the next OSD notification when they are already
+  // presenting volume state (e.g. the Audio Panel UI). We track this as a short
+  // time window so suppression applies to every monitor, not just the first one
+  // that receives the signal.
+  property double outputOSDSuppressedUntilMs: 0
+  property double inputOSDSuppressedUntilMs: 0
+
+  function suppressOutputOSD(durationMs = 400) {
+    const target = Date.now() + durationMs;
+    outputOSDSuppressedUntilMs = Math.max(outputOSDSuppressedUntilMs, target);
+  }
+
+  function suppressInputOSD(durationMs = 400) {
+    const target = Date.now() + durationMs;
+    inputOSDSuppressedUntilMs = Math.max(inputOSDSuppressedUntilMs, target);
+  }
+
+  function consumeOutputOSDSuppression(): bool {
+    return Date.now() < outputOSDSuppressedUntilMs;
+  }
+
+  function consumeInputOSDSuppression(): bool {
+    return Date.now() < inputOSDSuppressedUntilMs;
+  }
+
   readonly property real stepVolume: Settings.data.audio.volumeStep / 100.0
 
   // Filtered device nodes (non-stream sinks and sources)

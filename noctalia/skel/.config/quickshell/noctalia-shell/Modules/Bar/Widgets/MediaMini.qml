@@ -230,7 +230,7 @@ Item {
     anchors.verticalCenter: parent.verticalCenter
     width: isVerticalBar ? ((shouldHideIdle || isEmptyForHideMode) ? 0 : calculatedVerticalDimension()) : ((shouldHideIdle || isEmptyForHideMode) ? 0 : dynamicWidth)
     height: isVerticalBar ? ((shouldHideIdle || isEmptyForHideMode) ? 0 : calculatedVerticalDimension()) : Style.capsuleHeight
-    radius: isVerticalBar ? width / 2 : Style.radiusM
+    radius: Style.radiusM
     color: Style.capsuleColor
 
     // Smooth width transition
@@ -316,7 +316,10 @@ Item {
           color: hasActivePlayer ? Color.mOnSurface : Color.mOnSurfaceVariant
           pointSize: Style.fontSizeL * scaling
           verticalAlignment: Text.AlignVCenter
+          horizontalAlignment: Text.AlignHCenter
           Layout.alignment: Qt.AlignVCenter
+          Layout.preferredWidth: _iconOnlySize
+          Layout.preferredHeight: _iconOnlySize
           visible: !hasActivePlayer || (!showAlbumArt && !showProgressRing)
         }
 
@@ -413,7 +416,7 @@ Item {
                 id: trackArt
                 anchors.fill: parent
                 anchors.margins: showProgressRing ? 0 : -1 * scaling // Add negative margin to make album art larger when no progress ring
-                radius: width * 0.5
+                radius: Math.min(Style.radiusL, width / 2)
                 visible: showAlbumArt && hasActivePlayer
                 imagePath: MediaService.trackArtUrl
                 fallbackIcon: MediaService.isPlaying ? "media-pause" : "media-play"
@@ -426,9 +429,11 @@ Item {
               // Fallback icon when no album art or album art not shown
               NIcon {
                 anchors.centerIn: parent
+                width: parent.width
+                height: parent.height
                 icon: hasActivePlayer ? (MediaService.isPlaying ? "media-pause" : "media-play") : "disc"
                 color: hasActivePlayer ? Color.mOnSurface : Color.mOnSurfaceVariant
-                pointSize: showAlbumArt ? 8 * scaling : 12 * scaling  // Smaller when inside album art circle, larger when alone
+                pointSize: (showAlbumArt || showProgressRing) ? 8 * scaling : 12 * scaling  // Smaller when inside album art circle or progress ring, larger when alone
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 visible: (!showAlbumArt && hasActivePlayer) && showProgressRing
@@ -653,7 +658,7 @@ Item {
         NImageRounded {
           anchors.fill: parent
           visible: showAlbumArt && hasActivePlayer
-          radius: width * 0.5
+          radius: Math.min(Style.radiusL, width / 2)
           imagePath: MediaService.trackArtUrl
           fallbackIcon: MediaService.isPlaying ? "media-pause" : "media-play"
           fallbackIconSize: 12
@@ -664,6 +669,8 @@ Item {
         NIcon {
           id: mediaIconVertical
           anchors.centerIn: parent
+          width: parent.width
+          height: parent.height
           visible: !showAlbumArt || !hasActivePlayer
           icon: hasActivePlayer ? (MediaService.isPlaying ? "media-pause" : "media-play") : "disc"
           color: hasActivePlayer ? Color.mOnSurface : Color.mOnSurfaceVariant

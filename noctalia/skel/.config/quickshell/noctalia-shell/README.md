@@ -85,10 +85,6 @@ Check out our comprehensive documentation and installation guide to get up and r
   </a>
 </p>
 
-### ⚠️ Important: Breaking Change in v3.0.0
-
-If you're upgrading to `v3.0.0` and using **Niri**, we've reworked how we handle wallpapers & overview. Please read [the docs](https://docs.noctalia.dev/getting-started/compositor-settings/#niri-wallpaper-and-overview-setup) to adapt your niri config.
-
 ---
 
 ## 🖥️ Wayland Compositors
@@ -137,6 +133,7 @@ While all donations are greatly appreciated, they are completely voluntary.
 * Tempus Thales
 * Raine
 * JustCurtis
+* llego
 
 ---
 

@@ -26,8 +26,8 @@ Singleton {
       }
       // Toast: dark/light mode switched
       const enabled = !!Settings.data.colorSchemes.darkMode;
-      const label = enabled ? "Dark mode" : "Light mode";
-      const description = enabled ? "Enabled" : "Enabled";
+      const label = enabled ? I18n.tr("toast.dark-mode.dark-mode") : I18n.tr("toast.dark-mode.light-mode");
+      const description = I18n.tr("toast.dark-mode.enabled");
       ToastService.showNotice(label, description, "dark-mode");
     }
   }
@@ -66,6 +66,8 @@ Singleton {
       return "Noctalia (legacy)";
     } else if (schemeName === "Tokyo-Night") {
       return "Tokyo Night";
+    } else if (schemeName === "Rosepine") {
+      return "Rose Pine";
     }
     return schemeName;
   }
@@ -84,6 +86,8 @@ Singleton {
       schemeName = "Noctalia-legacy";
     } else if (schemeName === "Tokyo Night") {
       schemeName = "Tokyo-Night";
+    } else if (schemeName === "Rose Pine") {
+      schemeName = "Rosepine";
     }
     // Check preinstalled directory first, then downloaded directory
     var preinstalledPath = schemesDirectory + "/" + schemeName + "/" + schemeName + ".json";

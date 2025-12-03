@@ -46,6 +46,11 @@
         }
       },
       "battery": {
+        "device": {
+          "default": "默认（显示设备）",
+          "description": "选择要显示的电池设备。",
+          "label": "电池设备"
+        },
         "display-mode": {
           "description": "选择您希望此值显示的方式。",
           "label": "显示模式"
@@ -97,9 +102,13 @@
       "control-center": {
         "browse-file": "浏览文件",
         "browse-library": "浏览库",
-        "colorize-distro-logo": {
-          "description": "将主题颜色应用到您的发行版徽标。",
-          "label": "为发行版徽标着色"
+        "color-selection": {
+          "description": "将主题颜色应用于图标。",
+          "label": "选择颜色"
+        },
+        "enable-colorization": {
+          "description": "为控制中心图标启用着色，应用主题颜色。",
+          "label": "启用着色"
         },
         "icon": {
           "description": "从库中选择图标或自定义文件。",
@@ -271,9 +280,6 @@
         }
       },
       "system-monitor": {
-        "cpu-critical-threshold": {
-          "label": "CPU 使用率（严重）"
-        },
         "cpu-temperature": {
           "description": "如果可用，显示CPU温度读数。",
           "label": "CPU温度"
@@ -282,24 +288,9 @@
           "description": "显示当前CPU使用百分比。",
           "label": "CPU使用率"
         },
-        "cpu-warning-threshold": {
-          "label": "CPU 使用率（警告）"
-        },
-        "disk-critical-threshold": {
-          "label": "存储空间（严重）"
-        },
         "disk-path": {
           "description": "选择要监控的磁盘挂载点。",
           "label": "磁盘路径"
-        },
-        "disk-warning-threshold": {
-          "label": "存储空间（警告）"
-        },
-        "mem-critical-threshold": {
-          "label": "内存使用率（严重）"
-        },
-        "mem-warning-threshold": {
-          "label": "内存使用率（警告）"
         },
         "memory-percentage": {
           "description": "以百分比而不是绝对值显示内存使用情况。",
@@ -316,16 +307,6 @@
         "storage-usage": {
           "description": "显示磁盘空间使用信息。",
           "label": "存储使用率"
-        },
-        "temp-critical-threshold": {
-          "label": "CPU 温度（严重）"
-        },
-        "temp-warning-threshold": {
-          "label": "CPU 温度（警告）"
-        },
-        "thresholds": {
-          "description": "配置系统指标提示的阈值，超出阈值时将以高亮色进行提示。",
-          "header": "阈值设置"
         }
       },
       "taskbar": {
@@ -412,6 +393,7 @@
       "blocked": "已阻止",
       "connect": "连接",
       "connected-devices": "已连接设备",
+      "connecting": "正在连接…",
       "disabled": "蓝牙已禁用",
       "disconnect": "断开",
       "enable-message": "启用蓝牙以查看可用设备。",
@@ -512,6 +494,20 @@
     "unknown": "未知"
   },
   "launcher": {
+    "categories": {
+      "all": "全部",
+      "audiovideo": "音频和视频",
+      "chat": "聊天",
+      "development": "发展",
+      "education": "教育",
+      "game": "游戏",
+      "graphics": "图形",
+      "misc": "杂项",
+      "network": "网络",
+      "office": "办公室",
+      "system": "系统",
+      "webbrowser": "网页浏览器"
+    },
     "pin": "固定到 Dock",
     "unpin": "从 Dock 取消固定"
   },
@@ -530,6 +526,12 @@
       "description": "您的通知将在到达时显示在此处。",
       "no-notifications": "无通知",
       "title": "通知"
+    },
+    "range": {
+      "all": "全部",
+      "earlier": "更早",
+      "today": "今天",
+      "yesterday": "昨天"
     },
     "time": {
       "diffD": "1 天前",
@@ -558,6 +560,7 @@
     },
     "colors": {
       "error": "错误色",
+      "none": "无",
       "onSurface": "表层对应色",
       "primary": "主要色",
       "secondary": "次要色",
@@ -719,7 +722,7 @@
         "enabled": "蓝牙"
       },
       "tooltip": {
-        "action": "点击管理蓝牙设备"
+        "action": "蓝牙"
       }
     },
     "keepAwake": {
@@ -728,7 +731,7 @@
         "enabled": "保持唤醒"
       },
       "tooltip": {
-        "action": "点击切换保持唤醒模式"
+        "action": "保持唤醒"
       }
     },
     "nightLight": {
@@ -738,7 +741,7 @@
         "forced": "夜间模式"
       },
       "tooltip": {
-        "action": "点击切换夜间模式\n右键：打开设置"
+        "action": "夜间模式"
       }
     },
     "notifications": {
@@ -747,7 +750,7 @@
         "enabled": "通知"
       },
       "tooltip": {
-        "action": "左键：打开通知历史\n右键：打开右键菜单"
+        "action": "通知"
       }
     },
     "powerProfile": {
@@ -755,7 +758,7 @@
         "unavailable": "电源模式"
       },
       "tooltip": {
-        "action": "点击切换电源模式",
+        "action": "电源模式",
         "disabled": "安装 power-profiles-daemon 以使用电源模式"
       }
     },
@@ -765,13 +768,13 @@
         "stopped": "录制"
       },
       "tooltip": {
-        "action": "点击开始/停止屏幕录制"
+        "action": "屏幕录制器"
       }
     },
     "wallpaperSelector": {
       "label": "壁纸",
       "tooltip": {
-        "action": "左键：打开壁纸选择器\n右键：设置随机壁纸"
+        "action": "壁纸选择器"
       }
     },
     "wifi": {
@@ -781,7 +784,7 @@
         "wifi": "Wi-Fi"
       },
       "tooltip": {
-        "action": "点击管理 Wi-Fi 连接"
+        "action": "Wi-Fi"
       }
     }
   },
@@ -807,6 +810,8 @@
       },
       "noctalia": {
         "download-latest": "下载最新版本",
+        "git-commit": "Git提交:",
+        "git-commit-loading": "加载中...",
         "installed-version": "已安装版本：",
         "latest-version": "最新版本：",
         "section": {
@@ -1053,12 +1058,20 @@
         }
       },
       "templates": {
+        "compositors": {
+          "description": "合成器主题。",
+          "label": "合成器",
+          "niri": {
+            "description": "写入 {filepath}。需要 niri v25.11+",
+            "description-missing": "需要安装 {app}"
+          }
+        },
         "misc": {
-          "description": "其他配置选项。",
-          "label": "杂项",
+          "description": "创建您自己的模板",
+          "label": "高级",
           "user-templates": {
-            "description": "启用用户定义的 Matugen 配置。首次启用时将在 ~/.config/noctalia/user-templates.toml 创建模板文件",
-            "label": "用户模板"
+            "description": "仅在您知道自己在做什么时启用，请参阅我们的在线文档",
+            "label": "启用用户模板"
           }
         },
         "programs": {
@@ -1275,9 +1288,11 @@
         },
         "temperature": {
           "day": "白天",
+          "day-description": "控制白天的色温。",
           "description": "设置夜间和白天的颜色温暖度。",
           "label": "色温",
-          "night": "夜间"
+          "night": "夜间",
+          "night-description": "控制夜间的色温。"
         }
       },
       "title": "显示"
@@ -1381,7 +1396,8 @@
           "description": "编辑您的用户详细信息和头像。",
           "label": "个人资料"
         },
-        "select-avatar": "选择头像图片"
+        "select-avatar": "选择头像图片",
+        "tooltip": "浏览头像图片"
       },
       "screen-corners": {
         "radius": {
@@ -1488,17 +1504,17 @@
     },
     "location": {
       "calendar": {
-        "banner": {
-          "label": "标题"
-        },
-        "calendar": {
-          "label": "日历"
-        },
         "cards": {
           "section": {
             "description": "在日历面板中组织和启用/禁用卡片。",
             "label": "日历卡"
           }
+        },
+        "header": {
+          "label": "日历标题"
+        },
+        "month": {
+          "label": "日历月"
         }
       },
       "date-time": {
@@ -1859,6 +1875,12 @@
       "memory-section": {
         "label": "内存使用率"
       },
+      "network-section": {
+        "label": "网络"
+      },
+      "polling-interval": {
+        "label": "轮询间隔"
+      },
       "temp-critical-threshold": {
         "label": "严重阈值"
       },
@@ -1869,7 +1891,7 @@
         "label": "CPU 温度"
       },
       "thresholds-section": {
-        "description": "设置各项系统测量指标的阈值，超过该值将以高亮色进行提示。",
+        "description": "为每个系统指标调整警告/严重阈值和轮询间隔。",
         "label": "阈值"
       },
       "title": "系统监视器",
@@ -2101,6 +2123,11 @@
       "unavailable": "剪贴板历史记录不可用",
       "unavailable-desc": "未安装 'cliphist' 应用程序。请安装它以使用剪贴板历史记录功能。"
     },
+    "dark-mode": {
+      "dark-mode": "深色模式",
+      "enabled": "已启用",
+      "light-mode": "浅色模式"
+    },
     "do-not-disturb": {
       "disabled": "'勿扰模式'已禁用",
       "disabled-desc": "显示所有通知。",
@@ -2181,64 +2208,70 @@
   "tooltips": {
     "add-widget": "添加小部件",
     "bluetooth-devices": "蓝牙设备",
-    "brightness-at": "亮度：{brightness}%\n右键点击进入设置。\n滚动调整亮度。",
-    "cancel-timer": "取消计时器",
+    "brightness-at": "亮度：{brightness}%",
+    "cancel-timer": "计时器",
     "clear-history": "清除历史记录",
-    "click-to-start-recording": "点击开始录制",
-    "click-to-stop-recording": "点击停止录制",
-    "close": "关闭",
-    "connect-disconnect-devices": "左键点击连接。右键点击忘记。",
+    "click-to-start-recording": "屏幕录制器（开始录制）",
+    "click-to-stop-recording": "屏幕录制器（停止录制）",
+    "close": "关闭按钮",
+    "connect-disconnect-devices": "蓝牙设备",
     "delete-notification": "删除通知",
-    "disable-keep-awake": "单击以禁用保持唤醒。\n滚动以调整超时。",
-    "do-not-disturb-disabled": "'勿扰模式'已禁用",
-    "do-not-disturb-enabled": "'勿扰模式'已启用",
-    "enable-keep-awake": "单击以启用保持唤醒。\n滚动以调整超时。",
+    "disable-keep-awake": "保持唤醒",
+    "do-not-disturb-disabled": "勿扰模式",
+    "do-not-disturb-enabled": "勿扰模式",
+    "enable-keep-awake": "保持唤醒",
     "forget-network": "忘记网络",
+    "grid-view": "网格视图",
+    "hidden-files-hide": "隐藏文件",
+    "hidden-files-show": "隐藏文件",
     "home": "主目录",
-    "input-muted": "静音输入设备",
+    "input-muted": "麦克风",
     "keep-awake": "保持唤醒",
     "keyboard-layout": "{layout} 键盘布局",
-    "manage-vpn": "管理 VPN 连接",
-    "manage-wifi": "管理 Wi-Fi",
-    "microphone-volume-at": "麦克风音量 {volume}%\n左键点击进入设置。右键点击切换静音。\n滚动滚轮调节音量。",
-    "move-to-center-section": "移动到中央部分",
-    "move-to-left-section": "移动到左侧部分",
-    "move-to-right-section": "移动到右侧部分",
-    "next-media": "下一媒体",
+    "list-view": "列表视图",
+    "manage-vpn": "VPN 连接",
+    "manage-wifi": "Wi-Fi",
+    "microphone-volume-at": "麦克风音量：{volume}%",
+    "move-to-center-section": "中央部分",
+    "move-to-left-section": "左侧部分",
+    "move-to-right-section": "右侧部分",
+    "next-media": "下一首",
     "next-month": "下个月",
-    "night-light-disabled": "夜间模式已禁用。\n左键点击循环模式。\n右键点击访问设置。",
-    "night-light-enabled": "夜间模式已启用。\n左键点击循环模式。\n右键点击访问设置。",
-    "night-light-forced": "夜间模式已强制启用。\n左键点击循环模式。\n右键点击访问设置。",
-    "night-light-not-installed": "夜间模式不可用。\nwlsunset 未安装。",
-    "noctalia-performance-disabled": "Noctalia 性能模式已禁用。\n左键点击以启用。",
-    "noctalia-performance-enabled": "Noctalia 性能模式已启用。\n左键点击以禁用。",
-    "open-control-center": "打开控制中心",
-    "open-notification-history-disable-dnd": "打开通知历史记录\n右键：打开右键菜单",
-    "open-notification-history-enable-dnd": "打开通知历史记录\n右键：打开右键菜单",
-    "open-settings": "打开设置",
-    "open-tray-dropdown": "打开系统托盘下拉菜单",
-    "open-wallpaper-selector": "打开壁纸选择器",
-    "output-muted": "静音输出设备",
-    "pause": "暂停",
-    "play": "播放",
-    "power-profile": "'{profile}' 电源模式",
-    "previous-media": "上一媒体",
+    "night-light-disabled": "夜间模式",
+    "night-light-enabled": "夜间模式",
+    "night-light-forced": "夜间模式",
+    "night-light-not-installed": "夜间模式（不可用）",
+    "noctalia-performance-disabled": "Noctalia 性能模式",
+    "noctalia-performance-enabled": "Noctalia 性能模式",
+    "open-control-center": "控制中心",
+    "open-notification-history-disable-dnd": "通知历史记录",
+    "open-notification-history-enable-dnd": "通知历史记录",
+    "open-settings": "设置",
+    "open-tray-dropdown": "系统托盘",
+    "open-wallpaper-selector": "壁纸选择器",
+    "output-muted": "音频输出",
+    "pause": "暂停按钮",
+    "play": "播放按钮",
+    "power-profile": "{profile} 电源模式",
+    "previous-media": "上一首",
     "previous-month": "上个月",
     "refresh": "刷新",
     "refresh-devices": "刷新设备",
     "refresh-wallhaven": "刷新 Wallhaven 结果",
     "refresh-wallpaper-list": "刷新壁纸列表",
     "remove-widget": "移除小部件",
-    "screen-recorder-not-installed": "屏幕录制器未安装",
+    "screen-recorder-not-installed": "屏幕录制器（未安装）",
+    "search": "搜索",
+    "search-close": "关闭搜索",
     "session-menu": "会话菜单",
-    "set-power-profile": "设置\"{profile}\"电源模式",
-    "start-screen-recording": "开始屏幕录制",
-    "stop-screen-recording": "停止屏幕录制",
-    "switch-to-dark-mode": "切换到深色模式",
-    "switch-to-light-mode": "切换到浅色模式",
-    "up": "向上",
-    "volume-at": "输出音量 {volume}%\n左键点击进入设置。右键点击切换静音。\n滚动滚轮调节音量。",
-    "wallpaper-selector": "左键点击：打开壁纸选择器。\n右键点击：设置随机壁纸。",
+    "set-power-profile": "{profile} 电源模式",
+    "start-screen-recording": "屏幕录制器",
+    "stop-screen-recording": "屏幕录制器",
+    "switch-to-dark-mode": "深色模式",
+    "switch-to-light-mode": "浅色模式",
+    "up": "上级目录",
+    "volume-at": "输出音量：{volume}%",
+    "wallpaper-selector": "壁纸选择器",
     "widget-settings": "小部件设置"
   },
   "wallpaper": {
