@@ -87,9 +87,29 @@ Loader {
               return null;
             }
 
+            // Find laptop battery device, falling back to displayDevice if none found
+            function findLaptopBattery() {
+              if (UPower.displayDevice && UPower.displayDevice.isLaptopBattery) {
+                return UPower.displayDevice;
+              }
+
+              if (!UPower.devices) {
+                return UPower.displayDevice;
+              }
+
+              var devices = UPower.devices.values || [];
+              for (var i = 0; i < devices.length; i++) {
+                var device = devices[i];
+                if (device && device.type === UPowerDeviceType.Battery && device.isLaptopBattery && device.percentage !== undefined) {
+                  return device;
+                }
+              }
+              return UPower.displayDevice;
+            }
+
             readonly property var bluetoothDevice: findBluetoothBatteryDevice()
             readonly property bool hasBluetoothBattery: bluetoothDevice && bluetoothDevice.batteryAvailable && bluetoothDevice.battery !== undefined
-            readonly property var battery: UPower.displayDevice
+            readonly property var battery: findLaptopBattery()
             readonly property bool isDevicePresent: {
               if (hasBluetoothBattery) {
                 return bluetoothDevice.connected === true;
@@ -311,7 +331,7 @@ Loader {
                   Layout.preferredWidth: 70
                   Layout.preferredHeight: 70
                   Layout.alignment: Qt.AlignVCenter
-                  radius: Math.min(Style.radiusL, width / 2)
+                  radius: width / 2
                   color: Color.transparent
 
                   Rectangle {
@@ -340,7 +360,7 @@ Loader {
                     anchors.centerIn: parent
                     width: 66
                     height: 66
-                    radius: Math.min(Style.radiusL, width / 2)
+                    radius: width / 2
                     imagePath: Settings.preprocessPath(Settings.data.general.avatarImage)
                     fallbackIcon: "person"
 
@@ -383,6 +403,7 @@ Loader {
                         "en": "dddd, MMMM d",
                         "es": "dddd, d 'de' MMMM",
                         "fr": "dddd d MMMM",
+                        "ja": "yyyy年M月d日 dddd",
                         "nl": "dddd d MMMM",
                         "pt": "dddd, d 'de' MMMM",
                         "zh": "yyyy年M月d日 dddd"
@@ -530,10 +551,20 @@ Loader {
             // Bottom container with weather, password input and controls
             Rectangle {
               id: bottomContainer
-              height: Settings.data.general.compactLockScreen ? 120 : 220
+
+              // Support for removing the session/power buttons at the bottom.
+              readonly property int deltaY: Settings.data.general.showSessionButtonsOnLockScreen ? 0 : (Settings.data.general.compactLockScreen ? 36 : 48) + 14
+
+              height: {
+                let calcHeight = Settings.data.general.compactLockScreen ? 120 : 220;
+                if (!Settings.data.general.showSessionButtonsOnLockScreen) {
+                  calcHeight -= bottomContainer.deltaY;
+                }
+                return calcHeight;
+              }
               anchors.horizontalCenter: parent.horizontalCenter
               anchors.bottom: parent.bottom
-              anchors.bottomMargin: 100
+              anchors.bottomMargin: 100 + bottomContainer.deltaY
               radius: Style.radiusL
               color: Color.mSurface
 
@@ -1041,7 +1072,7 @@ Loader {
                       width: 36
                       height: 36
                       radius: Math.min(Style.radiusL, width / 2)
-                      color: eyeButtonArea.containsMouse ? Qt.alpha(Color.mOnSurface, 0.1) : "transparent"
+                      color: eyeButtonArea.containsMouse ? Color.mPrimary : Color.transparent
                       visible: passwordInput.text.length > 0
                       enabled: !lockContext.unlockInProgress
 
@@ -1049,7 +1080,14 @@ Loader {
                         anchors.centerIn: parent
                         icon: parent.parent.passwordVisible ? "eye-off" : "eye"
                         pointSize: Style.fontSizeM
-                        color: Color.mOnSurfaceVariant
+                        color: eyeButtonArea.containsMouse ? Color.mOnPrimary : Color.mOnSurfaceVariant
+
+                        Behavior on color {
+                          ColorAnimation {
+                            duration: 200
+                            easing.type: Easing.OutCubic
+                          }
+                        }
                       }
 
                       MouseArea {
@@ -1077,16 +1115,23 @@ Loader {
                       width: 36
                       height: 36
                       radius: Math.min(Style.radiusL, width / 2)
-                      color: submitButtonArea.containsMouse ? Color.mPrimary : Qt.alpha(Color.mPrimary, 0.8)
+                      color: submitButtonArea.containsMouse ? Color.mPrimary : Color.transparent
                       border.color: Color.mPrimary
-                      border.width: 1
+                      border.width: Style.borderS
                       enabled: !lockContext.unlockInProgress
 
                       NIcon {
                         anchors.centerIn: parent
                         icon: "arrow-forward"
                         pointSize: Style.fontSizeM
-                        color: Color.mOnPrimary
+                        color: submitButtonArea.containsMouse ? Color.mOnPrimary : Color.mPrimary
+
+                        Behavior on color {
+                          ColorAnimation {
+                            duration: 200
+                            easing.type: Easing.OutCubic
+                          }
+                        }
                       }
 
                       MouseArea {
@@ -1095,6 +1140,13 @@ Loader {
                         hoverEnabled: true
                         cursorShape: Qt.PointingHandCursor
                         onClicked: lockContext.tryUnlock()
+                      }
+
+                      Behavior on color {
+                        ColorAnimation {
+                          duration: 200
+                          easing.type: Easing.OutCubic
+                        }
                       }
                     }
 
@@ -1111,11 +1163,12 @@ Loader {
                   }
                 }
 
-                // System control buttons
+                // Session control buttons
                 RowLayout {
                   Layout.fillWidth: true
                   Layout.preferredHeight: Settings.data.general.compactLockScreen ? 36 : 48
                   spacing: 0
+                  visible: Settings.data.general.showSessionButtonsOnLockScreen
 
                   Item {
                     Layout.preferredWidth: Style.marginM
@@ -1128,8 +1181,8 @@ Loader {
                     text: I18n.tr("session-menu.logout")
                     outlined: true
                     backgroundColor: Color.mOnSurfaceVariant
-                    textColor: Color.mOnSurfaceVariant
-                    hoverColor: Color.mHover
+                    textColor: Color.mOnPrimary
+                    hoverColor: Color.mPrimary
                     fontSize: Settings.data.general.compactLockScreen ? Style.fontSizeS : Style.fontSizeM
                     iconSize: Settings.data.general.compactLockScreen ? Style.fontSizeM : Style.fontSizeL
                     fontWeight: Style.fontWeightMedium
@@ -1149,8 +1202,8 @@ Loader {
                     text: I18n.tr("session-menu.suspend")
                     outlined: true
                     backgroundColor: Color.mOnSurfaceVariant
-                    textColor: Color.mOnSurfaceVariant
-                    hoverColor: Color.mHover
+                    textColor: Color.mOnPrimary
+                    hoverColor: Color.mPrimary
                     fontSize: Settings.data.general.compactLockScreen ? Style.fontSizeS : Style.fontSizeM
                     iconSize: Settings.data.general.compactLockScreen ? Style.fontSizeM : Style.fontSizeL
                     fontWeight: Style.fontWeightMedium
@@ -1171,8 +1224,8 @@ Loader {
                     text: I18n.tr("session-menu.hibernate")
                     outlined: true
                     backgroundColor: Color.mOnSurfaceVariant
-                    textColor: Color.mOnSurfaceVariant
-                    hoverColor: Color.mHover
+                    textColor: Color.mOnPrimary
+                    hoverColor: Color.mPrimary
                     fontSize: Settings.data.general.compactLockScreen ? Style.fontSizeS : Style.fontSizeM
                     iconSize: Settings.data.general.compactLockScreen ? Style.fontSizeM : Style.fontSizeL
                     fontWeight: Style.fontWeightMedium
@@ -1184,7 +1237,6 @@ Loader {
 
                   Item {
                     Layout.preferredWidth: 10
-                    visible: Settings.data.general.showHibernateOnLockScreen
                   }
 
                   NButton {
@@ -1194,8 +1246,8 @@ Loader {
                     text: I18n.tr("session-menu.reboot")
                     outlined: true
                     backgroundColor: Color.mOnSurfaceVariant
-                    textColor: Color.mOnSurfaceVariant
-                    hoverColor: Color.mHover
+                    textColor: Color.mOnPrimary
+                    hoverColor: Color.mPrimary
                     fontSize: Settings.data.general.compactLockScreen ? Style.fontSizeS : Style.fontSizeM
                     iconSize: Settings.data.general.compactLockScreen ? Style.fontSizeM : Style.fontSizeL
                     fontWeight: Style.fontWeightMedium
@@ -1215,7 +1267,7 @@ Loader {
                     text: I18n.tr("session-menu.shutdown")
                     outlined: true
                     backgroundColor: Color.mError
-                    textColor: Color.mOnSurfaceVariant
+                    textColor: Color.mOnError
                     hoverColor: Color.mError
                     fontSize: Settings.data.general.compactLockScreen ? Style.fontSizeS : Style.fontSizeM
                     iconSize: Settings.data.general.compactLockScreen ? Style.fontSizeM : Style.fontSizeL

@@ -58,6 +58,14 @@
         "low-battery-threshold": {
           "description": "バッテリー残量がこのパーセンテージを下回ると警告を表示します。",
           "label": "低バッテリー警告の閾値"
+        },
+        "show-noctalia-performance": {
+          "description": "バッテリーパネルにNoctaliaパフォーマンスモードのトグルを表示します。",
+          "label": "Noctaliaパフォーマンストグルを表示"
+        },
+        "show-power-profile": {
+          "description": "バッテリーパネルに電源プロファイルの選択を表示します。",
+          "label": "電源プロファイルコントロールを表示"
         }
       },
       "brightness": {
@@ -132,6 +140,13 @@
           "stream-description": "継続的に実行するコマンドを入力します。"
         },
         "dynamic-text": "動的テキスト",
+        "hide-mode": {
+          "alwaysExpanded": "常に展開",
+          "description": "コマンドが出力を持っていない場合のウィジェットの表示を制御します。",
+          "expandWithOutput": "出力があるときに展開",
+          "label": "非表示モード",
+          "maxTransparent": "最大展開だが透過"
+        },
         "icon": {
           "description": "ライブラリからアイコンを選択します。",
           "label": "アイコン"
@@ -166,6 +181,10 @@
           "description": "ボタンを右クリックした際に実行するコマンド。",
           "label": "右クリック",
           "update-text": "右クリック時に表示テキストを更新"
+        },
+        "show-icon": {
+          "description": "ウィジェットのアイコンの表示を切り替えます。",
+          "label": "アイコンを表示"
         },
         "text-stream": {
           "description": "コマンドからストリーミングされた行を、ボタン上のテキストとして表示します。",
@@ -318,6 +337,10 @@
           "description": "一致するウィンドウがない場合のウィジェットの動作を制御します。",
           "label": "非表示モード"
         },
+        "max-width": {
+          "description": "画面幅に対するタスクバーの最大幅の割合。",
+          "label": "最大幅"
+        },
         "only-active-workspaces": {
           "description": "アクティブなワークスペースのアプリのみを表示します。",
           "label": "アクティブなワークスペースのみ"
@@ -325,6 +348,24 @@
         "only-same-output": {
           "description": "バーが配置されているディスプレイ上のアプリのみを表示します。",
           "label": "同じディスプレイのみ"
+        },
+        "show-pinned-apps": {
+          "description": "ドックからピン留めされたアプリをタスクバーに表示する。",
+          "label": "ピン留めされたアプリを表示"
+        },
+        "show-title": {
+          "description": "タスクバーにウィンドウタイトルを表示します。",
+          "description-disabled": "縦型タスクバーはタイトル表示に対応していません。",
+          "label": "タイトルを表示"
+        },
+        "smart-width": {
+          "description": "エントリの数に基づいてエントリの幅を自動的に調整します。",
+          "label": "スマート幅"
+        },
+        "title-width": {
+          "description": "タスクバーのウィンドウタイトルの幅を設定します（ピクセル単位）。",
+          "label": "タイトル幅",
+          "reset-tooltip": "タイトル幅をリセット"
         }
       },
       "taskbar-grouped": {
@@ -341,6 +382,10 @@
         "drawer-enabled": {
           "description": "有効にすると、ピン留めされていないトレイ項目をドロワーパネル内に表示します。\n無効にすると、すべての項目をインラインで表示します。",
           "label": "ドロワーを有効化"
+        },
+        "hide-passive": {
+          "description": "有効にすると、非アクティブなステータスのトレイアイコンは非表示になります。",
+          "label": "受動的なアイテムを隠す"
         }
       },
       "volume": {
@@ -452,7 +497,15 @@
     }
   },
   "clock": {
-    "tooltip": "カレンダーを開く"
+    "tooltip": "時計"
+  },
+  "common": {
+    "add": "追加",
+    "apply": "適用",
+    "cancel": "キャンセル",
+    "check-settings": "詳細については設定を確認してください。",
+    "close": "閉じる",
+    "save": "保存"
   },
   "context-menu": {
     "activate-app": "{app} をアクティブにする",
@@ -505,11 +558,13 @@
       "misc": "その他",
       "network": "ネットワーク",
       "office": "オフィス",
+      "pinned": "ピン留め",
       "system": "システム",
       "webbrowser": "ウェブブラウザ"
     },
-    "pin": "ドックにピン留め",
-    "unpin": "ドックからピン留めを解除"
+    "delete": "削除 (Sakujo)",
+    "pin": "ピン留め",
+    "unpin": "ピン留め解除"
   },
   "lock-screen": {
     "authenticating": "認証中...",
@@ -705,11 +760,15 @@
     "clipboard-clear-description": "クリップボード履歴をすべて消去",
     "clipboard-clear-description-full": "クリップボード履歴からすべての項目を削除します",
     "clipboard-clear-history": "クリップボード履歴を消去",
+    "clipboard-delete": "クリップボードのエントリを削除",
     "clipboard-history-disabled": "クリップボード履歴は無効です",
     "clipboard-history-disabled-description": "設定で履歴を有効にするか、cliphist をインストールしてください",
     "clipboard-loading": "クリップボード履歴を読み込み中...",
     "clipboard-loading-description": "お待ちください",
     "clipboard-search-description": "クリップボード履歴を検索",
+    "command": "コマンド",
+    "command-description": "シェルコマンドを実行する",
+    "command-name": "コマンド",
     "emoji": "絵文字選択",
     "emoji-loading": "絵文字を読み込み中...",
     "emoji-loading-description": "お待ちください",
@@ -970,7 +1029,7 @@
       },
       "widgets": {
         "section": {
-          "description": "ドラッグ＆ドロップでウィジェットを並べ替えます。 バッジは配置を示します：[L]左、[C]中央、[R]右。",
+          "description": "ウィジェットをドラッグして順番を変更します。右クリックメニューを使って、セクション間でウィジェットを移動したり、削除したりできます。",
           "label": "ウィジェットの配置"
         }
       }
@@ -1229,7 +1288,7 @@
           "cancel": "キャンセル"
         },
         "section": {
-          "description": "ショートカットウィジェットの設定と管理を行います。",
+          "description": "ウィジェットをドラッグして順番を変更します。右クリックメニューを使って、セクション間でウィジェットを移動したり、削除したりできます。",
           "label": "ショートカットウィジェット"
         },
         "sectionLeft": "左",
@@ -1311,6 +1370,10 @@
           "description": "ドックのアプリアイコンにテーマカラーを適用します（非フォーカス時のみ）。",
           "label": "テーマカラーの適用"
         },
+        "dead-opacity": {
+          "description": "実行されていないアプリのアイコンの不透明度を調整します。",
+          "label": "死んだ不透明度"
+        },
         "display": {
           "always-visible": "常に表示",
           "auto-hide": "自動的に隠す",
@@ -1325,6 +1388,14 @@
         "icon-size": {
           "description": "ドック全体のサイズを調整します。",
           "label": "ドックのサイズ"
+        },
+        "inactive-indicators": {
+          "description": "現在アクティブなアプリだけでなく、すべてのアプリのインジケーターピルを表示する。",
+          "label": "実行指標"
+        },
+        "pinned-static": {
+          "description": "ピン留めされたアプリのアイコンは、常に静的な順序で左に寄せてください。",
+          "label": "固定された静的アプリ"
         },
         "section": {
           "description": "ドックの動作と外観をカスタマイズします。",
@@ -1397,7 +1468,7 @@
           "label": "プロフィール"
         },
         "select-avatar": "アバター画像を選択",
-        "tooltip": "アバター画像を参照"
+        "tooltip": "プロフィール写真"
       },
       "screen-corners": {
         "radius": {
@@ -1486,6 +1557,10 @@
         "section": {
           "description": "ランチャーの挙動と外観をカスタマイズします。",
           "label": "外観"
+        },
+        "show-categories": {
+          "description": "アプリケーションをフィルタリングするためのカテゴリタブを表示します。",
+          "label": "カテゴリを表示"
         },
         "sort-by-usage": {
           "description": "有効にすると、よく使うアプリがリストの上位に表示されます。",
@@ -1592,6 +1667,10 @@
         "description": "電源メニューのオプションに「ハイバネート（休止状態）」を表示します。",
         "label": "ハイバネートを表示"
       },
+      "show-session-buttons": {
+        "description": "ロック画面から電源設定へのアクセスを許可します。",
+        "label": "電源制御"
+      },
       "title": "ロック画面"
     },
     "network": {
@@ -1666,6 +1745,61 @@
           "label": "外観"
         }
       },
+      "sounds": {
+        "enabled": {
+          "description": "着信通知の音声効果を有効にします。",
+          "label": "通知音を有効にする"
+        },
+        "excluded-apps": {
+          "description": "独自の通知音を持つ特定のアプリケーションについて、設定された通知音の再生をスキップします。",
+          "label": "除外アプリケーション",
+          "placeholder": "discord,firefox,chrome,chromium,edge"
+        },
+        "files": {
+          "critical": {
+            "description": "緊急度の高い通知で再生される音声ファイルへのパス。",
+            "label": "緊急通知音",
+            "select-title": "緊急通知音ファイルを選択"
+          },
+          "low": {
+            "description": "緊急度の低い通知で再生される音声ファイルへのパス。",
+            "label": "低優先度通知音",
+            "select-title": "低優先度通知音ファイルを選択"
+          },
+          "normal": {
+            "description": "通常優先度の通知で再生される音声ファイルへのパス。",
+            "label": "通常優先度通知音",
+            "select-title": "通常優先度通知音ファイルを選択"
+          },
+          "placeholder": "音声ファイルへのパスを入力",
+          "section": {
+            "description": "通知の緊急度レベルに応じてカスタム音声ファイルを設定します。",
+            "label": "音声ファイル"
+          },
+          "select-file": "音声ファイルを選択",
+          "unified": {
+            "description": "通知で再生される音声ファイルへのパス。",
+            "label": "通知音",
+            "select-title": "通知音ファイルを選択"
+          }
+        },
+        "section": {
+          "description": "通知の音声効果と音量を設定します。",
+          "label": "サウンド設定"
+        },
+        "separate": {
+          "description": "低、通常、緊急優先度の通知に異なる音声ファイルを使用します。",
+          "label": "優先度ごとに異なる音を使用する"
+        },
+        "unavailable": {
+          "description": "通知音を有効にするにはQt6マルチメディアをインストールしてください。",
+          "label": "通知音は利用できません"
+        },
+        "volume": {
+          "description": "通知音の音量レベルを調整します。",
+          "label": "サウンド音量"
+        }
+      },
       "title": "通知",
       "toast": {
         "keyboard": {
@@ -1733,7 +1867,7 @@
           "label": "ロックキー"
         },
         "section": {
-          "description": "OSD を表示するトリガー（イベント）を選択します。何も選択しない場合、すべてのイベントで表示されます。",
+          "description": "OSD を表示するトリガー（イベント）を選択します。",
           "label": "OSD のトリガーイベント"
         },
         "volume": {
@@ -1741,6 +1875,75 @@
           "label": "出力音量"
         }
       }
+    },
+    "plugins": {
+      "available": {
+        "description": "構成されたソースからプラグインをブラウズしてインストールします。",
+        "label": "利用できるプラグイン",
+        "no-plugins-description": "プラグインのソースを確認するか、リストを更新してください。",
+        "no-plugins-label": "利用できるプラグインはありません"
+      },
+      "filter": {
+        "all": "すべて",
+        "downloaded": "ダウンロード済み",
+        "not-downloaded": "ダウンロードされていません"
+      },
+      "install": "インストール",
+      "install-error": "インストールに失敗しました: {error}",
+      "install-success": "{plugin} のインストールに成功しました。",
+      "installed": {
+        "description": "ローカルにインストールされたすべてのプラグインを管理および設定します。",
+        "label": "インストール済みプラグイン",
+        "no-plugins-description": "下の利用可能なプラグインのセクションからプラグインをインストールしてください。",
+        "no-plugins-label": "プラグインはインストールされていません。"
+      },
+      "installing": "{plugin} をインストール中...",
+      "plugin-settings-title": "{plugin} 設定",
+      "refresh": {
+        "refreshing": "プラグインリストを更新中...",
+        "tooltip": "利用可能なプラグインを更新"
+      },
+      "settings": {
+        "tooltip": "プラグイン設定"
+      },
+      "settings-error-not-loaded": "プラグインはロードされませんでした。",
+      "settings-saved": "プラグイン設定を保存しました。",
+      "sources": {
+        "add-custom": "カスタムリポジトリを追加",
+        "add-dialog": {
+          "description": "GitHubリポジトリをプラグインソースとして追加する。",
+          "error": "プラグインソースの追加に失敗しました",
+          "name": "リポジトリ名",
+          "name-placeholder": "私のカスタムプラグイン",
+          "success": "プラグインソースが正常に追加されました。",
+          "title": "プラグインソースを追加",
+          "url": "リポジトリのURL"
+        },
+        "description": "プラグインのダウンロード元となるプラグインリポジトリを管理します。",
+        "label": "プラグインのソース",
+        "placeholder": "私のクールなリポジトリ",
+        "remove": {
+          "tooltip": "プラグインソースを削除"
+        }
+      },
+      "title": "プラグイン",
+      "uninstall": "アンインストール",
+      "uninstall-dialog": {
+        "description": "{plugin} をアンインストールしてもよろしいですか？プラグインのデータはすべて削除されます。",
+        "title": "プラグインをアンインストールする"
+      },
+      "uninstall-error": "アンインストールに失敗しました: {error}",
+      "uninstall-success": "{plugin} のアンインストールに成功しました。",
+      "uninstalling": "{plugin} をアンインストールしています...",
+      "update": "更新",
+      "update-all": "すべて更新 ({count})",
+      "update-all-success": "すべてのプラグインが正常に更新されました。",
+      "update-available": "{count}個のプラグインアップデートがあります",
+      "update-error": "プラグインの更新に失敗しました: {plugin}: {error}",
+      "update-incompatible": "Noctalia v{version} 以降が必要です。",
+      "update-success": "{plugin} を v{version} にアップデートしました。",
+      "update-version": "v{現在} → v{新規}",
+      "updating": "{plugin}を更新しています..."
     },
     "screen-recorder": {
       "audio": {
@@ -1761,7 +1964,7 @@
         "output-folder": {
           "description": "画面録画ファイルを保存するフォルダ。",
           "label": "出力フォルダ",
-          "tooltip": "出力フォルダを参照"
+          "tooltip": "出力フォルダ"
         },
         "section": {
           "description": "画面録画の出力先や内容を管理します。",
@@ -1815,6 +2018,23 @@
           "description": "セッションメニューに表示される電源操作と、その表示順序をカスタマイズします。",
           "label": "電源操作"
         }
+      },
+      "entry-settings": {
+        "command": {
+          "description": "このアクションのために実行するカスタムコマンド。空欄のままにすると、デフォルトのシステムコマンドが使用されます。",
+          "label": "コマンド",
+          "placeholder": "systemctl poweroff"
+        },
+        "default-command": {
+          "lock": "内部ロック画面（コマンドなし）",
+          "logout": "内部ログアウト (コマンドなし)"
+        },
+        "default-info": {
+          "description": "カスタムコマンドが指定されていない場合、デフォルトのシステムコマンドが使用されます。",
+          "label": "デフォルトのコマンド"
+        },
+        "title": "{entry} を構成する",
+        "tooltip": "コマンドを構成する"
       },
       "general": {
         "section": {
@@ -1917,10 +2137,15 @@
         "label": "アニメーション速度",
         "reset": "アニメーション速度をリセット"
       },
-      "border-radius": {
-        "description": "ウィンドウ、ボタン、その他の要素の角の丸みを制御します。",
-        "label": "角の丸み",
-        "reset": "角の丸みをリセット"
+      "box-border-radius": {
+        "description": "サイドバー、カード、コンテンツパネルなど、主要なレイアウトセクションの角の丸みを調整します。",
+        "label": "コンテナ半径",
+        "reset": "コンテナ半径をリセット"
+      },
+      "control-border-radius": {
+        "description": "ボタン、トグル、テキストフィールドなどのインタラクティブな要素の曲率を制御します。",
+        "label": "入力半径",
+        "reset": "入力半径をリセット"
       },
       "dim-desktop": {
         "description": "パネルやメニューが開いている間、デスクトップを暗くします。",
@@ -2025,7 +2250,7 @@
         "folder": {
           "description": "メインの壁紙フォルダのパス。",
           "label": "壁紙フォルダ",
-          "tooltip": "壁紙フォルダを参照"
+          "tooltip": "壁紙フォルダ"
         },
         "hide-wallpaper-filenames": {
           "description": "壁紙選択パネル内で、壁紙のファイル名を非表示にします。",
@@ -2034,7 +2259,7 @@
         "monitor-specific": {
           "description": "ディスプレイごとに異なる壁紙フォルダを設定します。",
           "label": "ディスプレイ別の壁紙フォルダ",
-          "tooltip": "ディスプレイ別の壁紙フォルダを参照"
+          "tooltip": "モニター壁紙フォルダ"
         },
         "recursive-search": {
           "description": "壁紙フォルダのサブフォルダ内も検索対象にします。",
@@ -2049,7 +2274,7 @@
         "selector": {
           "description": "壁紙を選択します。",
           "label": "壁紙選択パネル",
-          "tooltip": "壁紙選択パネルを開く"
+          "tooltip": "壁紙選択パネル"
         },
         "selector-position": {
           "description": "壁紙選択パネルの表示位置を選択します。",
@@ -2165,7 +2390,7 @@
     "noctalia-performance": {
       "disabled": "パフォーマンスモード: 無効",
       "enabled": "パフォーマンスモード: 有効",
-      "label": "Noctalia パフォーマンス"
+      "label": "Noctaliaパフォーマンス"
     },
     "power-profile": {
       "changed": "電源プロファイルを変更しました",
@@ -2213,7 +2438,7 @@
     "clear-history": "履歴を消去",
     "click-to-start-recording": "画面録画 (録画開始)",
     "click-to-stop-recording": "画面録画 (録画停止)",
-    "close": "閉じるボタン",
+    "close": "閉じる",
     "connect-disconnect-devices": "Bluetooth デバイス",
     "delete-notification": "通知を削除",
     "disable-keep-awake": "スリープ防止",
@@ -2250,8 +2475,8 @@
     "open-tray-dropdown": "システムトレイ",
     "open-wallpaper-selector": "壁紙選択パネル",
     "output-muted": "音声出力",
-    "pause": "一時停止ボタン",
-    "play": "再生ボタン",
+    "pause": "一時停止",
+    "play": "再生",
     "power-profile": "電源プロファイル: {profile}",
     "previous-media": "前のトラック",
     "previous-month": "前月",

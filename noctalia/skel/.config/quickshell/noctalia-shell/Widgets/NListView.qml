@@ -11,7 +11,7 @@ Item {
   property color handlePressedColor: handleColor
   property color trackColor: Color.transparent
   property real handleWidth: 6
-  property real handleRadius: Style.radiusM
+  property real handleRadius: Style.iRadiusM
   property int verticalPolicy: ScrollBar.AsNeeded
   property int horizontalPolicy: ScrollBar.AlwaysOff
   readonly property bool verticalScrollBarActive: {
@@ -20,6 +20,8 @@ Item {
     return listView.contentHeight > listView.height;
   }
   readonly property real scrollBarWidth: verticalScrollBarActive ? handleWidth : 0
+  readonly property real scrollBarSpacing: verticalScrollBarActive ? 4 : 0
+  readonly property real scrollBarTotalWidth: verticalScrollBarActive ? (handleWidth + 4) : 0
 
   // Forward ListView properties
   property alias model: listView.model

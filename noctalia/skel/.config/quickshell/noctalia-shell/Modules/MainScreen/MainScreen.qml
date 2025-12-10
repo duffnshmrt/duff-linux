@@ -19,6 +19,7 @@ import qs.Modules.Panels.Clock
 import qs.Modules.Panels.ControlCenter
 import qs.Modules.Panels.Launcher
 import qs.Modules.Panels.NotificationHistory
+import qs.Modules.Panels.Plugins
 import qs.Modules.Panels.SessionMenu
 import qs.Modules.Panels.Settings
 import qs.Modules.Panels.SetupWizard
@@ -50,6 +51,8 @@ PanelWindow {
   readonly property alias trayDrawerPanel: trayDrawerPanel
   readonly property alias wallpaperPanel: wallpaperPanel
   readonly property alias wifiPanel: wifiPanel
+  readonly property alias pluginPanel1: pluginPanel1
+  readonly property alias pluginPanel2: pluginPanel2
 
   // Expose panel backgrounds for AllBackgrounds
   readonly property var audioPanelPlaceholder: audioPanel.panelRegion
@@ -67,6 +70,8 @@ PanelWindow {
   readonly property var trayDrawerPanelPlaceholder: trayDrawerPanel.panelRegion
   readonly property var wallpaperPanelPlaceholder: wallpaperPanel.panelRegion
   readonly property var wifiPanelPlaceholder: wifiPanel.panelRegion
+  readonly property var pluginPanel1Placeholder: pluginPanel1.panelRegion
+  readonly property var pluginPanel2Placeholder: pluginPanel2.panelRegion
 
   Component.onCompleted: {
     Logger.d("MainScreen", "Initialized for screen:", screen?.name, "- Dimensions:", screen?.width, "x", screen?.height, "- Position:", screen?.x, ",", screen?.y);
@@ -202,105 +207,107 @@ PanelWindow {
       id: audioPanel
       objectName: "audioPanel-" + (root.screen?.name || "unknown")
       screen: root.screen
-      z: 50
     }
 
     BatteryPanel {
       id: batteryPanel
       objectName: "batteryPanel-" + (root.screen?.name || "unknown")
       screen: root.screen
-      z: 50
     }
 
     BluetoothPanel {
       id: bluetoothPanel
       objectName: "bluetoothPanel-" + (root.screen?.name || "unknown")
       screen: root.screen
-      z: 50
     }
 
     BrightnessPanel {
       id: brightnessPanel
       objectName: "brightnessPanel-" + (root.screen?.name || "unknown")
       screen: root.screen
-      z: 50
     }
 
     ControlCenterPanel {
       id: controlCenterPanel
       objectName: "controlCenterPanel-" + (root.screen?.name || "unknown")
       screen: root.screen
-      z: 50
     }
 
     ChangelogPanel {
       id: changelogPanel
       objectName: "changelogPanel-" + (root.screen?.name || "unknown")
       screen: root.screen
-      z: 50
     }
 
     ClockPanel {
       id: clockPanel
       objectName: "clockPanel-" + (root.screen?.name || "unknown")
       screen: root.screen
-      z: 50
     }
 
     Launcher {
       id: launcherPanel
       objectName: "launcherPanel-" + (root.screen?.name || "unknown")
       screen: root.screen
-      z: 50
     }
 
     NotificationHistoryPanel {
       id: notificationHistoryPanel
       objectName: "notificationHistoryPanel-" + (root.screen?.name || "unknown")
       screen: root.screen
-      z: 50
     }
 
     SessionMenu {
       id: sessionMenuPanel
       objectName: "sessionMenuPanel-" + (root.screen?.name || "unknown")
       screen: root.screen
-      z: 50
     }
 
     SettingsPanel {
       id: settingsPanel
       objectName: "settingsPanel-" + (root.screen?.name || "unknown")
       screen: root.screen
-      z: 50
     }
 
     SetupWizard {
       id: setupWizardPanel
       objectName: "setupWizardPanel-" + (root.screen?.name || "unknown")
       screen: root.screen
-      z: 50
     }
 
     TrayDrawerPanel {
       id: trayDrawerPanel
       objectName: "trayDrawerPanel-" + (root.screen?.name || "unknown")
       screen: root.screen
-      z: 50
     }
 
     WallpaperPanel {
       id: wallpaperPanel
       objectName: "wallpaperPanel-" + (root.screen?.name || "unknown")
       screen: root.screen
-      z: 50
     }
 
     WiFiPanel {
       id: wifiPanel
       objectName: "wifiPanel-" + (root.screen?.name || "unknown")
       screen: root.screen
-      z: 50
+    }
+
+    // ----------------------------------------------
+    // Plugin panel slots
+    // ----------------------------------------------
+    PluginPanelSlot {
+      id: pluginPanel1
+      objectName: "pluginPanel1-" + (root.screen?.name || "unknown")
+      screen: root.screen
+      slotNumber: 1
+    }
+
+    PluginPanelSlot {
+      id: pluginPanel2
+      objectName: "pluginPanel2-" + (root.screen?.name || "unknown")
+      screen: root.screen
+      slotNumber: 2
     }
 
     // ----------------------------------------------
@@ -318,8 +325,8 @@ PanelWindow {
       readonly property string barPosition: Settings.data.bar.position || "top"
       readonly property bool barIsVertical: barPosition === "left" || barPosition === "right"
       readonly property bool barFloating: Settings.data.bar.floating || false
-      readonly property real barMarginH: barFloating ? Math.round(Settings.data.bar.marginHorizontal * Style.marginXL) : 0
-      readonly property real barMarginV: barFloating ? Math.round(Settings.data.bar.marginVertical * Style.marginXL) : 0
+      readonly property real barMarginH: barFloating ? Math.ceil(Settings.data.bar.marginHorizontal * Style.marginXL) : 0
+      readonly property real barMarginV: barFloating ? Math.ceil(Settings.data.bar.marginVertical * Style.marginXL) : 0
       readonly property real attachmentOverlap: 1 // Attachment overlap to fix hairline gap with fractional scaling
 
       // Expose bar dimensions directly on this Item for BarBackground
@@ -411,178 +418,101 @@ PanelWindow {
   // Centralized Keyboard Shortcuts
   // ========================================
   // These shortcuts delegate to the opened panel's handler functions
-  // Panels can implement: onEscapePressed, onTabPressed, onShiftTabPressed,
-  // onUpPressed, onDownPressed, onReturnPressed
-
+  // Panels can implement: onEscapePressed, onTabPressed, onBackTabPressed,
+  // onUpPressed, onDownPressed, onReturnPressed, etc...
   Shortcut {
     sequence: "Escape"
-    enabled: root.isPanelOpen
-    onActivated: {
-      if (PanelService.openedPanel && PanelService.openedPanel.onEscapePressed) {
-        PanelService.openedPanel.onEscapePressed();
-      } else if (PanelService.openedPanel) {
-        PanelService.openedPanel.close();
-      }
-    }
+    enabled: root.isPanelOpen && (PanelService.openedPanel.onEscapePressed !== undefined)
+    onActivated: PanelService.openedPanel.onEscapePressed()
   }
 
   Shortcut {
     sequence: "Tab"
-    enabled: root.isPanelOpen
-    onActivated: {
-      if (PanelService.openedPanel && PanelService.openedPanel.onTabPressed) {
-        PanelService.openedPanel.onTabPressed();
-      }
-    }
-  }
-
-  Shortcut {
-    sequence: "Shift+Tab"
-    enabled: root.isPanelOpen
-    onActivated: {
-      if (PanelService.openedPanel && PanelService.openedPanel.onShiftTabPressed) {
-        PanelService.openedPanel.onShiftTabPressed();
-      }
-    }
-  }
-
-  Shortcut {
-    sequence: "Up"
-    enabled: root.isPanelOpen
-    onActivated: {
-      if (PanelService.openedPanel && PanelService.openedPanel.onUpPressed) {
-        PanelService.openedPanel.onUpPressed();
-      }
-    }
-  }
-
-  Shortcut {
-    sequence: "Down"
-    enabled: root.isPanelOpen
-    onActivated: {
-      if (PanelService.openedPanel && PanelService.openedPanel.onDownPressed) {
-        PanelService.openedPanel.onDownPressed();
-      }
-    }
-  }
-
-  Shortcut {
-    sequence: "Return"
-    enabled: root.isPanelOpen
-    onActivated: {
-      if (PanelService.openedPanel && PanelService.openedPanel.onReturnPressed) {
-        PanelService.openedPanel.onReturnPressed();
-      }
-    }
-  }
-
-  Shortcut {
-    sequence: "Left"
-    enabled: root.isPanelOpen
-    onActivated: {
-      if (PanelService.openedPanel && PanelService.openedPanel.onLeftPressed) {
-        PanelService.openedPanel.onLeftPressed();
-      }
-    }
-  }
-
-  Shortcut {
-    sequence: "Right"
-    enabled: root.isPanelOpen
-    onActivated: {
-      if (PanelService.openedPanel && PanelService.openedPanel.onRightPressed) {
-        PanelService.openedPanel.onRightPressed();
-      }
-    }
-  }
-
-  Shortcut {
-    sequence: "Home"
-    enabled: root.isPanelOpen
-    onActivated: {
-      if (PanelService.openedPanel && PanelService.openedPanel.onHomePressed) {
-        PanelService.openedPanel.onHomePressed();
-      }
-    }
-  }
-
-  Shortcut {
-    sequence: "End"
-    enabled: root.isPanelOpen
-    onActivated: {
-      if (PanelService.openedPanel && PanelService.openedPanel.onEndPressed) {
-        PanelService.openedPanel.onEndPressed();
-      }
-    }
-  }
-
-  Shortcut {
-    sequence: "PgUp"
-    enabled: root.isPanelOpen
-    onActivated: {
-      if (PanelService.openedPanel && PanelService.openedPanel.onPageUpPressed) {
-        PanelService.openedPanel.onPageUpPressed();
-      }
-    }
-  }
-
-  Shortcut {
-    sequence: "PgDown"
-    enabled: root.isPanelOpen
-    onActivated: {
-      if (PanelService.openedPanel && PanelService.openedPanel.onPageDownPressed) {
-        PanelService.openedPanel.onPageDownPressed();
-      }
-    }
+    enabled: root.isPanelOpen && (PanelService.openedPanel.onTabPressed !== undefined)
+    onActivated: PanelService.openedPanel.onTabPressed()
   }
 
   Shortcut {
     sequence: "Backtab"
-    enabled: root.isPanelOpen
-    onActivated: {
-      if (PanelService.openedPanel && PanelService.openedPanel.onBackTabPressed) {
-        PanelService.openedPanel.onBackTabPressed();
-      }
-    }
+    enabled: root.isPanelOpen && (PanelService.openedPanel.onBackTabPressed !== undefined)
+    onActivated: PanelService.openedPanel.onBackTabPressed()
+  }
+
+  Shortcut {
+    sequence: "Up"
+    enabled: root.isPanelOpen && (PanelService.openedPanel.onUpPressed !== undefined)
+    onActivated: PanelService.openedPanel.onUpPressed()
+  }
+
+  Shortcut {
+    sequence: "Down"
+    enabled: root.isPanelOpen && (PanelService.openedPanel.onDownPressed !== undefined)
+    onActivated: PanelService.openedPanel.onDownPressed()
+  }
+
+  Shortcut {
+    sequence: "Return"
+    enabled: root.isPanelOpen && (PanelService.openedPanel.onReturnPressed !== undefined)
+    onActivated: PanelService.openedPanel.onReturnPressed()
+  }
+
+  Shortcut {
+    sequence: "Left"
+    enabled: root.isPanelOpen && (PanelService.openedPanel.onLeftPressed !== undefined)
+    onActivated: PanelService.openedPanel.onLeftPressed()
+  }
+
+  Shortcut {
+    sequence: "Right"
+    enabled: root.isPanelOpen && (PanelService.openedPanel.onRightPressed !== undefined)
+    onActivated: PanelService.openedPanel.onRightPressed()
+  }
+
+  Shortcut {
+    sequence: "Home"
+    enabled: root.isPanelOpen && (PanelService.openedPanel.onHomePressed !== undefined)
+    onActivated: PanelService.openedPanel.onHomePressed()
+  }
+
+  Shortcut {
+    sequence: "End"
+    enabled: root.isPanelOpen && (PanelService.openedPanel.onEndPressed !== undefined)
+    onActivated: PanelService.openedPanel.onEndPressed()
+  }
+
+  Shortcut {
+    sequence: "PgUp"
+    enabled: root.isPanelOpen && (PanelService.openedPanel.onPageUpPressed !== undefined)
+    onActivated: PanelService.openedPanel.onPageUpPressed()
+  }
+
+  Shortcut {
+    sequence: "PgDown"
+    enabled: root.isPanelOpen && (PanelService.openedPanel.onPageDownPressed !== undefined)
+    onActivated: PanelService.openedPanel.onPageDownPressed()
   }
 
   Shortcut {
     sequence: "Ctrl+J"
-    enabled: root.isPanelOpen
-    onActivated: {
-      if (PanelService.openedPanel && PanelService.openedPanel.onCtrlJPressed) {
-        PanelService.openedPanel.onCtrlJPressed();
-      }
-    }
+    enabled: root.isPanelOpen && (PanelService.openedPanel.onCtrlJPressed !== undefined)
+    onActivated: PanelService.openedPanel.onCtrlJPressed()
   }
 
   Shortcut {
     sequence: "Ctrl+K"
-    enabled: root.isPanelOpen
-    onActivated: {
-      if (PanelService.openedPanel && PanelService.openedPanel.onCtrlKPressed) {
-        PanelService.openedPanel.onCtrlKPressed();
-      }
-    }
+    enabled: root.isPanelOpen && (PanelService.openedPanel.onCtrlKPressed !== undefined)
+    onActivated: PanelService.openedPanel.onCtrlKPressed()
   }
 
   Shortcut {
     sequence: "Ctrl+N"
-    enabled: root.isPanelOpen
-    onActivated: {
-      if (PanelService.openedPanel && PanelService.openedPanel.onCtrlNPressed) {
-        PanelService.openedPanel.onCtrlNPressed();
-      }
-    }
+    enabled: root.isPanelOpen && (PanelService.openedPanel.onCtrlNPressed !== undefined)
+    onActivated: PanelService.openedPanel.onCtrlNPressed()
   }
 
   Shortcut {
     sequence: "Ctrl+P"
-    enabled: root.isPanelOpen
-    onActivated: {
-      if (PanelService.openedPanel && PanelService.openedPanel.onCtrlPPressed) {
-        PanelService.openedPanel.onCtrlPPressed();
-      }
-    }
+    enabled: root.isPanelOpen && (PanelService.openedPanel.onCtrlPPressed !== undefined)
+    onActivated: PanelService.openedPanel.onCtrlPPressed()
   }
 }

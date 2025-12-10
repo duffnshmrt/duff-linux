@@ -129,6 +129,10 @@ Singleton {
     "settings-system-monitor": "activity",
     "bluetooth": "bluetooth",
     "bt-device-generic": "bluetooth",
+    "bt-device-gamepad": "device-gamepad-2",
+    "bt-device-microphone": "microphone",
+    "bt-device-headset": "headset",
+    "bt-device-earbuds": "device-airpods",
     "bt-device-headphones": "headphones",
     "bt-device-mouse": "mouse-2",
     "bt-device-keyboard": "bluetooth",
@@ -168,7 +172,8 @@ Singleton {
     "filepicker-text": "file-text",
     "filepicker-eye": "eye",
     "filepicker-eye-off": "eye-off",
-    "filepicker-folder-current": "checks"
+    "filepicker-folder-current": "checks",
+    "plugin": "plug-connected"
   }
 
   // Fonts Codepoints - do not change!

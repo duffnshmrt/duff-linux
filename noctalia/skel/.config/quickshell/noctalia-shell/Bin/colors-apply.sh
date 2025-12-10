@@ -55,7 +55,7 @@ EOF
         echo "Created new config file with noctalia theme."
     else
         # Check if theme is already set to noctalia
-        if grep -q "include=~/.config/foot/themes/noctalia" "$CONFIG_FILE"; then
+        if grep -q "include.*noctalia" "$CONFIG_FILE"; then
             echo "Theme already set to noctalia, skipping modification."
         else
             # Remove any existing theme include line to prevent duplicates.
@@ -234,11 +234,17 @@ cava)
             THEME_MODIFIED=true
         fi
 
-        # Reload cava if it's running
+        # Reload cava if it's running, but only if it's not using stdin config
         if pgrep -f cava >/dev/null; then
-            echo "Reloading cava configuration..."
-            pkill -USR1 cava
-            echo "✅ Cava reloaded successfully"
+            # Check if Cava is running with -p /dev/stdin (managed by CavaService)
+            if pgrep -af cava | grep -q -- "-p.*stdin"; then
+                echo "Cava is managed by CavaService (stdin config), skipping reload signal."
+                echo "✅ Theme file updated. CavaService will use the theme on next restart."
+            else
+                echo "Reloading cava configuration..."
+                pkill -USR1 cava
+                echo "✅ Cava reloaded successfully"
+            fi
         else
             if [ "$THEME_MODIFIED" = true ]; then
                 echo "✅ Configuration updated. Start cava to see the changes."
