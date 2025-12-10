@@ -309,7 +309,7 @@ build_variant() {
 	dank)
 	    COMMON=yes
 	    DANK=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cliphist hyprland hyprland-qtutils hyprpaper matugen network-manager-applet nwg-look pavucontrol qt5-wayland qt6-multimedia qt6-wayland quickshell xwayland-satellite wayland-devel wayland-protocols wlsunset xdg-desktop-portal-hyprland xorg-server-xwayland"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cliphist hyprland hyprland-qtutils hyprpaper mate-polkit matugen nwg-look pavucontrol qt5-wayland qt6-multimedia qt6-wayland quickshell xwayland-satellite wayland-devel wayland-protocols wlsunset xdg-desktop-portal-hyprland xorg-server-xwayland"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
         ;;
 	dwm)
@@ -340,7 +340,7 @@ build_variant() {
 	    COMMON=yes
 	    WAY=yes
 	    FUZZEL=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cliphist hyprland hyprland-qtutils hyprlock hyprpaper hyprsunset hyprutils qt5-wayland qt6-wayland wayland-devel wayland-protocols xdg-desktop-portal-hyprland"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cliphist hyprland hyprland-qtutils hyprlock hyprpaper hyprsunset hyprutils mate-polkit qt5-wayland qt6-wayland wayland-devel wayland-protocols xdg-desktop-portal-hyprland"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
         ;;
 	i3wm)
@@ -390,7 +390,7 @@ build_variant() {
         ;;
 	noctalia)
 	    COMMON=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cliphist hyprland hyprland-qtutils hyprpaper matugen network-manager-applet nwg-look pavucontrol qt5-wayland qt6-multimedia qt6-wayland quickshell xwayland-satellite wayland-devel wayland-protocols wlsunset xdg-desktop-portal-hyprland xorg-server-xwayland"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cliphist hyprland hyprland-qtutils hyprpaper mate-polkit matugen noctalia-cli nwg-look pavucontrol qt5-wayland qt6-multimedia qt6-wayland quickshell xwayland-satellite wayland-devel wayland-protocols wlsunset xdg-desktop-portal-hyprland xorg-server-xwayland"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
         ;;
 	openbox)
