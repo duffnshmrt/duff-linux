@@ -16,6 +16,7 @@ function _set_pkg_aliases() {
 
 		alias srcbuild='./xbps-src pkg'
 		alias isobuild='sudo ./d77 -r /home/dani77/d77void-pkgs/hostdir/binpkgs/ -r /home/dani77/calamares/'
+		alias hyprbuild='sudo ./d77 -r /home/dani77/d77void-pkgs/hostdir/binpkgs/ -r /home/dani77/calamares/ -r https://raw.githubusercontent.com/Makrennel/hyprland-void/repository-x86_64-glibc'
 	fi
 }
 
