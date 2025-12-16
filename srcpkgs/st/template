@@ -20,6 +20,7 @@ homepage="https://suckless.org"
 #changelog=""
 distfiles="https://dl.suckless.org/st/st-0.9.3.tar.gz"
 checksum=9ed9feabcded713d4ded38c8cebf36a3b08f0042ef7934a0e2b2409da56e649b
+repository=d77
 
 pre_build() {
 	mkdir -p ${DESTDIR}/usr/share/terminfo

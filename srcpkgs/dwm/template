@@ -20,6 +20,7 @@ homepage="https://suckless.org"
 #changelog="https://github.com/dani-77/dwm/releases/tag/dwm-${version}"
 distfiles="https://dl.suckless.org/$pkgname/$pkgname-$version.tar.gz"
 checksum=7cfc2c6d9386c07c49e2c906f209c18ba3364ce0b4872eae39f56efdb7fc00a3
+repository=d77
 
 do_build() {
 	[ -e ${FILESDIR}/config.h ] && cp ${FILESDIR}/config.h config.h

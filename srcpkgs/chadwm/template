@@ -20,6 +20,7 @@ homepage="https://github.com/dani-77/chadwm"
 #changelog=""
 distfiles="https://github.com/dani-77/${pkgname}/archive/refs/tags/${version}.tar.gz"
 checksum=75ba0fcc2e0f2e0be58d0ec5f13491f2b6930a83e247f22c8ad3bd04bac18fcb
+repository=d77
 
 do_build() {
 	cp ${FILESDIR}/xbps Makefile

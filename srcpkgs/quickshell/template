@@ -18,3 +18,4 @@ homepage="https://quickshell.org"
 changelog="https://quickshell.org/changelog/"
 distfiles="https://git.outfoxxed.me/quickshell/quickshell/archive/v${version}.tar.gz"
 checksum=d815c5f99f4a0a28545ffaa90464420c773b7c0ab62f713d9d8735a8e7282ca7
+repository=d77
