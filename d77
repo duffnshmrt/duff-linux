@@ -463,10 +463,6 @@ EOF
         include_common
     fi
 
-    if [ "$DANK" = yes ]; then
-        include_dank
-    fi
-
     if [ "$DMENU" = yes ]; then
         include_dmenu
     fi
