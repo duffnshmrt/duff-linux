@@ -8,5 +8,3 @@ super + r
 	gmrun
 super + t
 	slock
-super + x
-	rofi -show power -modi power:rofi-power-menu
