@@ -60,7 +60,7 @@ conky.text = [[
 ${color green}Info:
 $color $USER at $nodename with d77Void $sysname
 ${color grey}${hr}
-${execpi 5 /home/dani77/.config/conky/bunsenweather.sh "2735943"}
+${execpi 5 echo Weather:}${execpi 5 ~/.config/conky/wttr.sh}
 ${color grey}Date & Time:$color $time
 ${color grey}Uptime:$color $uptime
 ${color grey}Frequency:$color $freq_g GHz
