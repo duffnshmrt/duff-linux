@@ -60,24 +60,24 @@ conky.text = [[
 ${color green}Info:
 $color $USER at $nodename with d77Void $sysname
 ${color grey}${hr}
-${execpi 5 /home/dani77/.config/conky/bunsenweather.sh "2735943"}
+${execpi 5 echo Weather:}${execpi 5 ~/.config/conky/wttr.sh}
 ${color grey}Date & Time:$color $time
 ${color grey}Uptime:$color $uptime
 ${color grey}Frequency:$color $freq_g GHz
 ${color grey}RAM:$color $mem/$memmax - $memperc% ${membar 4}
 ${color grey}Swap:$color $swap/$swapmax - $swapperc% ${swapbar 4}
 ${color grey}CPU:$color $cpu% ${cpubar 4}
-${color grey}Battery:$color ${battery BAT0} ${battery_bar BAT0}
-${color grey}Remaining:$color ${battery_time BAT0}
+${color grey}Battery:$color ${battery BAT1} ${battery_bar BAT1}
+${color grey}Remaining:$color ${battery_time BAT1}
 ${color grey}Processes:$color $processes  ${color grey}Running:$color $running_processes
 ${color grey}${hr}
 ${color green}File systems $color${hr}
 $color / ${fs_used /}/${fs_size /} ${fs_bar 6 /}
 
 ${color green}Networking $color${hr}
-${offset 15}${color grey}${font}ESSID  $color${wireless_essid wlp21s0}
-${offset 15}${color grey}${font}DL $color${downspeed wlp21s0} ${totaldown wlp21s0}  ${alignr}${color grey}UL $color${upspeed wlp21s0} ${totalup wlp21s0}
-${offset 15}${color}${downspeedgraph wlp21s0 32,120 0BF14A 0BF14A-t}${color}${upspeedgraph wlp21s0 32,120 F10E0B F10E0B-t}
+${offset 15}${color grey}${font}ESSID  $color${wireless_essid wlp2s0}
+${offset 15}${color grey}${font}DL $color${downspeed wlp2s0} ${totaldown wlp2s0}  ${alignr}${color grey}UL $color${upspeed wlp2s0} ${totalup wlp2s0}
+${offset 15}${color}${downspeedgraph wlp2s0 32,120 0BF14A 0BF14A-t}${color}${upspeedgraph wlp2s0 32,120 F10E0B F10E0B-t}
 ${color grey}${hr}
 ${color grey}Name              PID     CPU%   MEM%
 ${color lightgrey} ${top name 1} ${top pid 1} ${top cpu 1} ${top mem 1}

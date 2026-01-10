@@ -1,5 +1,5 @@
 Hello
-Thank you for trying d77void.
+Thank you for trying d77void Openbox edition.
 
 To run the installer just open a terminal and type:
 
@@ -12,13 +12,6 @@ To maintain the configuration of the live iso, during install, choose local inst
 
 During install, add your user to the storage group. That way udiskie will automount disks.
 
-# NEWS
-
-Now Calamares installer is available making the install process even simpler.
-
-I would like to thank Calamares team, Kevin Figueroa (Cereus Linux) and johna1 (F-Void Linux) for all the work done and guidance.
-
-I would like to express my gratitude and say a big thank you to Rúben Gomez (Youtube channel Ruben_&_Linux_:~) for all the encouragement.
 
 To install with Calamares:
 
@@ -30,11 +23,20 @@ calamares
 
 # 1st run:
 
+## d77-welcome
+
+Don't forget to run the d77-welcome script; it will help you in several things; on first run after install I suggest 
+the install of d77void repository files and I strongly advise you to remove calamares with the helper on d77-welcome.
+
 ## Conky
 
 To tweak conky, edit .conkyrc; 
 
-To get weather running on it, you will need to register for an API at openweathermap and link it in ~/.config/conky/bunsenweather.sh and change local to be able to have weather running on it with your city instead of mine.
+### Weather
+
+No longer needed to update weather api; I changed the method to receive and parse weather info.
+
+### Wifi
 
 Probably you will need to change the wifi card device name to display properly the info.
 Check wich device name this way:
@@ -51,7 +53,7 @@ sed -i 's|wlp21s0|w???|g' .conkyrc
 In case battery is not working properly, swap BAT0 to BAT1 this way; open a terminal and type:
 
 ```
-sed -i 's|BAT0|BAT1|' .conkyrc
+sed -i 's|BAT0|BAT1|g' .conkyrc
 ```
 
 # Keybinds
