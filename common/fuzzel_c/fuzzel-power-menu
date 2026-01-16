@@ -1,6 +1,6 @@
 #!/bin/env bash
 
-SELECTION=$(echo -e " Suspend\n Logout\n Reboot\n Shutdown" | fuzzel -d -p " " -w 15 -l 4)
+SELECTION=$(echo -e "󰒲 Suspend\n Logout\n Reboot\n Shutdown" | fuzzel -d -p " " -w 15 -l 4)
 
 reboot_confirm() {
 	SELECTION=$(echo -e "confirm reboot\ncancel reboot" | fuzzel -d -p " " -w 15 -l 2)
@@ -24,7 +24,7 @@ shutdown_confirm() {
 }
 
 case $SELECTION in
-	" Suspend")
+	"󰒲 Suspend")
 		loginctl suspend
 		;;
 	" Logout")
