@@ -17,13 +17,9 @@ During install, add your user to the storage group. That way udiskie will automo
 
 Among other changes:
 
--  updated to dwm 6.6
+-  updated to dwm 6.7
 
--  updated to st 0.9.3
-
--  updated to slock 1.6
-
--  added a scratchpad
+-  reload sxhkd keybind
 
 ## Keybinds
 
@@ -62,6 +58,8 @@ super + l -> slock
 super + m -> geary
 
 super + p -> scrot
+
+super + Escape -> reload sxhkd config
 
 ## Hacking
 
