@@ -25,36 +25,31 @@ During install, add your user to the storage group. That way udiskie will automo
 
 ## News
 
-## 1st run:
-
 After install, run the script d77-welcome:
 
 ```
 d77-welcome
 ```
 
-That way the hyprland repo will be added to /etc/xbps.d and you can add easily other things like steam, flatpak, etc.
+Uninstall Calamares or you might have some issues later.
 
-I strongly advise you to uninstall Calamares; it will prevent future errors.
 
 # Keybinds
 
-super + return -> terminal
+alt + return -> terminal
 
-super + q -> close window
+alt + q -> close focused window
 
-super + shift + q -> logout
+alt + space -> menu
 
-super + a -> apps menu
+super + m -> logout
 
-super + c -> control pannel
+alt + n -> apps menu
 
-super + f -> file manager
+alt + r -> gmrun
 
-super + t -> lock screen
+super + r -> reload config
 
-super + w -> web browser
-
-super + x -> powermenu
+alt + x -> powermenu
 
 Have fun!
