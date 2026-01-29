@@ -39,7 +39,6 @@ myConfig = def
     , ("M-x", spawn "power_menu")
     , ("M-C-p", unGrab *> spawn "scrot -s")
     , ("M-S-b"  , spawn "qutebrowser")
-    , ("M-c"  , spawn "better-control")
     , ("M-C-t"  , spawn "slock")
     , ("M-S-r", spawn "xmonad --recompile")
     , ("M-s", namedScratchpadAction myScratchPads "terminal")

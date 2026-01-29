@@ -130,7 +130,6 @@ keys = [
     Key([mod], "i", lazy.widget["keyboardlayout"].next_keyboard(), desc="Next keyboard layout."),
     Key([mod], "a", lazy.function(dynamic_menu)),
     Key([mod], "b", lazy.function(dynamic_wall), desc="Swap Wallpaper"),
-    Key([mod], "c", lazy.spawn("better-control"), desc="Control Panel"),
     Key([mod], "d", lazy.spawn("pcmanfm"), desc="Filemanager"),
     Key([mod], "m", lazy.spawn("geary"), desc="Web browser"),
     Key([mod], "n", lazy.function(dynamic_launcher)),

@@ -32,8 +32,6 @@ calamares
 
 super + return -> terminal
 
-super + c -> control pannel
-
 super + d -> wmenu
 
 super + p -> menu

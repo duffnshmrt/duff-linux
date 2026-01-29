@@ -2,8 +2,6 @@ alt + shift + Return
 	st
 alt + b
 	wswap-X
-alt + c
-	better-control
 alt + d
 	rofi -show drun
 alt + e

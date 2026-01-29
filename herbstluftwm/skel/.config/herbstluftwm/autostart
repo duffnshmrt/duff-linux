@@ -36,7 +36,6 @@ Mod=Mod1    # Use alt as the main modifier
 
 hc keybind $Mod-a spawn ~/.config/herbstluftwm/scratchpad.sh
 hc keybind $Mod-b spawn wswap-X
-hc keybind Mod4-c spawn better-control
 hc keybind $Mod-d spawn rofi -show drun
 hc keybind $Mod-e spawn mousepad
 hc keybind Mod4-f spawn pcmanfm

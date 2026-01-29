@@ -21,8 +21,6 @@ super + return -> terminal
 
 super + b -> swap wallpaper
 
-super + c -> control panel
-
 super + a -> menu (x11 and wayland differ this menu)
 
 super + f -> file manager

@@ -6,8 +6,6 @@ alt + x
 	power_menu
 super + b
 	wswap-X
-super + c
-	better-control
 super + d
 	rofi -show drun
 super + f

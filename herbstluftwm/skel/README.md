@@ -48,8 +48,6 @@ alt + x -> powermenu
 
 alt + z -> yakuake alike scratchpad
 
-super + c -> control pannel
-
 super + f -> pcmanfm
 
 super + j -> jgmenu

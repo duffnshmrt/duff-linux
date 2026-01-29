@@ -66,8 +66,6 @@ alt + shift + return -> terminal
 
 alt + b -> swap wallpaper
 
-alt + c -> control panel
-
 alt + d -> rofi
 
 alt + e -> editor

@@ -47,8 +47,6 @@ alt + w -> brave
 
 super + b -> swap wallpaper
 
-super + c -> control pannel
-
 super + d -> rofi
 
 super + f -> pcmanfm

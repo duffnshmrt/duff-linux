@@ -19,8 +19,6 @@ super + a -> menu
 
 super + b -> swap wallpaper
 
-super + c -> control pannel
-
 super + f -> filemanager
 
 super + m -> mail
