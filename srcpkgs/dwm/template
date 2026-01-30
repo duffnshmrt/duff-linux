@@ -1,7 +1,7 @@
 # Template file for 'dwm_icon'
 pkgname=dwm
 version=6.7
-revision=77
+revision=77_1
 #archs="i686 x86_64"
 #build_wrksrc=
 build_style="gnu-makefile"
