@@ -17,7 +17,9 @@ During install, add your user to the storage group. That way udiskie will automo
 
 Among other changes:
 
--  updated to dwm 6.7
+-  updated to dwm 6.8
+
+-  patched with vanitygaps
 
 -  reload sxhkd keybind
 
