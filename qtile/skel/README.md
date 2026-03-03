@@ -23,7 +23,7 @@ super + b -> swap wallpaper
 
 super + a -> menu (x11 and wayland differ this menu)
 
-super + f -> file manager
+super + d -> file manager
 
 super + w -> firefox
 
