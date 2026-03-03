@@ -25,7 +25,7 @@ super + a -> menu (x11 and wayland differ this menu)
 
 super + d -> file manager
 
-super + w -> firefox
+super + w -> browser
 
 super+ m -> mail
 
