@@ -396,7 +396,7 @@ build_variant() {
         ;;
 	noctalia)
 	    COMMON=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cliphist gpu-screen-recorder hyprland hyprland-guiutils hyprpaper intel-media-driver libva-intel-driver mate-polkit matugen noctalia-cli noctalia-shell nwg-look pavucontrol qt5-wayland qt6-multimedia qt6-wayland quickshell xwayland-satellite wayland-devel wayland-protocols wlsunset xdg-desktop-portal-hyprland xorg-server-xwayland"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cliphist gpu-screen-recorder hyprland hyprland-guiutils hyprpaper intel-media-driver libva-intel-driver mate-polkit matugen noctalia-cli noctalia-qs noctalia-shell nwg-look pavucontrol qt5-wayland qt6-multimedia qt6-wayland xwayland-satellite wayland-devel wayland-protocols wlsunset xdg-desktop-portal-hyprland xorg-server-xwayland"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
         ;;
 	openbox)
