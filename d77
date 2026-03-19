@@ -162,6 +162,8 @@ include_gnome() {
 	mkdir -p "$INCLUDEDIR"/usr/lib
 	mkdir -p "$INCLUDEDIR"/usr/share/applications
 	mkdir -p "$INCLUDEDIR"/usr/share/pixmaps
+	mkdir -p "$INCLUDEDIR"/usr/share/gnome-shell
+	mkdir -p "$INCLUDEDIR"/usr/share/glib-2.0
 	mkdir -p "$INCLUDEDIR"/usr/share/plymouth/themes
 	mkdir -p "$INCLUDEDIR"/usr/share/polkit-1/rules.d
 	mkdir -p "$INCLUDEDIR"/usr/share/void-artwork
@@ -169,6 +171,8 @@ include_gnome() {
 	cp -r ./common/calamares "$INCLUDEDIR"/etc/
 	cp -r ./common/d77 "$INCLUDEDIR"/usr/share/plymouth/themes/
 	cp -r ./common/d77-spinner "$INCLUDEDIR"/usr/share/plymouth/themes/
+	cp -r ./common/extensions "$INCLUDEDIR"/usr/share/gnome-shell/
+	cp -r ./common/schemas "$INCLUDEDIR"/usr/share/glib-2.0/
 	cp -r ./common/.bash_it "$INCLUDEDIR"/etc/skel/
 	cp -r $variant/skel "$INCLUDEDIR"/etc/
 	cp ./common/grub "$INCLUDEDIR"/etc/default/
