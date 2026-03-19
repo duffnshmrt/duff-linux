@@ -86,7 +86,7 @@
         (command: SwapTags, value: "", modifier: ["modkey"], key: "w"),
         (command: MoveWindowUp, value: "", modifier: ["modkey", "Shift"], key: "k"),
         (command: MoveWindowDown, value: "", modifier: ["modkey", "Shift"], key: "j"),
-        (command: MoveWindowTop, value: "", modifier: ["modkey"], key: "Return"),
+        (command: MoveWindowTop, value: "", modifier: ["modkey", "Shift"], key: "Return"),
         (command: FocusWindowUp, value: "", modifier: ["modkey"], key: "k"),
         (command: FocusWindowDown, value: "", modifier: ["modkey"], key: "j"),
         (command: NextLayout, value: "", modifier: ["modkey", "Control"], key: "k"),

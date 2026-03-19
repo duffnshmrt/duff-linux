@@ -405,10 +405,9 @@ build_variant() {
 	leftwm)
 	    COMMON=yes
 	    X11=yes
-	    POLY=yes
 	    DMENU=yes
 	    ROFI=yes
-            PKGS="$PKGS $XORG_PKGS $D77_CORE $CALAMARES leftwm leftwm-theme"
+            PKGS="$PKGS $XORG_PKGS $D77_CORE $CALAMARES eww leftwm leftwm-theme wmctrl"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
         ;;
 	lxqt)

@@ -19,7 +19,7 @@ if [ -x "$(command -v feh)" ]; then
     feh --bg-scale $WALLPAPER
 fi
 
-polybar &
+#polybar &
 xcompmgr -c -f -n &
 exec dunst &
 redshift-gtk -l 41.6:-8.62 &
@@ -31,4 +31,5 @@ udiskie -at &
 synclient TapButton1=1 &
 synclient TapButton2=3 &
 synclient TapButton3=2 &
-
+eww daemon &
+eww open bar &
