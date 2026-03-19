@@ -151,6 +151,44 @@ include_fuzzel() {
 	cp ./common/fuzzel_c/fuzzel-power-menu "$INCLUDEDIR"/usr/bin/
 }
 
+include_gnome() {
+	mkdir -p "$INCLUDEDIR"/boot/grub/themes
+	mkdir -p "$INCLUDEDIR"/etc
+	mkdir -p "$INCLUDEDIR"/etc/skel/.config
+	mkdir -p "$INCLUDEDIR"/etc/skel/.local/share
+	mkdir -p "$INCLUDEDIR"/etc/default
+	mkdir -p "$INCLUDEDIR"/etc/skel/.local/share
+	mkdir -p "$INCLUDEDIR"/usr/bin
+	mkdir -p "$INCLUDEDIR"/usr/lib
+	mkdir -p "$INCLUDEDIR"/usr/share/applications
+	mkdir -p "$INCLUDEDIR"/usr/share/pixmaps
+	mkdir -p "$INCLUDEDIR"/usr/share/plymouth/themes
+	mkdir -p "$INCLUDEDIR"/usr/share/polkit-1/rules.d
+	mkdir -p "$INCLUDEDIR"/usr/share/void-artwork
+	cp -r ./common/d77-grub-theme "$INCLUDEDIR"/boot/grub/themes/
+	cp -r ./common/calamares "$INCLUDEDIR"/etc/
+	cp -r ./common/d77 "$INCLUDEDIR"/usr/share/plymouth/themes/
+	cp -r ./common/d77-spinner "$INCLUDEDIR"/usr/share/plymouth/themes/
+	cp -r ./common/.bash_it "$INCLUDEDIR"/etc/skel/
+	cp -r $variant/skel "$INCLUDEDIR"/etc/
+	cp ./common/grub "$INCLUDEDIR"/etc/default/
+	cp ./common/.gtkrc-2.0 "$INCLUDEDIR"/etc/skel/
+	cp ./common/.bashrc "$INCLUDEDIR"/etc/skel/
+	cp ./common/.Xresources "$INCLUDEDIR"/etc/skel/
+	cp ./common/d77-welcome "$INCLUDEDIR"/usr/bin/
+	cp ./common/50-udisks.rules "$INCLUDEDIR"/usr/share/polkit-1/rules.d/
+	cp ./common/d77-welcome.desktop "$INCLUDEDIR"/usr/share/applications/
+	cp ./common/d77void.png "$INCLUDEDIR"/usr/share/pixmaps/
+	cp ./common/splash.png "$INCLUDEDIR"/usr/share/void-artwork/
+	cp -r ./common/gtksourceview-4 "$INCLUDEDIR"/etc/skel/.local/share/
+	cp -r ./common/config/* "$INCLUDEDIR"/etc/skel/.config/
+	cp -r ./common/themes "$INCLUDEDIR"/etc/skel/.local/share/
+	cp -r ./common/.icons "$INCLUDEDIR"/etc/skel/
+	cp -r ./common/Wallpaper "$INCLUDEDIR"/etc/skel/
+	cp -r ./common/lib-d77-welcome "$INCLUDEDIR"/usr/lib/
+	cp -r ./common/Wallpaper "$INCLUDEDIR"/usr/share/
+}
+
 include_lxqt() {
 	mkdir -p "$INCLUDEDIR"/usr/share/lxqt/wallpapers
 	mkdir -p "$INCLUDEDIR"/usr/share/lxqt/graphics
@@ -229,11 +267,12 @@ build_variant() {
             WANT_INSTALLER=yes
             TARGET_ARCH="$ARCH"
 	    D77_CORE="acpi apulse alsa-plugins-pulseaudio alsa-tools alsa-utils arc-theme bash-completion bc brave-bin brightnessctl ca-certificates cmus cups cups-browsed curl elogind ethtool fastfetch feh font-awesome font-awesome5 font-awesome6 font-awesome7 font-hack-ttf font-iosevka geary gettext git gmrun htop inxi kitty kvantum mousepad mpv nano NetworkManager nerd-fonts-symbols-ttf nwg-look octoxbps oranchelo-icon-theme papirus-icon-theme pcmanfm plymouth polkit power-profiles-daemon qt5ct qt6ct qt5-graphicaleffects ranger sddm smartmontools system-config-printer tlp tlp-rdw transmission-qt udiskie ufw uget unzip usbutils util-linux vim void-repo-multilib void-repo-multilib-nonfree void-repo-nonfree wget xdg-user-dirs xdg-user-dirs-gtk xdg-utils xf86-input-synaptics xarchiver xcalc xinit xorg xorg-server xpdf xterm yt-dlp zathura zathura-pdf-poppler"
-	    D77_GNOME="acpi apulse alsa-plugins-pulseaudio alsa-tools alsa-utils arc-theme bash-completion bc brave-bin brightnessctl ca-certificates cmus cups cups-browsed curl elogind ethtool fastfetch feh font-awesome font-awesome5 font-awesome6 font-awesome7 font-hack-ttf font-iosevka geary gettext git gmrun htop inxi kvantum mousepad mpv nano NetworkManager nerd-fonts-symbols-ttf nwg-look octoxbps oranchelo-icon-theme papirus-icon-theme pcmanfm plymouth polkit power-profiles-daemon qt5ct qt6ct qt5-graphicaleffects ranger smartmontools system-config-printer tlp tlp-rdw transmission-qt udiskie ufw uget unzip usbutils util-linux vim void-repo-multilib void-repo-multilib-nonfree void-repo-nonfree wget xdg-user-dirs xdg-user-dirs-gtk xdg-utils xf86-input-synaptics xarchiver xcalc xinit xorg xorg-server xpdf xterm yt-dlp zathura zathura-pdf-poppler"
+	    D77_GNOME="acpi apulse alsa-plugins-pulseaudio alsa-tools alsa-utils arc-theme bash-completion bc brave-bin brightnessctl ca-certificates cmus cups cups-browsed curl elogind ethtool fastfetch feh font-awesome font-awesome5 font-awesome6 font-awesome7 font-hack-ttf font-iosevka geary gettext git htop inxi kvantum nano NetworkManager nerd-fonts-symbols-ttf octoxbps oranchelo-icon-theme papirus-icon-theme plymouth polkit power-profiles-daemon qt5ct qt6ct qt5-graphicaleffects ranger smartmontools tlp tlp-rdw transmission-qt udiskie ufw uget unzip usbutils util-linux vim void-repo-multilib void-repo-multilib-nonfree void-repo-nonfree wget xdg-user-dirs xdg-user-dirs-gtk xdg-utils xf86-input-synaptics xarchiver xinit xorg xorg-server xpdf yt-dlp zathura zathura-pdf-poppler"
 	    D77_WAYFIRE="acpi apulse alsa-plugins-pulseaudio alsa-tools alsa-utils arc-theme bash-completion bc brave-bin brightnessctl ca-certificates cmus cups cups-browsed curl elogind ethtool fastfetch feh font-awesome font-awesome5 font-awesome6 font-hack-ttf geary gettext git gmrun htop inxi kitty kvantum mousepad mpv nano NetworkManager network-manager-applet nerd-fonts-symbols-ttf nwg-look octoxbps oranchelo-icon-theme papirus-icon-theme pcmanfm plymouth polkit power-profiles-daemon qt5ct qt6ct qt5-graphicaleffects ranger sddm smartmontools system-config-printer tlp tlp-rdw transmission-gtk udiskie ufw uget unzip usbutils util-linux vim void-repo-multilib void-repo-multilib-nonfree void-repo-nonfree wget xdg-user-dirs xdg-user-dirs-gtk xdg-utils xf86-input-synaptics xarchiver xcalc xinit xorg xorg-server xpdf xterm yt-dlp zathura zathura-pdf-poppler"
 	    D77_EXTRA="abook automake calcurse cargo epson-inkjet-printer-escpr gcc isync make ncspot nextcloud-client neomutt pass pcsc-ccid pcsc-tools pcsclite python3-pip rust"
 	    CALAMARES="calamares grub rsync"
 	    COMMON=
+	    GNOME=
 	    X11=
 	    WAY=
 	    NIRI=
@@ -430,13 +469,9 @@ build_variant() {
             PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES grim ImageMagick qt5-wayland qt6-wayland sway swaybg swayidle swayimg swaylock wmenu"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
         ;;
-	super)
-	    COMMON=yes
-	    WAY=yes
-	    X11=yes
-	    DMENU=yes
-	    ROFI=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_GNOME $CALAMARES dwm extension-manager gdm gnome gnome-shell-extensions grim ImageMagick qt5-wayland qt6-wayland slstatus sxhkd"
+	gnome)
+	    GNOME=yes
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_GNOME $CALAMARES extension-manager gdm gnome gnome-keyring gnome-shell-extensions qt5-wayland qt6-wayland xdg-desktop-portal-gnome"
             SERVICES="$SERVICES dbus elogind gdm NetworkManager polkitd power-profiles-daemon"
         ;;
 	wayfire)
@@ -483,6 +518,10 @@ EOF
 
     if [ "$FUZZEL" = yes ]; then
         include_fuzzel
+    fi
+
+    if [ "$GNOME" = yes ]; then
+        include_gnome
     fi
 
     if [ "$ROFI" = yes ]; then
