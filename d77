@@ -339,8 +339,7 @@ build_variant() {
         ;;
 	cosmic)
 	    COMMON=yes
-	    X11=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cliphist cosmic-desktop ImageMagick"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_GNOME $CALAMARES cliphist cosmic-desktop ImageMagick"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
         ;;
 	dank)
@@ -368,6 +367,11 @@ build_variant() {
 	    ROFI=yes
             PKGS="$PKGS $XORG_PKGS $D77_CORE $CALAMARES fluxbox"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
+        ;;
+	gnome)
+	    GNOME=yes
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_GNOME $CALAMARES extension-manager gdm gnome gnome-keyring gnome-shell-extensions qt5-wayland qt6-wayland xdg-desktop-portal-gnome"
+            SERVICES="$SERVICES dbus elogind gdm NetworkManager polkitd power-profiles-daemon"
         ;;
 	herbstluftwm)
 	    COMMON=yes
@@ -470,11 +474,6 @@ build_variant() {
 	    FUZZEL=yes
             PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES grim ImageMagick qt5-wayland qt6-wayland sway swaybg swayidle swayimg swaylock wmenu"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
-        ;;
-	gnome)
-	    GNOME=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_GNOME $CALAMARES extension-manager gdm gnome gnome-keyring gnome-shell-extensions qt5-wayland qt6-wayland xdg-desktop-portal-gnome"
-            SERVICES="$SERVICES dbus elogind gdm NetworkManager polkitd power-profiles-daemon"
         ;;
 	wayfire)
 	    COMMON=yes
