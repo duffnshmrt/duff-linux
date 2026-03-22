@@ -1,0 +1,22 @@
+[General]
+default-transport=1766181303
+
+[Transport 1364492218]
+auth=true
+encryption=TLS
+host=posteo.de
+id=1364492218
+name=SMTP (daniazevedo77@posteo.net)
+port=587
+storepass=true
+user=daniazevedo77@posteo.net
+
+[Transport 1766181303]
+auth=true
+encryption=TLS
+host=posteo.de
+id=1766181303
+name=SMTP (daniazevedo77@posteo.net)
+port=587
+storepass=true
+user=daniazevedo77@posteo.net
