@@ -387,7 +387,7 @@ build_variant() {
         ;;
 	cosmic)
 	    COMMON=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_GNOME $CALAMARES cliphist cosmic-desktop-full gnome-keyring qt5-wayland qt6-wayland sddm 	xarchiver xdg-desktop-portal-cosmic"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_GNOME $CALAMARES cliphist cosmic-desktop-full gnome-keyring qt5-graphicaleffects qt5-wayland qt6-wayland sddm 	xarchiver xdg-desktop-portal-cosmic"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
         ;;
 	dank)
@@ -502,7 +502,7 @@ build_variant() {
         ;;        
 	plasma)
 	    PLASMA=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_GNOME $CALAMARES ark kde5 kde5-baseapps kmail librewolf-bin sddm yakuake"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_GNOME $CALAMARES ark kde5 kde5-baseapps kmail librewolf-bin qt5-graphicaleffects sddm yakuake"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
         ;;
 	qtile)
