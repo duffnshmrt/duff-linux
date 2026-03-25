@@ -10,11 +10,11 @@ window#bar {
 }
 
 .workspaces {
-  padding-left: 8px;
+  padding-left: 15px;
 }
 
 .ws-btn {
-  padding: 2px 5px;
+  padding: 0px 2px 5px 0px;
   border-radius: 6px;
   margin-right: 3px;
   background: #111827;
@@ -45,13 +45,8 @@ window#bar {
 }
 
 .title {
-  padding: 0 8px;
+  padding: 0 240px;
 }
-
-.net-metric {
-  min-width: 180px;
-}
-
 
 .right {
   padding-right: 15px;

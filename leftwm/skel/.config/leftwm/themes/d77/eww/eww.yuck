@@ -10,7 +10,9 @@
     (button :class "ws-btn ws-empty" :onclick "wmctrl -s 0" "1")
     (button :class "ws-btn ws-empty" :onclick "wmctrl -s 1" "2")
     (button :class "ws-btn ws-empty" :onclick "wmctrl -s 2" "3")
-    (button :class "ws-btn ws-empty" :onclick "wmctrl -s 3" "4")))
+    (button :class "ws-btn ws-empty" :onclick "wmctrl -s 3" "4")
+    (button :class "ws-btn ws-empty" :onclick "wmctrl -s 4" "5")
+    (button :class "ws-btn ws-empty" :onclick "wmctrl -s 5" "6")))
 
 (defwidget cpu-widget []
   (box :class "metric"
@@ -31,7 +33,7 @@
   "sh -c '~/.config/leftwm/themes/d77/eww/scripts/net.sh'")
 
 (defwidget net-widget []
-  (box :class "metric net-metric"
+  (box :class "metric"
     (label :text "󰤨")
     (label :text net)))
 
