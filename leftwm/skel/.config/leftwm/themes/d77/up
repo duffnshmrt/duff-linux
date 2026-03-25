@@ -1,5 +1,6 @@
 #!/bin/bash
 export SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+export EWW_DIR="$SCRIPTPATH/eww"
 
 # Down the last running theme
 if [ -f "/tmp/leftwm-theme-down" ]; then
@@ -27,5 +28,9 @@ udiskie -a &
 synclient TapButton1=1 &
 synclient TapButton2=3 &
 synclient TapButton3=2 &
-eww daemon &
-eww open bar &
+
+pkill -9 -x eww 2>/dev/null || true
+sleep 0.2
+cd "$EWW_DIR" &
+eww --config "$EWW_DIR" daemon &
+eww --config "$EWW_DIR" open bar &
