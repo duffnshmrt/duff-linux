@@ -1,5 +1,5 @@
 Hello
-Thank you for trying d77void. This ISO qith Qtile is hybrid (X11/Wayland).
+Thank you for trying d77void. This ISO with Qtile is hybrid (X11/Wayland).
 
 To run the installer just open a terminal and type:
 
