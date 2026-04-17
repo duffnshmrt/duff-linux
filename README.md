@@ -1,14 +1,6 @@
-# d77void - iso creator for my respin with WM
+# Duff Linux 🍺 (WIP)
 
-## Usage
+> [!NOTE]
+> This project would not be possible without the use of d77void. Please go check it out here: https://github.com/dani-77/d77void
 
-Clone repo
-
-
-```
-git clone https://github.com/dani-77/d77void
-```
-
-Read carefully the INSTALL.md file to know how to use it.
-
-Happy hacking.
+A personal/heavily opinionated distro based off dani-77's d77void Linux distribution. Please note this is still heavily work-in-progress.
