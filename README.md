@@ -21,7 +21,7 @@ cd void-packages
 ./xbps-src pkg calamares
 ```
 
-3. Assuming everything went well, step three is to create the ISO 🎉. Using KDE as an example:
+3. Assuming everything went well, step three is to create the ISO 🎉. Make sure you are in this repo's directory. Then, using KDE as an example:
 
 ```
 sudo ./d77 -r /home/$USER/void-packages/hostdir/binpkgs/ -b kde -- -T d77void
