@@ -7,6 +7,8 @@
 
 A personal/opinionated distro based off dani-77's d77void Linux distribution, focused on KDE Plasma with BTRFS. Please note this is still heavily work-in-progress.
 
+<img src="https://github.com/duffnshmrt/duff-linux/blob/main/duff-linux.png?raw=true" width="300">
+
 # ISO Generation Guide
 
 1. The first step is to clone this repo, Void's official packages repo, and then finally to build binary-bootstrap. This sets up the "masterdir," which is like a mini-Void system inside a folder where your building happens.
