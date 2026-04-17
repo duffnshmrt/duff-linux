@@ -205,6 +205,7 @@ build_variant() {
             GRUB_PKGS="grub-i386-efi grub-x86_64-efi"
             GFX_PKGS="xorg-video-drivers"
             GFX_WL_PKGS="mesa-dri"
+			KERNEL_PKG="linux7.0"
             WANT_INSTALLER=yes
             TARGET_ARCH="$ARCH"
 	    D77_CORE="acpi apulse alsa-plugins-pulseaudio alsa-tools alsa-utils arc-theme bash-completion bc brightnessctl ca-certificates cmus cups cups-browsed curl elogind ethtool fastfetch feh font-awesome font-awesome5 font-awesome6 font-hack-ttf font-iosevka geary gettext git gmrun htop inxi kvantum mousepad mpv nano NetworkManager nerd-fonts-symbols-ttf nwg-look octoxbps papirus-icon-theme pcmanfm plymouth polkit power-profiles-daemon qt5ct qt6ct qt5-graphicaleffects ranger sddm smartmontools system-config-printer tlp tlp-rdw transmission-qt udiskie ufw uget unzip usbutils util-linux vim void-repo-multilib void-repo-multilib-nonfree void-repo-nonfree wget xdg-user-dirs xdg-user-dirs-gtk xdg-utils xf86-input-synaptics xarchiver xcalc xinit xorg xorg-server xpdf yt-dlp zathura zathura-pdf-poppler"
@@ -234,7 +235,7 @@ build_variant() {
     esac
 
     A11Y_PKGS="espeakup void-live-audio"
-    PKGS="dialog cryptsetup lvm2 mdadm void-docs-browse xtools-minimal xmirror chrony tmux $A11Y_PKGS $GRUB_PKGS"
+    PKGS="linux7.0-headers dialog cryptsetup lvm2 mdadm void-docs-browse xtools-minimal xmirror chrony tmux $A11Y_PKGS $GRUB_PKGS"
     FONTS="font-misc-misc terminus-font dejavu-fonts-ttf"
     WAYLAND_PKGS="$GFX_WL_PKGS $FONTS"
     XORG_PKGS="$GFX_PKGS $FONTS xorg-minimal xorg-input-drivers setxkbmap xauth"
