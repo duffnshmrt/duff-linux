@@ -6,7 +6,7 @@ set -eu
 
 PROGNAME=$(basename "$0")
 ARCH=$(uname -m)
-IMAGES="niri plasma"
+IMAGES="plasma"
 TRIPLET=
 REPO=
 DATE=$(date -u +%Y%m%d)
@@ -22,7 +22,7 @@ usage() {
 
 	OPTIONS
 	 -a <arch>     Set architecture (or platform) in the image. Asahi is untested.
-	 -b <variant>  Use "noctalia" for the niri variant.
+	 -b <variant>  Only "plasma" is supported here. (WIP)
                May be specified multiple times to build multiple variants.
 	 -d <date>     Override the datestamp on the generated image (YYYYMMDD format)
 	 -t <arch-date-variant>
@@ -132,14 +132,6 @@ include_common() {
 	cp -r ./common/Wallpaper "$INCLUDEDIR"/usr/share/
 }
 
-include_niri() {
-	mkdir -p "$INCLUDEDIR"/usr/bin
-	cp ./common/dconf_niri "$INCLUDEDIR"/usr/bin/
-	cp ./common/sww "$INCLUDEDIR"/usr/bin/
-	cp ./common/niri_1st "$INCLUDEDIR"/usr/bin/
-	cp ./common/screenlock "$INCLUDEDIR"/usr/bin/
-} 
-
 include_plasma() {
     # 1. Create essential directory structure [cite: 13]
     mkdir -p "$INCLUDEDIR"/etc/skel/.config
@@ -189,7 +181,6 @@ build_variant() {
 	    COMMON=
 	    PLASMA=
 	    X11=
-	    NIRI=
 	    ;;
         aarch64*)
             GRUB_PKGS="grub-arm64-efi"
@@ -217,18 +208,7 @@ build_variant() {
     case $variant in
         base)
             SERVICES="$SERVICES dhcpcd wpa_supplicant acpid"
-        ;;
-	niri)
-	    COMMON=yes
-	    NIRI=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES gnome-keyring grim ImageMagick kitty niri qt5-wayland qt6-wayland swaybg swayidle swayimg swaylock swww xdg-desktop-portal-gnome xdg-desktop-portal-gtk"
-            SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
-        ;;
-	niri-noctalia)
-	    COMMON=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cliphist gnome-keyring grim ImageMagick kitty mate-polkit matugen niri noctalia-cli noctalia-qs noctalia-shell pavucontrol qt5-wayland qt6-multimedia qt6-wayland swaybg swayidle swayimg SwayNotificationCenter upower wayland-devel wayland-protocols wlsunset xdg-desktop-portal-gnome xdg-desktop-portal-gtk xorg-server-xwayland xwayland-satellite"
-            SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
-        ;;      
+        ;;     
 	plasma)
 	    PLASMA=yes
             PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES ark kde-plasma kde-baseapps sddm"
@@ -242,10 +222,6 @@ build_variant() {
 
     if [ "$COMMON" = yes ]; then
         include_common
-    fi
-
-    if [ "$NIRI" = yes ]; then
-        include_niri
     fi
 
     if [ "$PLASMA" = yes ]; then
