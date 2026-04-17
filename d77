@@ -89,47 +89,12 @@ setup_pipewire() {
 }
 
 include_common() {
-	mkdir -p "$INCLUDEDIR"/boot/grub/themes
 	mkdir -p "$INCLUDEDIR"/etc
-	mkdir -p "$INCLUDEDIR"/etc/skel/.config
-	mkdir -p "$INCLUDEDIR"/etc/skel/.local/share
-	mkdir -p "$INCLUDEDIR"/etc/default
-	mkdir -p "$INCLUDEDIR"/etc/skel/.local/share
-	mkdir -p "$INCLUDEDIR"/usr/bin
-	mkdir -p "$INCLUDEDIR"/usr/lib
-	mkdir -p "$INCLUDEDIR"/usr/share/applications
-	mkdir -p "$INCLUDEDIR"/usr/share/pixmaps
-	mkdir -p "$INCLUDEDIR"/usr/share/plymouth/themes
 	mkdir -p "$INCLUDEDIR"/usr/share/polkit-1/rules.d
-	mkdir -p "$INCLUDEDIR"/usr/share/void-artwork
-	mkdir -p "$INCLUDEDIR"/usr/share/sddm/faces
-	mkdir -p "$INCLUDEDIR"/usr/share/sddm/themes
-	cp -r ./common/d77-grub-theme "$INCLUDEDIR"/boot/grub/themes/
 	cp -r ./common/calamares "$INCLUDEDIR"/etc/
-	cp -r ./common/d77 "$INCLUDEDIR"/usr/share/plymouth/themes/
-	cp -r ./common/d77-spinner "$INCLUDEDIR"/usr/share/plymouth/themes/
-	cp -r ./common/.bash_it "$INCLUDEDIR"/etc/skel/
 	cp -r $variant/skel "$INCLUDEDIR"/etc/
 	cp ./common/asound.conf "$INCLUDEDIR"/etc/
-	cp ./common/sddm.conf "$INCLUDEDIR"/etc/
-	cp ./common/grub "$INCLUDEDIR"/etc/default/
-	cp ./common/.gtkrc-2.0 "$INCLUDEDIR"/etc/skel/
-	cp ./common/.bashrc "$INCLUDEDIR"/etc/skel/
-	cp ./common/.Xresources "$INCLUDEDIR"/etc/skel/
-	cp ./common/d77-welcome "$INCLUDEDIR"/usr/bin/
 	cp ./common/50-udisks.rules "$INCLUDEDIR"/usr/share/polkit-1/rules.d/
-	cp ./common/d77-welcome.desktop "$INCLUDEDIR"/usr/share/applications/
-	cp ./common/d77void.png "$INCLUDEDIR"/usr/share/pixmaps/
-	cp ./common/splash.png "$INCLUDEDIR"/usr/share/void-artwork/
-	cp ./common/anon.face.icon "$INCLUDEDIR"/usr/share/sddm/faces/
-	cp -r ./common/gtksourceview-4 "$INCLUDEDIR"/etc/skel/.local/share/
-	cp -r ./common/config/* "$INCLUDEDIR"/etc/skel/.config/
-	cp -r ./common/themes "$INCLUDEDIR"/etc/skel/.local/share/
-	cp -r ./common/.icons "$INCLUDEDIR"/etc/skel/
-	cp -r ./common/Wallpaper "$INCLUDEDIR"/etc/skel/
-	cp -r ./common/lib-d77-welcome "$INCLUDEDIR"/usr/lib/
-	cp -r ./common/slice "$INCLUDEDIR"/usr/share/sddm/themes/
-	cp -r ./common/Wallpaper "$INCLUDEDIR"/usr/share/
 }
 
 include_plasma() {
@@ -212,7 +177,7 @@ build_variant() {
 	plasma)
 	    PLASMA=yes
             PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES ark kde-plasma kde-baseapps sddm"
-            SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon"
+            SERVICES="$SERVICES dbus sddm NetworkManager polkitd power-profiles-daemon"
         ;;
         *)
             >&2 echo "Unknown variant $variant"
@@ -245,6 +210,7 @@ build_variant() {
     fi
 
     ./mklive.sh -a "$TARGET_ARCH" -o "$IMG" -p "$PKGS" -S "$SERVICES" -I "$INCLUDEDIR" \
+		-T "duff-linux" \
         ${KERNEL_PKG:+-v $KERNEL_PKG} ${REPO} "$@"
 
 	cleanup
