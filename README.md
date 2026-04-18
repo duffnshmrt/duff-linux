@@ -9,7 +9,7 @@ A personal/opinionated distro based off dani-77's d77void Linux distribution, wi
 - KDE Plasma as the desktop environment, uses latest version available
 - Linux kernel 7.0.0_1 instead of the default older version
 - Live environment with Calamares installer
-- BTRFS (snapper support WIP)
+- BTRFS with automatic pre-transaction snapshots (system backups)
 - OctoXBPS as a graphical application to manage native packages
 - OctoXBPS Notifier to tell you when updates are available
 - Flatpak support with Discover out of the box
