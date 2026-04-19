@@ -179,6 +179,8 @@ if ! /usr/bin/btrfs subvolume snapshot "/run/duff-mnt/$SNAP_PATH" /run/duff-mnt/
     /usr/bin/umount /run/duff-mnt; exit 1
 fi
 
+rm -f /run/duff-mnt/@home/*/.cache/ksycoca* 2>/dev/null || true
+
 /usr/bin/umount /run/duff-mnt
 echo "$(date): restore complete, rebooting" >> "$LOG"
 sleep 2
