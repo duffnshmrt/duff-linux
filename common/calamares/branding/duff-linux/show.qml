@@ -27,94 +27,59 @@ Presentation
         repeat: true
         onTriggered: nextSlide()
     }
-	
-    Slide {
 
-        Image {
-            id: squid
-            source: "1squid.png"
-            width: 200; height: 200
-            fillMode: Image.PreserveAspectFit
-            anchors.centerIn: parent
-        }
+    Slide {
         Text {
-            anchors.horizontalCenter: squid.horizontalCenter
-            anchors.top: background.bottom
-            text: "This is a simple Calamares installer for d77void.<br/>"+
-                  "Void distribution don't have it by default and because of some complaints about the default install method, this was created."
+            anchors.centerIn: parent
+            text: "🍻<br/><br/><b>Welcome to Duff Linux</b><br/><br/>" +
+                  "A personal, opinionated distro built on Void Linux.<br/>" +
+                  "KDE Plasma · Btrfs Snapshots · Rolling Release"
             wrapMode: Text.WordWrap
-            width: presentation.width
-            horizontalAlignment: Text.Center
+            width: presentation.width * 0.8
+            horizontalAlignment: Text.AlignHCenter
+            font.pointSize: 14
         }
     }
 
     Slide {
-
-        Image {
-            id: background
-            source: "2background1.png"
-            width: 640 
-	    height: 360
-            fillMode: Image.PreserveAspectFit
-            anchors.centerIn: parent
-        }
         Text {
-            anchors.horizontalCenter: background.horizontalCenter
-            anchors.top: background.bottom
-            text: "One of the few original backgrounds created for d77."
+            anchors.centerIn: parent
+            text: "🖥️<br/><br/><b>KDE Plasma Desktop</b><br/><br/>" +
+                  "A full-featured, modern desktop environment.<br/>" +
+                  "Breeze Dark theme out of the box, with Wayland support."
             wrapMode: Text.WordWrap
-            width: presentation.width
-            horizontalAlignment: Text.Center
+            width: presentation.width * 0.8
+            horizontalAlignment: Text.AlignHCenter
+            font.pointSize: 14
         }
     }
 
     Slide {
-
-        Image {
-            id: octo
-            source: "4octo.png"
-            width: 640
-	    height: 360
-            fillMode: Image.PreserveAspectFit
-            anchors.centerIn: parent
-        }
-
         Text {
-            anchors.horizontalCenter: desktop.horizontalCenter
-            anchors.top: background.bottom
-            text: "   "
+            anchors.centerIn: parent
+            text: "📸<br/><br/><b>Automatic Btrfs Snapshots</b><br/><br/>" +
+                  "Every package transaction is backed up automatically.<br/>" +
+                  "Boot into any snapshot from the GRUB menu to restore your system."
             wrapMode: Text.WordWrap
-            width: presentation.width
-            horizontalAlignment: Text.Center
+            width: presentation.width * 0.8
+            horizontalAlignment: Text.AlignHCenter
+            font.pointSize: 14
         }
     }
 
     Slide {
-
-        Image {
-            id: desktop
-            source: "3desktop.png"
-            width: 640
-	    height: 360
-            fillMode: Image.PreserveAspectFit
+        Text {
             anchors.centerIn: parent
+            text: "📦<br/><br/><b>Package Management</b><br/><br/>" +
+                  "Native packages via OctoXBPS with update notifications.<br/>" +
+                  "Flatpak support with Flathub pre-configured via Discover."
+            wrapMode: Text.WordWrap
+            width: presentation.width * 0.8
+            horizontalAlignment: Text.AlignHCenter
+            font.pointSize: 14
         }
-       Text {
-           anchors.horizontalCenter: desktop.horizontalCenter
-           anchors.top: background.bottom
-           text: "   "
-           wrapMode: Text.WordWrap
-           width: presentation.width
-           horizontalAlignment: Text.Center
-       }
     }
-          
-    // When this slideshow is loaded as a V1 slideshow, only
-    // activatedInCalamares is set, which starts the timer (see above).
-    //
-    // In V2, also the onActivate() and onLeave() methods are called.
-    // These example functions log a message (and re-start the slides
-    // from the first).
+
     function onActivate() {
         console.log("QML Component (default slideshow) activated");
         presentation.currentSlide = 0;

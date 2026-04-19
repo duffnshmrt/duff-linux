@@ -27,8 +27,8 @@ strings:
     donateUrl:           https://kde.org/community/donations/index.php
 
 images:
-    productIcon:         "1squid.png"
-    productLogo:         "1squid.png"
+    productIcon:         "icon.png"
+    productLogo:         "icon.png"
     productWelcome:      "languages.png"
 
 style:
