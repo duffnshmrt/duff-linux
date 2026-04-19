@@ -10,6 +10,9 @@ IMAGES="plasma"
 TRIPLET=
 REPO=
 DATE=$(date -u +%Y%m%d)
+BUILD_LOG="$(pwd)/d77-build.log"
+WORKDIR_OWNER_UID=$(stat -c '%u' .)
+WORKDIR_OWNER_GID=$(stat -c '%g' .)
 
 usage() {
 	cat <<-EOH
@@ -51,10 +54,42 @@ done
 shift $((OPTIND - 1))
 
 INCLUDEDIR=$(mktemp -d)
+SHIMDIR=$(mktemp -d)
 trap "cleanup" INT TERM
 
 cleanup() {
     rm -rf "$INCLUDEDIR"
+    rm -rf "$SHIMDIR"
+}
+
+restore_ownership() {
+    for path in "$@"; do
+        [ -e "$path" ] || continue
+        chown "$WORKDIR_OWNER_UID:$WORKDIR_OWNER_GID" "$path" 2>/dev/null || true
+    done
+}
+
+init_logging() {
+    : > "$BUILD_LOG"
+    exec > >(tee "$BUILD_LOG") 2>&1
+    restore_ownership "$BUILD_LOG"
+    printf 'Build log: %s\n' "$BUILD_LOG"
+    printf 'Build started: %s\n' "$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+}
+
+setup_build_shims() {
+    cat <<'EOF' > "$SHIMDIR/grub-mkconfig"
+#!/bin/sh
+printf 'd77: skipped grub-mkconfig during ISO build\n' >&2
+exit 0
+EOF
+    chmod 755 "$SHIMDIR/grub-mkconfig"
+
+    cat <<'EOF' > "$SHIMDIR/update-grub"
+#!/bin/sh
+exec grub-mkconfig "$@"
+EOF
+    chmod 755 "$SHIMDIR/update-grub"
 }
 
 include_installer() {
@@ -107,13 +142,27 @@ include_plasma() {
     mkdir -p "$INCLUDEDIR"/etc/xbps.d/hooks
 
 # Create a pre-transaction hook for snapshots
-    cat <<EOF > "$INCLUDEDIR"/etc/xbps.d/hooks/pre-install-snapshot.sh
+    cat <<'EOF' > "$INCLUDEDIR"/etc/xbps.d/hooks/pre-install-snapshot.sh
 #!/bin/sh
-if command -v snapper >/dev/null; then
-    snapper -c root create --description "Before XBPS transaction" --cleanup-algorithm number
-    # Manually update GRUB since the daemon is missing
-    grub-mkconfig -o /boot/grub/grub.cfg
+if ! command -v snapper >/dev/null || ! command -v findmnt >/dev/null; then
+    exit 0
 fi
+
+ROOT_FSTYPE=$(findmnt -n -o FSTYPE / 2>/dev/null)
+ROOT_SUBVOL=$(findmnt -n -o OPTIONS / 2>/dev/null | tr ',' '\n' | sed -n 's/^subvol=//p' | head -n 1)
+
+case "$ROOT_FSTYPE:$ROOT_SUBVOL" in
+    btrfs:/@|btrfs:@) ;;
+    *)
+        exit 0
+        ;;
+esac
+
+[ -d /.snapshots ] || exit 0
+
+snapper -c root create --description "Before XBPS transaction" --cleanup-algorithm number
+# Manually update GRUB since the daemon is missing
+grub-mkconfig -o /boot/grub/grub.cfg
 EOF
     chmod 755 "$INCLUDEDIR"/etc/xbps.d/hooks/pre-install-snapshot.sh
 
@@ -397,7 +446,7 @@ build_variant() {
         ;;     
 	plasma)
 	    PLASMA=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES snapper cronie grub-btrfs inotify-tools ark kde-plasma kde-baseapps sddm-kcm sddm discover flatpak xdg-desktop-portal-kde"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cronie ark kde-plasma kde-baseapps sddm-kcm sddm discover flatpak xdg-desktop-portal-kde"
             SERVICES="$SERVICES dbus sddm NetworkManager polkitd power-profiles-daemon cronie zramen"
         ;;
         *)
@@ -430,10 +479,11 @@ build_variant() {
         setup_pipewire
     fi
 
-    ./build/mklive.sh -a "$TARGET_ARCH" -o "$IMG" -p "$PKGS" -S "$SERVICES" -I "$INCLUDEDIR" \
-		-T "duff-linux" \
+    PATH="$SHIMDIR:$PATH" ./build/mklive.sh -a "$TARGET_ARCH" -o "$IMG" -p "$PKGS" -S "$SERVICES" -I "$INCLUDEDIR" \
+        -T "duff-linux" \
         ${KERNEL_PKG:+-v $KERNEL_PKG} ${REPO} "$@"
 
+	restore_ownership "$IMG" "$BUILD_LOG"
 	cleanup
 }
 
@@ -441,6 +491,9 @@ if [ ! -x build/mklive.sh ]; then
     echo build/mklive.sh not found >&2
     exit 1
 fi
+
+init_logging
+setup_build_shims
 
 if [ -n "$TRIPLET" ]; then
     IFS=: read -r ARCH DATE VARIANT _ < <( echo "$TRIPLET" | sed -Ee 's/^(.+)-([0-9rc]+)-(.+)$/\1:\2:\3/' )

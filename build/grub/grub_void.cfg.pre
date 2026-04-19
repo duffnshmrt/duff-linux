@@ -20,9 +20,6 @@ if loadfont "(${voidlive})/boot/grub/fonts/unicode.pf2" ; then
 
 	terminal_input console
 	terminal_output gfxterm
-
-	insmod png
-	background_image "(${voidlive})/boot/isolinux/@@SPLASHIMAGE@@"
 fi
 
 # Set default menu entry

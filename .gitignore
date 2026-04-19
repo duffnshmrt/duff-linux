@@ -15,3 +15,5 @@ release/
 build/packer/cloud-*/
 build/packer/vagrant-*/
 mklive-build*/
+d77-build.log
+*.log

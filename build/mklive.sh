@@ -258,10 +258,8 @@ generate_isolinux_boot() {
     cp -f "$SYSLINUX_DATADIR"/reboot.c32 "$ISOLINUX_DIR"
     cp -f "$SYSLINUX_DATADIR"/poweroff.c32 "$ISOLINUX_DIR"
     cp -f build/isolinux/isolinux.cfg.in "$ISOLINUX_DIR"/isolinux.cfg
-    cp -f ${SPLASH_IMAGE} "$ISOLINUX_DIR"
 
-    sed -i  -e "s|@@SPLASHIMAGE@@|$(basename "${SPLASH_IMAGE}")|" \
-        -e "s|@@KERNVER@@|${KERNELVERSION}|" \
+    sed -i -e "s|@@KERNVER@@|${KERNELVERSION}|" \
         -e "s|@@KEYMAP@@|${KEYMAP}|" \
         -e "s|@@ARCH@@|$TARGET_ARCH|" \
         -e "s|@@LOCALE@@|${LOCALE}|" \
@@ -277,7 +275,6 @@ generate_isolinux_boot() {
 
 generate_grub_efi_boot() {
     cp -f build/grub/grub.cfg "$GRUB_DIR"
-    cp -f "${SPLASH_IMAGE}" "$ISOLINUX_DIR"
     cp -f build/grub/grub_void.cfg.pre "$GRUB_DIR"/grub_void.cfg
 
     case "$TARGET_ARCH" in
@@ -374,8 +371,6 @@ menuentry "System shutdown" --hotkey p --id poweroff {
 }
 EOF
     cat build/grub/grub_void.cfg.post >> "$GRUB_DIR"/grub_void.cfg
-
-    sed -i -e "s|@@SPLASHIMAGE@@|$(basename "${SPLASH_IMAGE}")|" "$GRUB_DIR"/grub_void.cfg
 
     mkdir -p "$GRUB_DIR"/fonts
 
@@ -525,7 +520,7 @@ while getopts "a:b:r:c:C:T:Kk:l:i:I:S:e:s:o:p:g:v:P:Vh" opt; do
 	esac
 done
 shift $((OPTIND - 1))
-XBPS_REPOSITORY="$XBPS_REPOSITORY --repository=https://repo-default.voidlinux.org/current --repository=https://repo-default.voidlinux.org/current/musl --repository=https://repo-default.voidlinux.org/current/aarch64"
+XBPS_REPOSITORY="$XBPS_REPOSITORY --repository=https://repo-default.voidlinux.org/current"
 
 # Configure dracut to use overlayfs for the writable overlay.
 BOOT_CMDLINE="$BOOT_CMDLINE rd.live.overlay.overlayfs=1 "
@@ -603,8 +598,7 @@ STEP_COUNT=10
 
 : ${SYSLINUX_DATADIR:="$VOIDTARGETDIR"/usr/lib/syslinux}
 : ${GRUB_DATADIR:="$VOIDTARGETDIR"/usr/share/grub}
-: ${SPLASH_IMAGE:=build/data/splash.png}
-: ${XBPS_INSTALL_CMD:=xbps-install}
+: ${XBPS_INSTALL_CMD:=/usr/bin/xbps-install}
 : ${XBPS_REMOVE_CMD:=xbps-remove}
 : ${XBPS_QUERY_CMD:=xbps-query}
 : ${XBPS_RINDEX_CMD:=xbps-rindex}

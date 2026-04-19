@@ -5,7 +5,6 @@ ONTIMEOUT linux
 
 MENU TABMSG Press ENTER to boot or TAB to edit a menu entry
 MENU AUTOBOOT BIOS default device boot in # second{,s}...
-MENU BACKGROUND @@SPLASHIMAGE@@
 MENU WIDTH 78
 MENU MARGIN 1
 MENU ROWS 12
