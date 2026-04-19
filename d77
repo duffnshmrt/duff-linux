@@ -7,8 +7,10 @@ set -eu
 PROGNAME=$(basename "$0")
 ARCH=$(uname -m)
 IMAGES="plasma"
+GPU_PROFILE="amd"
 TRIPLET=
 REPO=
+REPO_PATHS=()
 DATE=$(date -u +%Y%m%d)
 BUILD_LOG="$(pwd)/d77-build.log"
 WORKDIR_OWNER_UID=$(stat -c '%u' .)
@@ -27,6 +29,7 @@ usage() {
 	 -a <arch>     Set architecture (or platform) in the image. Asahi is untested.
 	 -b <variant>  Only "plasma" is supported here. (WIP)
                May be specified multiple times to build multiple variants.
+	 -g <gpu>      Set GPU profile: amd (default) or nvidia
 	 -d <date>     Override the datestamp on the generated image (YYYYMMDD format)
 	 -t <arch-date-variant>
 	               Equivalent to setting -a, -b, and -d
@@ -39,12 +42,13 @@ usage() {
 	EOH
 }
 
-while getopts "a:b:d:t:hr:V" opt; do
+while getopts "a:b:d:g:t:hr:V" opt; do
 case $opt in
     a) ARCH="$OPTARG";;
     b) IMAGES="$OPTARG";;
     d) DATE="$OPTARG";;
-    r) REPO="-r $OPTARG $REPO";;
+    g) GPU_PROFILE="$OPTARG";;
+    r) REPO="-r $OPTARG $REPO"; REPO_PATHS+=("$OPTARG");;
     t) TRIPLET="$OPTARG";;
     V) version; exit 0;;
     h) usage; exit 0;;
@@ -401,10 +405,63 @@ include_x11() {
 	cp ./build/common/wswap-X "$INCLUDEDIR"/usr/bin/
 }		
 
+ensure_nvidia_repo() {
+    local repo=
+    local main_repo=
+    local nonfree_repo=
+
+    [ "$GPU_PROFILE" = "nvidia" ] || return 0
+
+    case "$ARCH" in
+        x86_64*|i686*) ;;
+        *) return 0 ;;
+    esac
+
+    for repo in "${REPO_PATHS[@]}"; do
+        case "$repo" in
+            */nonfree|*/nonfree/) return 0 ;;
+        esac
+    done
+
+    for repo in "${REPO_PATHS[@]}"; do
+        case "$repo" in
+            */binpkgs|*/binpkgs/)
+                main_repo="${repo%/}"
+                nonfree_repo="${main_repo}/nonfree"
+                if [ -d "$nonfree_repo" ]; then
+                    REPO="-r $nonfree_repo $REPO"
+                    REPO_PATHS+=("$nonfree_repo")
+                    info_msg "d77: automatically adding NVIDIA nonfree repo: $nonfree_repo"
+                    return 0
+                fi
+                ;;
+        esac
+    done
+
+    cat >&2 <<EOF
+NVIDIA build selected, but no XBPS nonfree repository was found.
+
+The proprietary NVIDIA package is built into a separate nonfree repo in void-packages.
+Build it first, then rerun d77 with both repositories:
+
+  cd /home/\$USER/Documents/GitHub/void-packages
+  echo XBPS_ALLOW_RESTRICTED=yes >> etc/conf
+  ./xbps-src pkg nvidia
+  sudo ./d77 -r /home/\$USER/Documents/GitHub/void-packages/hostdir/binpkgs/ -r /home/\$USER/Documents/GitHub/void-packages/hostdir/binpkgs/nonfree/ -g nvidia -b plasma --
+
+EOF
+    exit 1
+}
+
+write_gpu_profile() {
+    mkdir -p "$INCLUDEDIR"/etc/duff-linux
+    printf '%s\n' "$GPU_PROFILE" > "$INCLUDEDIR"/etc/duff-linux/gpu-profile
+}
+
 build_variant() {
     variant="$1"
     shift
-    IMG=duff-linux-live-${ARCH}-${DATE}-${variant}.iso
+    IMG=duff-linux-live-${ARCH}-${DATE}-${variant}-${GPU_PROFILE}.iso
 
     # el-cheapo installer is unsupported on arm because arm doesn't install a kernel by default
     # and to work around that would add too much complexity to it
@@ -413,12 +470,26 @@ build_variant() {
     case "$ARCH" in
         x86_64*|i686*)
             GRUB_PKGS="grub-i386-efi grub-x86_64-efi"
-            GFX_PKGS="xorg-video-drivers"
-            GFX_WL_PKGS="mesa-dri"
+            case "$GPU_PROFILE" in
+                amd)
+                    GFX_PKGS="xorg-video-drivers"
+                    GFX_WL_PKGS="mesa-dri"
+                    GPU_DRIVER_PKGS=
+                    ;;
+                nvidia)
+                    GFX_PKGS=
+                    GFX_WL_PKGS=
+                    GPU_DRIVER_PKGS="nvidia"
+                    ;;
+                *)
+                    >&2 echo "Unknown GPU profile $GPU_PROFILE"
+                    exit 1
+                    ;;
+            esac
 			KERNEL_PKG="linux7.0"
             WANT_INSTALLER=yes
             TARGET_ARCH="$ARCH"
-	    D77_CORE="acpi alsa-plugins-pulseaudio alsa-utils bash-completion ca-certificates curl elogind fastfetch git inxi nano NetworkManager octoxbps polkit power-profiles-daemon sddm udiskie ufw unzip usbutils util-linux void-repo-multilib void-repo-multilib-nonfree void-repo-nonfree wget xdg-user-dirs xdg-user-dirs-gtk xdg-utils xinit xorg xorg-server zramen"
+	    D77_CORE="acpi alsa-plugins-pulseaudio alsa-utils bash-completion ca-certificates curl elogind fastfetch git inxi nano NetworkManager octoxbps polkit power-profiles-daemon sddm udiskie ufw unzip usbutils util-linux void-repo-multilib void-repo-multilib-nonfree void-repo-nonfree wget xdg-user-dirs xdg-user-dirs-gtk xdg-utils xinit zramen"
 	    CALAMARES="calamares grub rsync"
 	    COMMON=
 	    PLASMA=
@@ -428,20 +499,30 @@ build_variant() {
             GRUB_PKGS="grub-arm64-efi"
             GFX_PKGS="xorg-video-drivers"
             GFX_WL_PKGS="mesa-dri"
+            GPU_DRIVER_PKGS=
 			KERNEL_PKG="linux7.0"
             TARGET_ARCH="$ARCH"
+            if [ "$GPU_PROFILE" != "amd" ]; then
+                >&2 echo "GPU profile $GPU_PROFILE is not supported on $ARCH"
+                exit 1
+            fi
             ;;
         asahi*)
             GRUB_PKGS="asahi-base asahi-scripts grub-arm64-efi"
             GFX_PKGS="mesa-asahi-dri"
             GFX_WL_PKGS="mesa-asahi-dri"
+            GPU_DRIVER_PKGS=
             KERNEL_PKG="linux-asahi"
             TARGET_ARCH="aarch64${ARCH#asahi}"
+            if [ "$GPU_PROFILE" != "amd" ]; then
+                >&2 echo "GPU profile $GPU_PROFILE is not supported on $ARCH"
+                exit 1
+            fi
             ;;
     esac
 
     A11Y_PKGS="espeakup void-live-audio"
-    PKGS="linux7.0-headers dialog cryptsetup lvm2 mdadm void-docs-browse xtools-minimal xmirror chrony tmux $A11Y_PKGS $GRUB_PKGS"
+    PKGS="linux7.0-headers dialog cryptsetup lvm2 mdadm void-docs-browse xtools-minimal xmirror chrony tmux $A11Y_PKGS $GRUB_PKGS $GPU_DRIVER_PKGS"
     FONTS="font-misc-misc terminus-font dejavu-fonts-ttf"
     WAYLAND_PKGS="$GFX_WL_PKGS $FONTS"
     XORG_PKGS="$GFX_PKGS $FONTS xorg-minimal xorg-input-drivers setxkbmap xauth"
@@ -474,6 +555,8 @@ build_variant() {
         include_x11
     fi
 
+    write_gpu_profile
+
     if [ "$WANT_INSTALLER" = yes ]; then
         include_installer
     else
@@ -501,6 +584,7 @@ fi
 
 init_logging
 setup_build_shims
+ensure_nvidia_repo
 
 if [ -n "$TRIPLET" ]; then
     IFS=: read -r ARCH DATE VARIANT _ < <( echo "$TRIPLET" | sed -Ee 's/^(.+)-([0-9rc]+)-(.+)$/\1:\2:\3/' )

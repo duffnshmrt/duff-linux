@@ -21,7 +21,7 @@ An opinionated distro based off dani-77's d77void Linux distribution, with the f
 
 # ISO Generation Guide
 
-1. The first step is to clone this repo, Void's official packages repo, and then finally to build binary-bootstrap. This sets up the "masterdir," which is like a mini-Void system inside a folder where your building happens.
+1. Clone this repo and Void's `void-packages` repo, then bootstrap `void-packages`. This creates the local build environment that produces the package repositories used by `d77`.
 
 ```
 git clone https://github.com/duffnshmrt/duff-linux
@@ -30,13 +30,30 @@ cd void-packages
 ./xbps-src binary-bootstrap
 ```
 
-2. Step two is to add d77's "secret sauce". Go to this repo's folder and copy everything inside its /build/srcpkgs folder into the /srcpkgs folder of the void-packages repo you just cloned. This gives Void the "recipes" for things like Calamares (the installer) that might not be in the official repos. Once done, you can build Calamares.
+2. Copy the custom package templates from this repo into `void-packages/srcpkgs`, then build Calamares so your local repo has the installer package used by the ISO build.
 ```
 ./xbps-src pkg calamares
 ```
 
-3. Assuming everything went well, step three is to create the ISO 🎉. In a terminal in this directory/repository, run the following command:
+3. Build the ISO from this repo.
+
+AMD / default ISO:
 
 ```
 sudo ./d77 -r /home/$USER/void-packages/hostdir/binpkgs/ -b plasma --
 ```
+
+NVIDIA ISO:
+
+The proprietary `nvidia` package is a restricted package in Void and is built into a separate local `nonfree` repository. Enable restricted builds, build the package, then point `d77` at both your main and `nonfree` repos.
+
+```
+cd /home/$USER/void-packages
+echo XBPS_ALLOW_RESTRICTED=yes >> etc/conf
+./xbps-src pkg nvidia
+
+cd /home/$USER/duff-linux
+sudo ./d77 -r /home/$USER/void-packages/hostdir/binpkgs/ -r /home/$USER/void-packages/hostdir/binpkgs/nonfree/ -g nvidia -b plasma --
+```
+
+`d77` defaults to the AMD profile, so `-g amd` is optional. If the local `nonfree` repo already exists, `d77` will now add it automatically for NVIDIA builds when you pass only `/hostdir/binpkgs/`.
