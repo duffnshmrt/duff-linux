@@ -5,7 +5,7 @@
 > [!NOTE]
 > This project would not be possible without the use of d77void. Please go check it out here: https://github.com/dani-77/d77void
 
-A personal/opinionated distro based off dani-77's d77void Linux distribution, with the following notable features:
+An opinionated distro based off dani-77's d77void Linux distribution, with the following notable features:
 - KDE Plasma as the desktop environment, uses latest version available
 - Linux kernel 7.0.0_1 instead of the default older version
 - Live environment with Calamares installer
