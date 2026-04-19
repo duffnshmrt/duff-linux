@@ -243,7 +243,24 @@ EOF
     # 4. Set OctoXBPS Notifier to autostart by default
     ln -sf /usr/share/applications/octoxbps-notifier.desktop "$INCLUDEDIR"/etc/xdg/autostart/
 
-    # 5. Fastfetch branding
+    # 5. Duff Linux identity (live environment)
+    cat <<'EOF' > "$INCLUDEDIR"/etc/os-release
+NAME="Duff Linux"
+ID=duff-linux
+ID_LIKE=void
+PRETTY_NAME="Duff Linux"
+ANSI_COLOR="1;33"
+HOME_URL="https://github.com/duffnshmrt/duff-linux"
+SUPPORT_URL="https://github.com/duffnshmrt/duff-linux"
+BUG_REPORT_URL="https://github.com/duffnshmrt/duff-linux/issues"
+LOGO=duff-linux
+EOF
+
+    # 6. KDE "About this System" icon
+    mkdir -p "$INCLUDEDIR"/usr/share/pixmaps
+    cp ./common/calamares/branding/duff-linux/icon.png "$INCLUDEDIR"/usr/share/pixmaps/duff-linux.png
+
+    # 7. Fastfetch branding
     mkdir -p "$INCLUDEDIR"/etc/fastfetch
     cat <<'EOF' > "$INCLUDEDIR"/etc/fastfetch/duff-linux.txt
       .-.
@@ -264,8 +281,41 @@ EOF
         "source": "/etc/fastfetch/duff-linux.txt",
         "type": "file",
         "color": { "1": "yellow" }
-    }
+    },
+    "modules": [
+        "title",
+        "separator",
+        "os",
+        "host",
+        "kernel",
+        "uptime",
+        "packages",
+        "shell",
+        "display",
+        "de",
+        "wm",
+        "theme",
+        "icons",
+        "font",
+        "terminal",
+        "cpu",
+        "gpu",
+        "memory",
+        "swap",
+        "disk",
+        "battery",
+        "locale",
+        "break",
+        "colors"
+    ]
 }
+EOF
+
+    # 8. Auto-run fastfetch when a terminal opens
+    mkdir -p "$INCLUDEDIR"/etc/profile.d
+    cat <<'EOF' > "$INCLUDEDIR"/etc/profile.d/fastfetch.sh
+#!/bin/sh
+[ -t 1 ] && fastfetch
 EOF
 }
 
