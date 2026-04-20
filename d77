@@ -316,7 +316,8 @@ BUG_REPORT_URL="https://github.com/duffnshmrt/duff-linux/issues"
 LOGO=duff-linux
 EOF
 
-    # KDE "About this System" icon
+    # Desktop-visible Duff Linux icon assets.
+    # Keep the repo-root duff-linux.png for project artwork only.
     mkdir -p "$INCLUDEDIR"/usr/share/pixmaps
     mkdir -p "$INCLUDEDIR"/usr/share/icons/hicolor/256x256/apps
     cp ./build/common/calamares/branding/duff-linux/icon.png "$INCLUDEDIR"/usr/share/pixmaps/duff-linux.png
