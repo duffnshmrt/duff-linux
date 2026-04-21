@@ -359,20 +359,182 @@ EOF
 LC_TIME=en_US.UTF-8
 EOF
 
-    # Set OctoXBPS Notifier to autostart with a short delay. On first boot on
-    # real hardware, KDE's system tray isn't ready when XDG autostart fires,
-    # causing the notifier to crash. A 20-second sleep covers the cold-boot
-    # case without being noticeable on subsequent (cache-warm) logins.
+    # Start OctoXBPS through a small Plasma Wayland wrapper. This removes the
+    # old sleep-based workaround and instead restarts plasmashell after real
+    # display-layout changes, which restores lost tray icons when the Plasma
+    # system tray hits its monitor-change bug.
+    mkdir -p "$INCLUDEDIR"/usr/local/bin
+    cat <<'EOF' > "$INCLUDEDIR"/usr/local/bin/duff-plasma-tray-fix
+#!/bin/sh
+
+is_plasma_wayland() {
+    [ "${XDG_SESSION_TYPE:-}" = "wayland" ] || return 1
+
+    case "${XDG_CURRENT_DESKTOP:-}:${DESKTOP_SESSION:-}" in
+        *KDE*:*|*PLASMA*:*|*:*plasma*|*:*kde*)
+            return 0
+            ;;
+    esac
+
+    [ -n "${KDE_FULL_SESSION:-}" ]
+}
+
+dbus_name_has_owner() {
+    command -v dbus-send >/dev/null 2>&1 || return 1
+
+    dbus-send --session --print-reply \
+        --dest=org.freedesktop.DBus \
+        /org/freedesktop/DBus \
+        org.freedesktop.DBus.NameHasOwner \
+        "string:$1" 2>/dev/null | grep -q "boolean true"
+}
+
+wait_for_plasma_tray() {
+    count=0
+
+    while [ "$count" -lt 60 ]; do
+        if pgrep -x plasmashell >/dev/null 2>&1 && \
+           dbus_name_has_owner org.kde.StatusNotifierWatcher; then
+            return 0
+        fi
+
+        count=$((count + 1))
+        sleep 1
+    done
+
+    return 0
+}
+
+log_file="${XDG_RUNTIME_DIR:-/tmp}/octoxbps-notifier-session.log"
+
+log_message() {
+    printf '%s %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*" >> "$log_file"
+}
+
+display_signature() {
+    kscreen-doctor -j 2>/dev/null | tr -d '\n\t '
+}
+
+restart_plasmashell() {
+    lockdir="${XDG_RUNTIME_DIR:-/tmp}/duff-plasmashell-restart.lock"
+
+    mkdir "$lockdir" 2>/dev/null || return 0
+
+    (
+        trap 'rmdir "$lockdir"' EXIT INT TERM HUP
+
+        sleep 1
+
+        if command -v systemctl >/dev/null 2>&1 && \
+           systemctl --user --quiet is-active plasma-plasmashell.service >/dev/null 2>&1; then
+            systemctl --user restart plasma-plasmashell.service >/dev/null 2>&1 && exit 0
+        fi
+
+        if command -v kquitapp6 >/dev/null 2>&1; then
+            kquitapp6 plasmashell >/dev/null 2>&1 || true
+        else
+            pkill -x plasmashell >/dev/null 2>&1 || true
+        fi
+
+        sleep 1
+        nohup plasmashell --replace >/dev/null 2>&1 &
+    ) >/dev/null 2>&1 &
+}
+
+watch_display_changes() {
+    notifier_pid=$1
+    last_restart_at=0
+    last_change_at=0
+
+    command -v kscreen-doctor >/dev/null 2>&1 || return 0
+
+    previous_signature=$(display_signature)
+    [ -n "$previous_signature" ] || return 0
+
+    sleep 15
+
+    while kill -0 "$notifier_pid" 2>/dev/null; do
+        sleep 2
+
+        current_signature=$(display_signature)
+        [ -n "$current_signature" ] || continue
+        [ "$current_signature" = "$previous_signature" ] && continue
+
+        now=$(date +%s)
+
+        if [ $((now - last_change_at)) -lt 8 ]; then
+            previous_signature=$current_signature
+            continue
+        fi
+
+        last_change_at=$now
+        previous_signature=$current_signature
+
+        if [ $((now - last_restart_at)) -lt 300 ]; then
+            log_message "display change detected but plasmashell restart is rate-limited"
+            continue
+        fi
+
+        last_restart_at=$now
+        log_message "display change detected; restarting plasmashell once"
+        previous_signature=$current_signature
+        restart_plasmashell
+    done
+}
+
+run_notifier_session() {
+    wait_for_plasma_tray
+    existing_pids=$(pgrep -x octoxbps-notifier || true)
+
+    if [ -n "$existing_pids" ]; then
+        log_message "found pre-existing octoxbps-notifier instance(s): $existing_pids"
+        pkill -x octoxbps-notifier 2>/dev/null || true
+        sleep 2
+    fi
+
+    log_message "starting managed octoxbps-notifier instance"
+
+    /usr/bin/octoxbps-notifier >> "$log_file" 2>&1 &
+    notifier_pid=$!
+    watcher_pid=
+
+    if is_plasma_wayland; then
+        watch_display_changes "$notifier_pid" &
+        watcher_pid=$!
+    fi
+
+    wait "$notifier_pid"
+    status=$?
+
+    [ -n "$watcher_pid" ] && kill "$watcher_pid" 2>/dev/null || true
+
+    log_message "managed octoxbps-notifier exited with status $status"
+    return "$status"
+}
+
+run_notifier_session
+EOF
+    chmod 755 "$INCLUDEDIR"/usr/local/bin/duff-plasma-tray-fix
+
     mkdir -p "$INCLUDEDIR"/etc/xdg/autostart
     cat <<'EOF' > "$INCLUDEDIR"/etc/xdg/autostart/octoxbps-notifier.desktop
 [Desktop Entry]
 Type=Application
+Hidden=true
+EOF
+
+    cat <<'EOF' > "$INCLUDEDIR"/etc/xdg/autostart/duff-octoxbps-notifier.desktop
+[Desktop Entry]
+Type=Application
 Name=OctoXBPS Notifier
 Comment=OctoXBPS system tray notifier
-Exec=sh -c 'sleep 5 && exec octoxbps-notifier'
+Exec=/usr/local/bin/duff-plasma-tray-fix
 Icon=octoxbps
 Terminal=false
 Hidden=false
+X-KDE-autostart-after=panel
+X-KDE-autostart-phase=2
+StartupNotify=false
 EOF
 
     # Duff Linux identity (live environment)
@@ -659,7 +821,7 @@ build_variant() {
         ;;     
 	plasma)
 	    PLASMA=yes
-            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cronie ark kde-plasma kde-baseapps spectacle sddm-kcm sddm discover flatpak xdg-desktop-portal-kde"
+            PKGS="$PKGS $XORG_PKGS $WAYLAND_PKGS $D77_CORE $CALAMARES cronie ark kde-plasma kde-baseapps spectacle sddm-kcm sddm discover flatpak xdg-desktop-portal-kde kscreen"
             SERVICES="$SERVICES dbus elogind sddm NetworkManager polkitd power-profiles-daemon cronie zramen"
         ;;
         *)
