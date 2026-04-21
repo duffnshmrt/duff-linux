@@ -405,14 +405,93 @@ wait_for_plasma_tray() {
     return 0
 }
 
-log_file="${XDG_RUNTIME_DIR:-/tmp}/octoxbps-notifier-session.log"
+log_file="${XDG_RUNTIME_DIR:-/tmp}/duff-plasma-tray-fix.log"
+log_max_bytes=262144
+log_keep_lines=200
+
+trim_log_file() {
+    [ -f "$log_file" ] || return 0
+
+    log_size=$(wc -c < "$log_file" 2>/dev/null || printf '0')
+    [ "${log_size:-0}" -le "$log_max_bytes" ] && return 0
+
+    tmp_log="${log_file}.tmp"
+    tail -n "$log_keep_lines" "$log_file" > "$tmp_log" 2>/dev/null || return 0
+    mv "$tmp_log" "$log_file"
+}
 
 log_message() {
+    trim_log_file
     printf '%s %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*" >> "$log_file"
 }
 
-display_signature() {
-    kscreen-doctor -j 2>/dev/null | tr -d '\n\t '
+restart_state_dir="${XDG_RUNTIME_DIR:-/tmp}/duff-plasma-tray-fix"
+pending_restart_pid_file="$restart_state_dir/pending-restart.pid"
+last_restart_file="$restart_state_dir/last-restart"
+
+ensure_restart_state_dir() {
+    mkdir -p "$restart_state_dir"
+}
+
+get_last_restart_at() {
+    if [ -r "$last_restart_file" ]; then
+        cat "$last_restart_file"
+    else
+        printf '0\n'
+    fi
+}
+
+clear_pending_restart() {
+    rm -f "$pending_restart_pid_file"
+}
+
+schedule_plasmashell_restart() {
+    ensure_restart_state_dir
+
+    if [ -r "$pending_restart_pid_file" ]; then
+        pending_pid=$(cat "$pending_restart_pid_file" 2>/dev/null || true)
+        if [ -n "$pending_pid" ] && kill -0 "$pending_pid" 2>/dev/null; then
+            kill "$pending_pid" 2>/dev/null || true
+            log_message "rescheduling pending plasmashell restart"
+        fi
+        clear_pending_restart
+    fi
+
+    (
+        trap 'clear_pending_restart' EXIT INT TERM HUP
+
+        # KScreen emits display updates while outputs are still settling. A short
+        # debounce lets nearby events coalesce into one restart.
+        sleep 3
+        restart_plasmashell
+        date +%s > "$last_restart_file"
+    ) >/dev/null 2>&1 &
+
+    printf '%s\n' "$!" > "$pending_restart_pid_file"
+}
+
+handle_display_change_event() {
+    now=$(date +%s)
+    watcher_started_at=$2
+    last_restart_at=$(get_last_restart_at)
+
+    # Plasma/KScreen often emit setup noise during login while outputs are
+    # still coming online. Ignore that warm-up window so we only react to
+    # actual post-login monitor changes.
+    if [ $((now - watcher_started_at)) -lt 10 ]; then
+        log_message "display change event ignored during startup grace period"
+        return 1
+    fi
+
+    # Allow quick follow-up changes like Plasma's "Revert" action, but still
+    # avoid restart storms if a fresh restart just happened moments ago.
+    if [ $((now - last_restart_at)) -lt 4 ]; then
+        log_message "display change event received but plasmashell restart is rate-limited"
+        return 1
+    fi
+
+    log_message "display change event received; scheduling plasmashell restart"
+    return 0
 }
 
 restart_plasmashell() {
@@ -423,7 +502,10 @@ restart_plasmashell() {
     (
         trap 'rmdir "$lockdir"' EXIT INT TERM HUP
 
-        sleep 1
+        # KScreen emits configChanged while outputs are still settling. A short
+        # debounce avoids restarting plasmashell in the middle of the DRM/EGL
+        # transition, which can make the restart fail.
+        sleep 3
 
         if command -v systemctl >/dev/null 2>&1 && \
            systemctl --user --quiet is-active plasma-plasmashell.service >/dev/null 2>&1; then
@@ -443,42 +525,37 @@ restart_plasmashell() {
 
 watch_display_changes() {
     notifier_pid=$1
-    last_restart_at=0
-    last_change_at=0
+    watcher_started_at=$(date +%s)
+    ensure_restart_state_dir
 
-    command -v kscreen-doctor >/dev/null 2>&1 || return 0
+    if command -v kscreen-console >/dev/null 2>&1; then
+        kscreen-console monitor 2>/dev/null |
+        while IFS= read -r line; do
+            kill -0 "$notifier_pid" 2>/dev/null || break
+            [ -n "$line" ] || continue
 
-    previous_signature=$(display_signature)
-    [ -n "$previous_signature" ] || return 0
+            handle_display_change_event "" "$watcher_started_at" || continue
+            schedule_plasmashell_restart
+        done
+        return 0
+    fi
 
-    sleep 15
+    command -v dbus-monitor >/dev/null 2>&1 || {
+        log_message "no KScreen monitor command available; skipping Plasma tray recovery watcher"
+        return 0
+    }
 
-    while kill -0 "$notifier_pid" 2>/dev/null; do
-        sleep 2
+    dbus-monitor --session \
+        "type='signal',sender='org.kde.KScreen',path='/backend',interface='org.kde.kscreen.Backend',member='configChanged'" 2>/dev/null |
+    while IFS= read -r line; do
+        kill -0 "$notifier_pid" 2>/dev/null || break
 
-        current_signature=$(display_signature)
-        [ -n "$current_signature" ] || continue
-        [ "$current_signature" = "$previous_signature" ] && continue
-
-        now=$(date +%s)
-
-        if [ $((now - last_change_at)) -lt 8 ]; then
-            previous_signature=$current_signature
-            continue
-        fi
-
-        last_change_at=$now
-        previous_signature=$current_signature
-
-        if [ $((now - last_restart_at)) -lt 300 ]; then
-            log_message "display change detected but plasmashell restart is rate-limited"
-            continue
-        fi
-
-        last_restart_at=$now
-        log_message "display change detected; restarting plasmashell once"
-        previous_signature=$current_signature
-        restart_plasmashell
+        case "$line" in
+            signal*)
+                handle_display_change_event "" "$watcher_started_at" || continue
+                schedule_plasmashell_restart
+                ;;
+        esac
     done
 }
 
@@ -507,6 +584,7 @@ run_notifier_session() {
     status=$?
 
     [ -n "$watcher_pid" ] && kill "$watcher_pid" 2>/dev/null || true
+    clear_pending_restart
 
     log_message "managed octoxbps-notifier exited with status $status"
     return "$status"
