@@ -372,6 +372,19 @@ done
 EOF
     chmod 755 "$INCLUDEDIR"/etc/runit/run-core-services.sh
 
+    # Hide the hibernate button in KDE's logout / lock screen for the live
+    # session as well, so the live image matches the installed system.
+    cat <<'EOF' > "$INCLUDEDIR"/etc/runit/core-services/05-hide-hibernate-button.sh
+#!/bin/sh
+find /usr/share/plasma/lookandfeel \
+    \( -path '*/org.kde.breeze/contents/logout/Logout.qml' \
+    -o -path '*/org.kde.breeze.desktop/contents/logout/Logout.qml' \
+    -o -path '*/org.kde.breezedark.desktop/contents/logout/Logout.qml' \) \
+    -type f \
+    -exec sed -i '/id: hibernateButton/,/^[[:space:]]*}/ s/visible: .*/visible: false/' {} +
+EOF
+    chmod 755 "$INCLUDEDIR"/etc/runit/core-services/05-hide-hibernate-button.sh
+
     # Autostart Calamares in the Live ISO
     mkdir -p "$INCLUDEDIR"/etc/skel/.config/autostart
     ln -sf /usr/share/applications/calamares.desktop "$INCLUDEDIR"/etc/skel/.config/autostart/calamares.desktop
