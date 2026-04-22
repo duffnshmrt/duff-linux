@@ -47,7 +47,7 @@ Presentation
             anchors.centerIn: parent
             text: "🍻<br/><br/><b>Welcome to Duff Linux</b><br/><br/>" +
                   "An opinionated distro built on Void Linux.<br/>" +
-                  "KDE Plasma · Btrfs Snapshots · Rolling Release"
+                  "KDE Plasma · BTRFS Snapshots · Rolling Release"
             wrapMode: Text.WordWrap
             width: presentation.width * 0.8
             horizontalAlignment: Text.AlignHCenter

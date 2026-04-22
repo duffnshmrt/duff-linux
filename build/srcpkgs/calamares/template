@@ -35,6 +35,7 @@ esac
 pre_configure() {
     vsed -i -e "s/desired_size = 512 \* 1024 \* 1024  \# 512MiB/desired_size = 512 \* 1024 \* 1024 \* 4  \# 2048MiB/" src/modules/fstab/main.py
     vsed -i 's/services-systemd/services-runit/g' settings.conf
+    vsed -i 's/if ( \/\* About-Calamares Button enabled \*\/ true )/if ( false )/' src/calamares/CalamaresWindow.cpp
 }
 
 post_install() {
