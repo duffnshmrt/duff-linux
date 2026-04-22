@@ -1,3 +1,0 @@
-[submodule "common/.bash_it"]
-	path = common/.bash_it
-	url = https://github.com/Bash-it/bash-it.git
