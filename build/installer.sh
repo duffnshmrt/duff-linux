@@ -1599,12 +1599,11 @@ fi
 # main()
 #
 DIALOG --title "${BOLD}${RED} Enter the void ... ${RESET}" --msgbox "\n
-Welcome to d77void installation. A simple and minimal \
-respin of Void Linux.\n\n
-The installation should be pretty straightforward. If you are in trouble \
-please join the ${BOLD}Discord${RESET} server listed on Sourceforge or \
-the Void Linux channel ${BOLD}#voidlinux${RESET} on ${BOLD}irc.libera.chat${RESET}.\n\n
-${BOLD}https://d77void.sourceforge.io${RESET}\n\n" 16 80
+Welcome to Duff Linux installation.\n\n
+The installation should be pretty straightforward. If you run into trouble, \
+please open an issue on GitHub or visit the Void Linux channel \
+${BOLD}#voidlinux${RESET} on ${BOLD}irc.libera.chat${RESET}.\n\n
+${BOLD}https://github.com/duffnshmrt/duff-linux${RESET}\n\n" 16 80
 
 while true; do
     menu
