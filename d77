@@ -1,4 +1,0 @@
-#!/bin/sh
-
-printf 'Warning: ./d77 is deprecated; use ./duff instead.\n' >&2
-exec "$(dirname "$0")/duff" "$@"
