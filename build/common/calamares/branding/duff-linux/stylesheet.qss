@@ -20,7 +20,7 @@ QWizardPage {
 }
 
 #sidebarApp {
-    background-color: #292f34;
+    background-color: #252d36;
 }
 
 #logoApp {
@@ -66,6 +66,8 @@ QTableView {
     color: #f3f5f7;
     border: 1px solid #3c4652;
     border-radius: 6px;
+    min-height: 34px;
+    padding: 6px 10px;
     selection-background-color: #d35400;
     selection-color: #ffffff;
 }
@@ -93,6 +95,39 @@ QComboBox::drop-down {
 
 QComboBox::down-arrow {
     image: none;
+}
+
+QCheckBox,
+QRadioButton {
+    spacing: 8px;
+}
+
+QCheckBox::indicator,
+QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+    background-color: #f3f5f7;
+    border: 1px solid #cfd6de;
+}
+
+QCheckBox::indicator {
+    border-radius: 3px;
+}
+
+QRadioButton::indicator {
+    border-radius: 8px;
+}
+
+QCheckBox::indicator:unchecked,
+QRadioButton::indicator:unchecked {
+    background-color: #f3f5f7;
+    border: 1px solid #cfd6de;
+}
+
+QCheckBox::indicator:checked,
+QRadioButton::indicator:checked {
+    background-color: #ffffff;
+    border: 1px solid #d35400;
 }
 
 QPushButton,
