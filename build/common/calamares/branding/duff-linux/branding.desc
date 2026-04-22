@@ -32,7 +32,7 @@ images:
     productWelcome:      "languages.png"
 
 style:
-   SidebarBackground:        "#292F34"
+   SidebarBackground:        "#252D36"
    SidebarText:              "#FFFFFF"
    SidebarTextCurrent:       "#292F34"
    SidebarBackgroundCurrent: "#D35400"

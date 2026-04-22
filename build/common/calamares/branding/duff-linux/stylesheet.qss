@@ -66,8 +66,8 @@ QTableView {
     color: #f3f5f7;
     border: 1px solid #3c4652;
     border-radius: 6px;
-    min-height: 34px;
-    padding: 6px 10px;
+    min-height: 26px;
+    padding: 3px 7px;
     selection-background-color: #d35400;
     selection-color: #ffffff;
 }
@@ -126,8 +126,8 @@ QRadioButton::indicator:unchecked {
 
 QCheckBox::indicator:checked,
 QRadioButton::indicator:checked {
-    background-color: #ffffff;
-    border: 1px solid #d35400;
+    background-color: #d35400;
+    border: 1px solid #ffb066;
 }
 
 QPushButton,
