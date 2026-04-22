@@ -8,7 +8,7 @@
 An opinionated distro based off dani-77's d77void Linux distribution, with the following notable features:
 - KDE Plasma as the desktop environment, uses latest version available
 - Variants for Linux kernel 7.0 or 6.19
-- Live environment with Calamares installer
+- Live KDE Plasma environment with Calamares installer
 - BTRFS with automatic snapshots (both pre-transaction and regular system backups)
 - OctoXBPS as a graphical application to manage native packages
 - OctoXBPS Notifier to tell you when updates are available
