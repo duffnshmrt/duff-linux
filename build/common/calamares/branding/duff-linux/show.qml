@@ -75,7 +75,7 @@ Presentation
     Slide {
         Text {
             anchors.centerIn: parent
-            text: "📸<br/><br/><b>Automatic Btrfs Snapshots</b><br/><br/>" +
+            text: "📸<br/><br/><b>Automatic BTRFS Snapshots</b><br/><br/>" +
                   "Every package transaction is backed up automatically.<br/>" +
                   "Boot into any snapshot from the GRUB menu to restore your system."
             wrapMode: Text.WordWrap
