@@ -13,6 +13,7 @@ REBUILD=no
 SKIP_IMAGE_BUILD=no
 ROOTFUL=no
 CONTAINER_COMMAND=()
+CONTAINER_ACTION=
 
 usage() {
     cat <<EOF
@@ -20,6 +21,8 @@ Usage: $(basename "$0") [options] [shell|setup|build-amd-6.19|build-amd-7.0|buil
 
 Runs Duff Linux build commands inside a Void Linux container while keeping the
 host distribution clean.
+The ISO build shortcuts use rootful Podman automatically because ISO assembly
+needs loop devices, mknod, mounts, and unmounts.
 
 Common examples:
   $(basename "$0") shell
@@ -96,12 +99,15 @@ container_command_for() {
 
     case "$command_name" in
         shell)
+            CONTAINER_ACTION=shell
             CONTAINER_COMMAND=(/bin/bash "$@")
             ;;
         setup)
+            CONTAINER_ACTION=setup
             CONTAINER_COMMAND=(./scripts/setup-iso-build-env.sh "$@")
             ;;
         build-amd-6.19|build-amd-7.0|build-nvidia-6.19|build-nvidia-7.0)
+            CONTAINER_ACTION=build
             CONTAINER_COMMAND=("./scripts/${command_name}.sh" "$@")
             ;;
         --)
@@ -109,9 +115,11 @@ container_command_for() {
                 printf 'Missing command after --\n' >&2
                 exit 1
             }
+            CONTAINER_ACTION=custom
             CONTAINER_COMMAND=("$@")
             ;;
         *)
+            CONTAINER_ACTION=custom
             CONTAINER_COMMAND=("$command_name" "$@")
             ;;
     esac
@@ -176,6 +184,11 @@ if [ "${#CONTAINER_COMMAND[@]}" -eq 0 ]; then
 fi
 
 ENGINE=$(find_engine)
+if [ "$ENGINE" = podman ] && [ "$CONTAINER_ACTION" = build ] && [ "$ROOTFUL" = no ]; then
+    printf 'ISO assembly needs loop devices, mknod, mounts, and unmounts; switching Podman to rootful mode.\n'
+    ROOTFUL=yes
+fi
+
 if [ "$ROOTFUL" = yes ]; then
     ENGINE_CMD=(sudo "$ENGINE")
 else
