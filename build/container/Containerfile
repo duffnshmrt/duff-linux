@@ -5,6 +5,12 @@ ARG MIRROR="https://repo-default.voidlinux.org/"
 RUN xbps-install -SyuR "${MIRROR}/current" xbps \
 	&& xbps-install -yuR "${MIRROR}/current" \
 	&& xbps-install -yuR "${MIRROR}/current" \
-		bash make git kmod xz lzo qemu-user-arm qemu-user-aarch64 binfmt-support outils dosfstools e2fsprogs
+		bash make git kmod xz lzo qemu-user-arm qemu-user-aarch64 binfmt-support outils dosfstools e2fsprogs \
+		ca-certificates rsync shadow sudo
 
-CMD ["/bin/sh"]
+COPY container/duff-container-entrypoint /usr/local/bin/duff-container-entrypoint
+
+RUN chmod 755 /usr/local/bin/duff-container-entrypoint
+
+ENTRYPOINT ["/usr/local/bin/duff-container-entrypoint"]
+CMD ["/bin/bash"]

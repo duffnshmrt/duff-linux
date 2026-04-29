@@ -17,3 +17,4 @@ build/packer/vagrant-*/
 mklive-build*/
 d77-build.log
 *.log
+*.codex

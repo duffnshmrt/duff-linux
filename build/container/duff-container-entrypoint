@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -euo pipefail
+
+host_uid=${DUFF_HOST_UID:-1000}
+host_gid=${DUFF_HOST_GID:-1000}
+user_name=${DUFF_CONTAINER_USER:-duffbuild}
+group_name=${DUFF_CONTAINER_GROUP:-duffbuild}
+
+if ! getent group "$host_gid" >/dev/null; then
+    groupadd -g "$host_gid" "$group_name"
+fi
+
+if ! getent passwd "$host_uid" >/dev/null; then
+    useradd -m -u "$host_uid" -g "$host_gid" -s /bin/bash "$user_name"
+fi
+
+actual_user=$(getent passwd "$host_uid" | cut -d: -f1)
+actual_home=$(getent passwd "$host_uid" | cut -d: -f6)
+
+mkdir -p /etc/sudoers.d
+printf '%s ALL=(ALL) NOPASSWD: ALL\n' "$actual_user" > /etc/sudoers.d/duff-container-builder
+chmod 0440 /etc/sudoers.d/duff-container-builder
+
+export HOME="$actual_home"
+export USER="$actual_user"
+export LOGNAME="$actual_user"
+
+if [ "$#" -eq 0 ]; then
+    set -- /bin/bash
+fi
+
+exec sudo -H -E -u "$actual_user" -- "$@"
